@@ -1,0 +1,87 @@
+<template>
+  <v-container
+    fill-height
+    fluid
+    grid-list-xl
+  >
+    <v-layout wrap>
+      <v-flex
+        md12
+        sm12
+        lg4
+      >
+        <h1>Bienvenido</h1>
+      </v-flex>
+      <!--v-flex
+        md12
+        sm12
+        lg4
+      >
+        <h1>evaluaciones</h1>
+      </!--v-flex>
+      <v-flex--
+        md12
+        sm12
+        lg4
+      >
+        <h1>usuarios</h1>
+      </v-flex-->
+      <!--v-flex--
+        sm6
+        xs12
+        md6
+        lg3
+      >
+        <h1>cuatro</h1>
+      </!--v-flex-->
+      <!--v-flex
+        sm6
+        xs12
+        md6
+        lg3
+      >
+        <h1>cinco</h1>
+      </!--v-flex-->
+      <!--v-flex
+        sm6
+        xs12
+        md6
+        lg3
+      >
+        <h1>seis</h1>
+      </!--v-flex-->
+      <!--v-flex
+        sm6
+        xs12
+        md6
+        lg3
+      >
+        <h1>siete</h1>
+      </!--v-flex-->
+      <!--v-flex
+        md12
+        lg6
+      >
+        <h1>ocho</h1>
+      </!--v-flex-->
+      <!--v-flex
+        md12
+        lg6
+      >
+        <h1>nueve</h1>
+      </!--v-flex-->
+    </v-layout>
+  </v-container>
+</template>
+
+<script>
+export default {
+  name: 'Dashboard',
+  data () {
+    return {
+    }
+  },
+  methods: {
+  },
+}
+</script>

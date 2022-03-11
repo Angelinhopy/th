@@ -1,0 +1,120 @@
+CREATE OR REPLACE VIEW v_usuario AS
+SELECT a.idusuario, a.nombreusuario, a.idperfil, b.nombreperfil
+FROM usuario a 
+INNER JOIN perfil b 
+ON b.idperfil = a.idperfil;
+
+CREATE OR REPLACE VIEW v_permiso AS
+SELECT c.idperfil, c.nombreperfil, a.idpermiso, a.nombretabla, b.alta, b.baja, b.mod, b.cons
+FROM permiso a 
+INNER JOIN permiso_perfil b 
+ON b.idpermiso = a.idpermiso
+INNER JOIN perfil c
+on c.idperfil = b.idperfil;
+
+CREATE OR REPLACE VIEW v_empleado AS
+SELECT a.idpersonal, concat_ws(' ', a.nombre, a.apellido, a.ci) AS nomape, a.nombre, a.apellido, a.domicilio, a.idbarrio, b.descripcion AS barrio, a.idciudad, c.descripcion AS ciudad, a.telefono, a.celular, a.fecnac, a.lugarnac, a.idnacional, d.descripcion AS nacionalidad, a.ci, a.sexo, a.estcivil, a.conyuge, a.email, a.foto, a.fec_ing, a.resingreso, a.fecresingreso, a.pila, n.descripcion AS planilla, a.orden, a.lineapres, e.linea, e.descripcion AS linea_pres, e.categoria categoria_pres, e.cantidad, e.sueldo AS sueldo_pres, e.totmensu, e.vacancia, a.idcategoria, f.categoria, f.sueldo, a.idcargopres, g.descripcion AS cargo_pres, a.iddepen, h.descripcion AS dependencia, a.idcargofun, i.descripcion AS cargo_func, a.idjerarquia, j.descripcion AS jerarquia, a.idestado, k.descripcion AS estado, a.tipodoc, a.res_mov, a.fecresmov, a.idturno, l.descripcion AS turno, l.entrada, l.salida, a.idinstituestado, m.descripcion AS institucion
+FROM empleado a
+INNER JOIN barrio b
+ON b.idbarrio = a.idbarrio
+INNER JOIN ciudad c
+ON c.idciudad = a.idciudad
+INNER JOIN nacionalidad d
+ON d.idnacional = a.idnacional
+INNER JOIN vacancia e
+ON e.lineapres = a.lineapres
+INNER JOIN categoria f
+ON f.idcategoria = a.idcategoria
+INNER JOIN cargo_presupuestado g
+ON g.idcargopres = a.idcargopres
+INNER JOIN dependencia h
+ON h.iddepen = a.iddepen
+INNER JOIN cargo_funcional i
+ON i.idcargofun = a.idcargofun
+INNER JOIN jerarquia j
+ON j.idjerarquia = a.idjerarquia
+INNER JOIN estado k
+ON k.idestado = a.idestado
+INNER JOIN turno l
+ON l.idturno = a.idturno
+INNER JOIN institucion_estado m
+ON m.idinstituestado = a.idinstituestado
+INNER JOIN plani_benefi n 
+ON n.idplanibene = a.pila;
+
+CREATE OR REPLACE VIEW v_cursos AS
+SELECT a.idcurso, a.tipocurso, a.nombrecurso, a.institucion, a.fecha_inicio, a.fecha_fin, a.nota, a.rendimiento, a.asistencia, a.observacion,
+a.idpersonal, concat_ws(' ', b.nombre, b.apellido, b.ci) AS nomape, b.nombre, b.apellido, b.ci, a.idciudad, c.descripcion AS ciudad, a.idpais, d.descripcion AS pais
+FROM cursos a
+INNER JOIN empleado b
+ON b.idpersonal = a.idpersonal
+INNER JOIN ciudad c
+ON c.idciudad = a.idciudad
+INNER JOIN pais d
+ON d.idpais = a.idpais;
+
+CREATE OR REPLACE VIEW v_nivel_academico AS
+SELECT a.idnivelacademico, a.cicloacademico, a.completo, a.grado_curso, a.idcolegio, b.descripcion AS colegio, a.iduniversidad, c.descripcion AS universidad, a.idfacultad, d.descripcion AS facultad, a.idcarrera, e.descripcion AS carrera, a.idtitulo, f.descripcion AS titulo, a.idpersonal, concat_ws(' ', g.nombre, g.apellido, g.ci) AS nomape, g.nombre, g.apellido, g.ci
+FROM nivel_academico a
+INNER JOIN centro_educativo b
+ON b.idcolegio = a.idcolegio
+INNER JOIN universidad c
+ON c.iduniversidad = a.iduniversidad
+INNER JOIN facultad d
+ON d.idfacultad = a.idfacultad
+INNER JOIN carrera e
+ON e.idcarrera = a.idcarrera
+INNER JOIN titulo f
+ON f.idtitulo = a.idtitulo
+INNER JOIN empleado g
+ON g.idpersonal = a.idpersonal;
+
+CREATE OR REPLACE VIEW v_beneficios_gratifi AS
+SELECT a.id_benegratifi, a.idpersonal, b.nombre, concat_ws(' ', b.nombre, b.apellido, b.ci) AS nomape, b.apellido, a.ci, a.periodo, a.mes, a.idrubropres, c.descripcion AS rubro_pres, a.idplanibene, d.descripcion AS planibene, a.monto, a.idtipodescuento, e.descripcion AS tipo_desc, a.desc_jub, a.monto_cobrar
+FROM beneficios_gratifi a
+INNER JOIN empleado b
+ON b.idpersonal = a.idpersonal
+INNER JOIN rubro_presupuestario c
+ON c.idrubropres = a.idrubropres
+INNER JOIN plani_benefi d
+ON d.idplanibene = a.idplanibene
+INNER JOIN tipo_descuento e
+ON e.idtipodescuento = a.idtipodescuento;
+
+CREATE OR REPLACE VIEW v_evaluacion AS
+SELECT a.iddesempeno, a.idpersonal, concat_ws(' ', b.nombre, b.apellido, b.ci) AS nomape, b.nombre, b.apellido, a.ci, a.periodo, a.mes, c.iddetalledesem, c.periodo AS periodo_det, c.mes AS mes_det, c.idtipodesempe, d.descripcion AS tipo_desempeno, c.evaluacion
+FROM evaluacion a
+INNER JOIN empleado b
+ON b.idpersonal = a.idpersonal
+LEFT JOIN detalle_evaluacion c
+ON c.iddesempeno = a.iddesempeno
+LEFT JOIN tipo_desempeno d
+ON c.idtipodesempe = d.idtipodesempe
+ORDER BY a.iddesempeno, c.iddetalledesem;
+
+CREATE OR REPLACE VIEW v_sueldos AS
+SELECT a.idsueldo, a.ci, a.periodo, a.mes, a.idrubropres, c.descripcion AS rubro_pres, a.pila, d.descripcion AS planilla, a.lineapres, e.linea, e.descripcion AS descrip_vac, e.categoria AS categoria_vac, e.cantidad, e.sueldo AS sueldo_vac, e.totmensu, e.vacancia, a.cargo_pres, a.categoria, a.sueldo, a.devengado, a.total_desc_pila, a.importe_neto_pila, a.total_general_desc, a.importe_neto_des, a.idpersonal, concat_ws(' ', b.nombre, b.apellido, b.ci) AS nomape, b.nombre, b.apellido, b.ci AS ci_emple, f.iddetallesueldo, f.ci AS ci_det, f.periodo AS periodo_det, f.mes AS mes_det, f.idtipodescuento, g.descripcion AS tipo_descuento, f.monto
+FROM sueldos a 
+INNER JOIN empleado b 
+ON b.idpersonal = a.idpersonal
+INNER JOIN rubro_presupuestario c 
+ON c.idrubropres = a.idrubropres
+LEFT JOIN plani_benefi d 
+ON d.idplanibene = a.pila
+LEFT JOIN vacancia e 
+ON e.lineapres = a.lineapres
+LEFT JOIN detalle_sueldo f 
+ON f.idsueldo = a.idsueldo
+LEFT JOIN tipo_descuento g 
+ON g.idtipodescuento = f.idtipodescuento;
+
+CREATE OR REPLACE VIEW v_aguinaldo AS
+SELECT a.idaguinaldo, a.periodo, a.mes, a.idrubropres, c.descripcion AS rubro_pres, a.idpersonal, concat_ws(' ', b.nombre, b.apellido, b.ci) AS nomape, b.nombre, b.apellido, b.ci, d.iddetalle_agui, d.ci AS ci_det, d.periodo AS periodo_det, d.mes AS mes_det, d.idsueldo, d.monto
+FROM aguinaldo a 
+INNER JOIN empleado b 
+ON b.idpersonal = a.idpersonal
+INNER JOIN rubro_presupuestario c 
+ON c.idrubropres = a.idrubropres
+LEFT JOIN detalle_agui d 
+ON d.idaguinaldo = a.idaguinaldo;
+
