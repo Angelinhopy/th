@@ -251,10 +251,10 @@
                               sm12
                               md10>
                               <v-autocomplete
-                                v-model="editedItem.pila"
+                                v-model="editedItem.plla"
                                 :items="PlanillaList"
                                 item-text="descripcion"
-                                item-value="idplanibene"
+                                item-value="plla"
                                 label="Planilla"
                                 :append-icon="'mdi-plus'"
                               ></v-autocomplete>
@@ -396,7 +396,25 @@
                                 :append-icon="'mdi-plus'"
                               ></v-autocomplete>
                             </v-flex>
-                            
+                            <v-flex
+                              xs12
+                              sm6
+                              md6>
+                              <v-text-field
+                                v-model="editedItem.fic"
+                                hint="YYYY-MM-DD"
+                                label="Fecha Inicio Contrato" />
+                            </v-flex>
+                            <v-flex
+                              xs12
+                              sm6
+                              md6>
+                              <v-text-field
+                                v-model="editedItem.ffc"
+                                hint="YYYY-MM-DD"
+                                label="Fecha Fin Contrato" />
+                            </v-flex>
+
                           </v-layout>
                         </v-container>
                       </v-card-text>
@@ -503,6 +521,10 @@
                 </template>
               </template>
 
+              <template v-slot:item.plla="props">
+                {{ planilla(props.item.plla) }}
+              </template>
+
               <template v-slot:footer.page-text="props">
                 {{props.pageStart}} - {{props.pageStop}} de {{props.itemsLength}}
               </template>
@@ -573,7 +595,7 @@ export default {
       { text: 'Fec Ingreso', value: 'fec_ing' },
       { text: 'Res. Ingreso', value: 'resingreso' },
       { text: 'Fec. Res. Ing.', value: 'fecresingreso' },
-      { text: 'Planilla', value: 'planilla' },
+      { text: 'Planilla', value: 'plla' },
       { text: 'Órden', value: 'orden' },
       { text: 'Línea Pres.', value: 'linea_pres' },
       { text: 'Categ. Pres.', value: 'categoria_pres' },
@@ -595,9 +617,12 @@ export default {
       { text: 'Entrada', value: 'entrada' },
       { text: 'Salida', value: 'salida' },
       { text: 'Institución Est.', value: 'institucion' },
+      { text: 'Fecha Ini. Cont.', value: 'fic' },
+      { text: 'Fecha Fin Cont.', value: 'ffc' },
     ],
     editedIndex: -1,
     editedItem: {
+      idpersonal: '',
       nombre: '',
       apellido: '',
       domicilio: '',
@@ -617,7 +642,7 @@ export default {
       fec_ing: '',
       resingreso: '',
       fecresingreso: '',
-      pila: '',
+      plla: '',
       orden: '',
       lineapres: '',
       idcategoria: '',
@@ -631,6 +656,8 @@ export default {
       fecresmov: '',
       idturno: '',
       idinstituestado: '',
+      fic: '',
+      ffc: '',
     },
     defaultItem: {
     },
@@ -646,7 +673,17 @@ export default {
     EstadoList: [],
     TurnoList: [],
     InstitucionList: [],
-    PlanillaList: [],
+    PlanillaList: [
+      {plla: '1', descripcion: 'FISCAL'},
+      {plla: '2', descripcion: 'IPS'},
+      {plla: '3', descripcion: 'OBRERO'},
+      {plla: '4', descripcion: 'CONTRATADO'},
+      {plla: '5', descripcion: 'DIRECTORIO'},
+      {plla: '6', descripcion: 'CONTRATADO-IVA'},
+      {plla: '7', descripcion: 'COMISIONADO-FISCAL'},
+      {plla: '8', descripcion: 'COMISIONADO-IPS'},
+      {plla: '9', descripcion: 'SIN PLANILLA'},
+    ],
     genero: [
       {sexo: 'M', val: '1'},
       {sexo: 'F', val: '2'},
@@ -674,7 +711,8 @@ export default {
 
     mod(){
       return this.getPermiso().find( access => access.nombretabla.includes(this.$route.name)).mod
-    }
+    },
+
   },
 
   watch: {
@@ -698,7 +736,6 @@ export default {
     this.getEstado()
     this.getTurno()
     this.getInstitucion()
-    this.getPlanilla()
   },
 
   methods: {
@@ -843,14 +880,8 @@ export default {
         })
     },
 
-    getPlanilla() {
-      this.actTableList('planilla')
-        .then( response => {
-          this.PlanillaList = response.data
-        })
-        .catch( error => {
-          console.log(error)
-        })
+    planilla(id){
+      return this.PlanillaList.find( planilla => planilla.plla.includes(id)).descripcion
     },
     
     // object.assign fills in the empty object with the properties of item

@@ -697,6 +697,23 @@ Vue.use(VueRouter)
           }
         }
       },
+      {
+        path: 'listgeneral',
+        name: 'listgeneral',
+        meta: {
+          name: 'listgeneral',
+          requiresAuth: true
+        },
+        component: () => import(`@/components/dashboard/ListadoGeneral.vue`),
+        beforeEnter: (to, from, next) => {
+          if ( store.getters['auth/accesspage'].some( access => access.nombretabla.includes(to.name)) ) {
+            next()
+          }
+          else {
+            next('/unauthorized')
+          }
+        }
+      },
     ]
   },
   {

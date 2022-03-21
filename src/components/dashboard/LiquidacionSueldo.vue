@@ -166,7 +166,7 @@
                                   cols="12"
                                   sm="5"
                                 >
-                                  {{ SueldoSelect.pila }} - {{ SueldoSelect.planilla }}
+                                  {{ SueldoSelect.plla }} - {{ planilla(SueldoSelect.plla) }}
                                 </v-col>
                               </v-row>
                             </td>
@@ -184,7 +184,7 @@
                                   cols="12"
                                   sm="5"
                                 >
-                                  {{ SueldoSelect.linea }}
+                                  {{ SueldoSelect.linea }} - {{ SueldoSelect.descrip_vac }}
                                 </v-col>
                               </v-row>
                             </td>
@@ -274,7 +274,7 @@
                                   cols="12"
                                   sm="5"
                                 >
-                                  {{ SueldoSelect.mes }}
+                                  {{ mesElegido(SueldoSelect.mes) }}
                                 </v-col>
                               </v-row>
                             </td>
@@ -372,7 +372,18 @@ export default {
       {desc: 'Octubre', value: '10'},
       {desc: 'Noviembre', value: '11'},
       {desc: 'Diciembre', value: '12'},
-    ]
+    ],
+    PlanillaList: [
+      {plla: '1', descripcion: 'FISCAL'},
+      {plla: '2', descripcion: 'IPS'},
+      {plla: '3', descripcion: 'OBRERO'},
+      {plla: '4', descripcion: 'CONTRATADO'},
+      {plla: '5', descripcion: 'DIRECTORIO'},
+      {plla: '6', descripcion: 'CONTRATADO-IVA'},
+      {plla: '7', descripcion: 'COMISIONADO-FISCAL'},
+      {plla: '8', descripcion: 'COMISIONADO-IPS'},
+      {plla: '9', descripcion: 'SIN PLANILLA'},
+    ],
   }),
 
   // called when page is created before dom
@@ -440,6 +451,14 @@ export default {
         .catch( error => {
           console.log(error)
         })
+    },
+
+    planilla(id = 1){
+      return null || this.PlanillaList.find( planilla => planilla.plla.includes(id)).descripcion
+    },
+
+    mesElegido(id = 1){
+      return this.meses.find( mes => mes.value.includes(id)).desc
     },
 
     onProgress(progress) {

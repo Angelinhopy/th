@@ -13,10 +13,10 @@
       >
         <v-container grid-list-md >
           <v-layout wrap>
-            <v-flex
+            <!--v-flex
               xs12
               sm12
-              md6>
+              md5>
               <v-autocomplete
                 v-model="EmpleadoSelect"
                 :items="EmpleadoList"
@@ -25,6 +25,20 @@
                 item-value="idpersonal"
                 label="Empleado"
               ></v-autocomplete>
+            </!--v-flex-->
+            <v-flex
+              xs12
+              sm12
+              md2
+            >
+              <v-select
+                v-model="periodo"
+                :items="years"
+                item-text="desc"
+                item-value="value"
+                label="Periodo"
+                :append-icon="'mdi-plus'"
+              ></v-select>
             </v-flex>
             <v-flex
               xs12
@@ -32,14 +46,14 @@
               md2
             >
               <v-select
-                v-model="period"
-                :items="years"
+                v-model="mes"
+                :items="meses"
                 item-text="desc"
                 item-value="value"
-                label="Periodo"
+                label="Mes"
                 :append-icon="'mdi-plus'"
-                :disabled="!isEmpleadoSelect"
-                @change="getAguinaldo()"
+                @change="getSueldo()"
+                :disabled="!isPeriodo"
               ></v-select>
             </v-flex>
           </v-layout>
@@ -58,12 +72,12 @@
                 :enable-download="true"
                 :preview-modal="true"
                 :paginate-elements-by-height="1000"
-                filename="Aguinaldo"
+                filename="ListaGeneral"
                 :pdf-quality="2"
                 :manual-pagination="false"
                 pdf-format="a4"
-                pdf-orientation="portrait"
-                pdf-content-width="800px"
+                pdf-orientation="landscape"
+                pdf-content-width="100%"
 
                 @progress="onProgress($event)"
                 @hasDownloaded="hasDownloaded($event)"
@@ -71,105 +85,46 @@
               >
                 <section slot="pdf-content" class="section-container">
                   <section class="mb-1">
-                    <h1>Liquidación de Aguinaldo</h1>
+                    <h1>Listado General</h1>
                   </section>
 
-                  <section class="mb-1">
-                    <h3>Datos Personales</h3>
-                    <v-simple-table dense light>
+                  <section>
+                    <v-simple-table
+                      dense
+                      light
+                    >
                       <template v-slot:default>
                         <thead>
                           <tr>
-                            <th>ID Empleado: {{ AguinaldoSelect.idpersonal }}</th>
+                            <th class="text-left">Legajo</th>
+                            <th class="text-left">N° Cédula</th>
+                            <th class="text-left">Nombre</th>
+                            <th class="text-left">Apellido</th>
+                            <th class="text-left">Planilla</th>
+                            <th class="text-left">Categoría</th>
+                            <th class="text-left">Sueldo</th>
+                            <th class="text-left">Devengado</th>
+                            <th class="text-left">Aporte</th>
+                            <th class="text-left">Neto</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>
-                              <v-row no-gutters>
-                                <v-col
-                                  cols="12"
-                                  sm="4"
-                                >
-                                  <b>Nombre:</b>
-                                </v-col>
-                                <v-col
-                                  cols="12"
-                                  sm="5"
-                                >
-                                  {{ AguinaldoSelect.nombre }}
-                                </v-col>
-                              </v-row>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <v-row no-gutters>
-                                <v-col
-                                  cols="12"
-                                  sm="4"
-                                >
-                                  <b>Apellido:</b>
-                                </v-col>
-                                <v-col
-                                  cols="12"
-                                  sm="5"
-                                >
-                                  {{ AguinaldoSelect.apellido }}
-                                </v-col>
-                              </v-row>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <v-row no-gutters>
-                                <v-col
-                                  cols="12"
-                                  sm="4"
-                                >
-                                  <b>Nro. Cédula:</b>
-                                </v-col>
-                                <v-col
-                                  cols="12"
-                                  sm="5"
-                                >
-                                  {{ AguinaldoSelect.ci }}
-                                </v-col>
-                              </v-row>
-                            </td>
+                          <tr
+                            v-for="item in SueldoSelect"
+                            :key="item.idsueldo"
+                          >
+                            <td>{{ item.idpersonal }}</td>
+                            <td>{{ item.ci }}</td>
+                            <td>{{ item.nombre }}</td>
+                            <td>{{ item.apellido }}</td>
+                            <td>{{ planilla(item.plla) }}</td>
+                            <td>{{ item.categoria }}</td>
+                            <td>{{ item.sueldo }}</td>
+                            <td>{{ item.devengado }}</td>
+                            <td>{{ item.monto }}</td>
+                            <td>{{ item.devengado - item.monto }}</td>
                           </tr>
                         </tbody>
-                      </template>
-                    </v-simple-table>
-                  </section>
-
-                  <section class="mb-1">
-                    <h3>Detalle:</h3>
-                    <v-simple-table dense light>
-                      <template v-slot:default>
-                        <thead>
-                          <tr>
-                            <th>Nro.</th>
-                            <th>Periodo</th>
-                            <th>Mes</th>
-                            <th>Monto</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr v-for="(agui, index) in AguinaldoSelect.detalle" :key="index">
-                            <td>{{ index+1 }}</td>
-                            <td>{{ agui.periodo_det }}</td>
-                            <td>{{ mes(agui.mes_det) }}</td>
-                            <td>{{ agui.monto }}</td>
-                          </tr>
-                        </tbody>
-                        <tfoot>
-                          <tr>
-                            <td>-</td>
-                            <td colspan="2"><b>TOTAL ............................GS:</b></td>
-                            <td><b>{{ totalAguinaldo }}</b></td>
-                          </tr>
-                        </tfoot>
                       </template>
                     </v-simple-table>
                   </section>
@@ -197,10 +152,11 @@ import { mapActions } from 'vuex'
 import VueHtml2pdf from 'vue-html2pdf'
 export default {
   data: () => ({
-    EmpleadoList: [],
-    EmpleadoSelect: [],
-    AguinaldoSelect: [],
-    period: '',
+    //EmpleadoList: [],
+    //EmpleadoSelect: [],
+    SueldoSelect: [],
+    periodo: '',
+    mes: '',
     progress: 0,
     pdfDownloaded: false,
     years: [
@@ -223,12 +179,23 @@ export default {
       {desc: 'Octubre', value: '10'},
       {desc: 'Noviembre', value: '11'},
       {desc: 'Diciembre', value: '12'},
-    ]
+    ],
+    PlanillaList: [
+      {plla: '1', descripcion: 'FISCAL'},
+      {plla: '2', descripcion: 'IPS'},
+      {plla: '3', descripcion: 'OBRERO'},
+      {plla: '4', descripcion: 'CONTRATADO'},
+      {plla: '5', descripcion: 'DIRECTORIO'},
+      {plla: '6', descripcion: 'CONTRATADO-IVA'},
+      {plla: '7', descripcion: 'COMISIONADO-FISCAL'},
+      {plla: '8', descripcion: 'COMISIONADO-IPS'},
+      {plla: '9', descripcion: 'SIN PLANILLA'},
+    ],
   }),
 
   // called when page is created before dom
   created() {
-    this.getEmpleado()
+    //this.getEmpleado()
   },
 
   computed: {
@@ -236,18 +203,31 @@ export default {
       return this.progress !== 0 && this.progress !== 100
     },
 
-    isEmpleadoSelect(){
+    /*isEmpleadoSelect(){
       return Object.keys(this.EmpleadoSelect).length !== 0 ? true : false
+    },*/
+
+    isPeriodo() {
+      return this.periodo !== '' ? true : false
     },
-    
-    totalAguinaldo(){
-      if(this.AguinaldoSelect.hasOwnProperty("detalle")){
-        return Math.round(this.AguinaldoSelect.detalle.reduce((sum, value) => (sum + parseInt(value.monto)), 0) / 12)
+
+    totalDevengado(){
+      return this.SueldoSelect.devengado || 0
+    },
+
+    totalDescuento(){
+      if(this.SueldoSelect.hasOwnProperty("detalle")){
+        return this.SueldoSelect.detalle.reduce((sum, value) => (sum + parseInt(value.monto)), 0)
       }
       else{
         return 0
       }
     },
+
+    totalSueldo(){
+      return this.totalDevengado - this.totalDescuento || 0
+    }
+
   },
 
   components: {
@@ -259,7 +239,7 @@ export default {
       actTableList: 'getTableList',
     }),
 
-    getEmpleado() {
+    /*getEmpleado() {
       this.actTableList('empleado')
         .then( response => {
           this.EmpleadoList = response.data
@@ -267,20 +247,24 @@ export default {
         .catch( error => {
           console.log(error)
         })
-    },
+    },*/
 
-    getAguinaldo() {
-      this.AguinaldoSelect = []
-      this.actTableList(`aguinaldo/${this.EmpleadoSelect.idpersonal}/${this.period}`)
+    getSueldo() {
+      this.SueldoSelect = []
+      this.actTableList(`listsueldos/${this.periodo}/${this.mes}`)
         .then( response => {
-          this.AguinaldoSelect = response.data[0]
+          this.SueldoSelect = response.data
         })
         .catch( error => {
           console.log(error)
         })
     },
 
-    mes(id){
+    planilla(id = 1){
+      return null || this.PlanillaList.find( planilla => planilla.plla.includes(id)).descripcion
+    },
+
+    mesElegido(id = 1){
       return this.meses.find( mes => mes.value.includes(id)).desc
     },
 

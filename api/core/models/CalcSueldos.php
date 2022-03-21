@@ -35,7 +35,7 @@
     }
 
     public static function CalculoSueldo($empleado, $periodo, $mes){
-      $idrubropres = 0;
+      $idrubropres = 111;
       $cargo = '';
       $categ = '';
       $cargo_pres_desc = "**S/D**";
@@ -59,31 +59,43 @@
       $empl = self::getEmpleado();
       self::CargoPres($empl->idcargopres);
       self::Categoria($empl->idcategoria);
-
-      if( $empl->pila == 2 || $empl->pila == 3 ){
+      
+      if( $empl->plla == 1 || $empl->plla == 2 ){
         $idrubropres = 111;
       }
-      elseif( $empl->pila == 4 || $empl->pila == 5 ) {
+      elseif( $empl->plla == 3 || $empl->plla == 4 ) {
         $idrubropres = 144;
       }
 
       $cargo = self::getCargoPres();
-      $cargo_pres_desc = $cargo->descripcion;
+      if( $cargo ){
+        $cargo_pres_desc = $cargo->descripcion;
+      }
 
       $categ = self::getCategoria();
       $sueldo = $categ->sueldo;
       $categoria = $categ->categoria;
       
-      if( $empl->pila == 1 ){
+      //calcular salario por fecha de ingreso
+      list($anio_ing, $mes_ing, $dia_ing) = explode('-', $empl->fec_ing);
+      
+      if( $anio_ing == $periodo && $mes_ing == $mes){
+        $cant_dias_mes = date('t', strtotime($empl->fec_ing));
+        $cant_dias_trab = $cant_dias_mes - ($dia_ing-1);
+        $devengado = ceil( ($sueldo / $cant_dias_mes) * $cant_dias_trab );
+      }
+      else {
+        $devengado = $sueldo;
+      }
+
+      if( $empl->plla == 1 ){
         $idtipodescuento = 1;
-        $monto = $sueldo * $descuent_16;
+        $monto = $devengado * $descuent_16;
       }
       else {
         $idtipodescuento = 2;
-        $monto = $sueldo * $descuent_9;
+        $monto = $devengado * $descuent_9;
       }
-
-      $devengado = $sueldo;
 
       $added = tabSueldos::create(array(
         'idpersonal' => $empl->idpersonal,
@@ -91,14 +103,14 @@
         'periodo' => $periodo,
         'mes' => $mes,
         'idrubropres' => $idrubropres,
-        'pila' => $empl->pila,
+        'plla' => $empl->plla,
         'lineapres' => $empl->lineapres,
         'cargo_pres' => $cargo_pres_desc,
         'categoria' => $categoria,
         'sueldo' => $sueldo,
         'devengado' => $devengado,
-        'total_desc_pila' => 0,
-        'importe_neto_pila' => 0,
+        'total_desc_plla' => 0,
+        'importe_neto_plla' => 0,
         'total_general_desc' => 0,
         'importe_neto_des' => 0
       ));
@@ -132,7 +144,7 @@
       self::Aguinaldo($empl->idpersonal, $periodo);
 
       if( !self::getAguinaldo() ){
-        if( $empl->pila == 1 || $empl->pila == 2 ){
+        if( $empl->plla == 1 || $empl->plla == 2 ){
           $idrubropres = 114;
         }
         else {
@@ -227,8 +239,7 @@
           $resul[$keya]["mes"] = $value->mes;
           $resul[$keya]["idrubropres"] = $value->idrubropres;
           $resul[$keya]["rubro_pres"] = $value->rubro_pres;
-          $resul[$keya]["pila"] = $value->pila;
-          $resul[$keya]["planilla"] = $value->planilla;
+          $resul[$keya]["plla"] = $value->plla;
           $resul[$keya]["lineapres"] = $value->lineapres;
           $resul[$keya]["linea"] = $value->linea;
           $resul[$keya]["descrip_vac"] = $value->descrip_vac;
@@ -241,8 +252,8 @@
           $resul[$keya]["categoria"] = $value->categoria;
           $resul[$keya]["sueldo"] = $value->sueldo;
           $resul[$keya]["devengado"] = $value->devengado;
-          $resul[$keya]["total_desc_pila"] = $value->total_desc_pila;
-          $resul[$keya]["importe_neto_pila"] = $value->importe_neto_pila;
+          $resul[$keya]["total_desc_plla"] = $value->total_desc_plla;
+          $resul[$keya]["importe_neto_plla"] = $value->importe_neto_plla;
           $resul[$keya]["total_general_desc"] = $value->total_general_desc;
           $resul[$keya]["importe_neto_des"] = $value->importe_neto_des;
           $resul[$keya]["idpersonal"] = $value->idpersonal;
@@ -294,6 +305,21 @@
         );
       }  
     }
+    
+    public static function listSueldos($periodo, $mes){
+      $listSueldos = viewSueldos::where('periodo', '=', $periodo)->and_where('mes', '=', $mes)->get();
+      
+      if($listSueldos) {
+        return $listSueldos;
+      }
+      else{
+        return $listSueldos = array(
+          array(
+            "idsueldo" => ''
+          )
+        );
+      }
+    }
 
     public static function UpSueldo($id, $data){
       self::Sueldos($data->idpersonal, $data->periodo, $data->mes);
@@ -310,7 +336,7 @@
         'periodo' => $data->periodo,
         'mes' => $data->mes
         //'idrubropres' => $data->idrubropres,
-        //'pila' => $data->pila,
+        //'plla' => $data->plla,
         //'lineapres' => $data->lineapres,
         //'cargo_pres' => $data->cargo_pres,
         //'categoria' => $data->categoria,

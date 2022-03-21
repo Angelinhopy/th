@@ -109,6 +109,7 @@
             { title: 'Bonificación/gratificación', table: 'bonificacion' },
             { title: 'Evaluación del personal', table: 'evalpersonal' },
             { title: 'Liquidación aguinaldo', table: 'liqaguinaldo' },
+            { title: 'Listado General', table: 'listgeneral' },
             ],
           title: 'Informes',
         },

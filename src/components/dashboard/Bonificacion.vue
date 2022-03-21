@@ -179,7 +179,7 @@
                           <tr v-for="(bonif, index) in BonificacionSelect.detalle" :key="index">
                             <td>{{ index+1 }}</td>
                             <td>{{ bonif.periodo }}</td>
-                            <td>{{ bonif.mes }}</td>
+                            <td>{{ mes(bonif.mes) }}</td>
                             <td>{{ bonif.planibene }}</td>
                             <td>{{ bonif.rubro_pres }}</td>
                             <td>{{ bonif.monto }}</td>
@@ -330,6 +330,10 @@ export default {
         .catch( error => {
           console.log(error)
         })
+    },
+
+    mes(id){
+      return this.meses.find( mes => mes.value.includes(id)).desc
     },
 
     onProgress(progress) {

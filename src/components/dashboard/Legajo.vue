@@ -427,7 +427,7 @@
                                   cols="12"
                                   sm="5"
                                 >
-                                  {{ EmpleadoSelect.pila }} - {{ EmpleadoSelect.planilla }}
+                                  {{ EmpleadoSelect.plla }} - {{ planilla(EmpleadoSelect.plla) }}
                                 </v-col>
                               </v-row>
                             </td>
@@ -463,7 +463,7 @@
                                   cols="12"
                                   sm="5"
                                 >
-                                  {{ EmpleadoSelect.linea }}
+                                  {{ EmpleadoSelect.linea }} - {{ EmpleadoSelect.linea_pres }}
                                 </v-col>
                               </v-row>
                             </td>
@@ -907,6 +907,17 @@ export default {
     CursosSelect: [],
     EvaluacionList: [],
     EvaluacionSelect: [],
+    PlanillaList: [
+      {plla: '1', descripcion: 'FISCAL'},
+      {plla: '2', descripcion: 'IPS'},
+      {plla: '3', descripcion: 'OBRERO'},
+      {plla: '4', descripcion: 'CONTRATADO'},
+      {plla: '5', descripcion: 'DIRECTORIO'},
+      {plla: '6', descripcion: 'CONTRATADO-IVA'},
+      {plla: '7', descripcion: 'COMISIONADO-FISCAL'},
+      {plla: '8', descripcion: 'COMISIONADO-IPS'},
+      {plla: '9', descripcion: 'SIN PLANILLA'},
+    ],
     progress: 0,
     pdfDownloaded: false,
   }),
@@ -972,6 +983,10 @@ export default {
         .catch( error => {
           console.log(error)
         })
+    },
+
+    planilla(id = 1){
+      return this.PlanillaList.find( planilla => planilla.plla.includes(id)).descripcion
     },
 
     FiltrarDatos() {

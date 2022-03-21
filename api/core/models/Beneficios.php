@@ -22,6 +22,7 @@
           static::$resul[static::$keya]["nombre"] = $value->nombre;
           static::$resul[static::$keya]["apellido"] = $value->apellido;
           static::$resul[static::$keya]["ci"] = $value->ci;
+          static::$resul[static::$keya]["plla"] = $value->plla;
                     
           static::$resul[static::$keya]["detalle"][static::$keyb]["id_benegratifi"] = $value->id_benegratifi;
           static::$resul[static::$keya]["detalle"][static::$keyb]["periodo"] = $value->periodo;

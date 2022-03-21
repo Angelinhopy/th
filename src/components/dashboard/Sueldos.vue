@@ -294,6 +294,14 @@
 
               </template>
 
+              <template v-slot:item.plla="props">
+                {{ planilla(props.item.plla) }}
+              </template>
+
+              <template v-slot:item.mes="props">
+                {{ mes(props.item.mes) }}
+              </template>
+
               <template v-slot:expanded-item="{ headers, item }">
 
                 <td :colspan="headers.length">
@@ -430,7 +438,7 @@
                             </td>
                             <!--td>{{ it.ci_det }}</!--td-->
                             <td>{{ it.periodo_det }}</td>
-                            <td>{{ it.mes_det }}</td>
+                            <td>{{ mes(it.mes_det) }}</td>
                             <td>{{ it.tipo_descuento }}</td>
                             <td>{{ it.monto }}</td>
                           </tr>
@@ -508,7 +516,7 @@ export default {
       { text: 'Periodo', value: 'periodo' },
       { text: 'Mes', value: 'mes' },
       { text: 'Rubro', value: 'rubro_pres' },
-      { text: 'Planilla', value: 'planilla' },
+      { text: 'Planilla', value: 'plla' },
       { text: 'Linea Pres', value: 'descrip_vac' },
       { text: 'Cargo Pres.', value: 'cargo_pres' },
       { text: 'Categoría', value: 'categoria_vac' },
@@ -524,7 +532,7 @@ export default {
       periodo: '',
       mes: '',
       idrubropres: '',
-      pila: '',
+      plla: '',
       lineapres: '',
       //cargo_pres: '',
       categoria: '',
@@ -545,11 +553,21 @@ export default {
     },
     EmpleadoList: [],
     RubroList: [],
-    PlanillaList: [],
     VacanciaList: [],
     PresupuestadoList: [],
     CategoriaList: [],
     TipoDescuentoList: [],
+    PlanillaList: [
+      {plla: '1', descripcion: 'FISCAL'},
+      {plla: '2', descripcion: 'IPS'},
+      {plla: '3', descripcion: 'OBRERO'},
+      {plla: '4', descripcion: 'CONTRATADO'},
+      {plla: '5', descripcion: 'DIRECTORIO'},
+      {plla: '6', descripcion: 'CONTRATADO-IVA'},
+      {plla: '7', descripcion: 'COMISIONADO-FISCAL'},
+      {plla: '8', descripcion: 'COMISIONADO-IPS'},
+      {plla: '9', descripcion: 'SIN PLANILLA'},
+    ],
     years: [
       {desc : '2021', value: '2021'},
       {desc : '2022', value: '2022'},
@@ -602,7 +620,6 @@ export default {
     this.getSueldos()
     this.getEmpleado()
     this.getRubro()
-    this.getPlanilla()
     this.getVacancia()
     this.getPresupuestado()
     this.getCategoria()
@@ -652,16 +669,6 @@ export default {
         })
     },
 
-    getPlanilla() {
-      this.actTableList('planilla')
-        .then( response => {
-          this.PlanillaList = response.data
-        })
-        .catch( error => {
-          console.log(error)
-        })
-    },
-
     getVacancia() {
       this.actTableList('vacancia')
         .then( response => {
@@ -701,6 +708,15 @@ export default {
           console.log(error)
         })
     },
+
+    planilla(id){
+      return this.PlanillaList.find( planilla => planilla.plla.includes(id)).descripcion
+    },
+
+    mes(id){
+      return this.meses.find( mes => mes.value.includes(id)).desc
+    },
+
     /*
     selectSueldo(){
       this.editedItem.sueldo = this.CategoriaList.find(categ => categ.idcategoria.includes(this.editedItem.categoria)).sueldo

@@ -1429,7 +1429,7 @@
       'fec_ing' => $data->fec_ing,
       'resingreso' => $data->resingreso,
       'fecresingreso' => $data->fecresingreso,
-      'pila' => $data->pila,
+      'plla' => $data->plla,
       'orden' => $data->orden,
       'lineapres' => $data->lineapres,
       'idcategoria' => $data->idcategoria,
@@ -1442,7 +1442,9 @@
       'res_mov' => $data->res_mov,
       'fecresmov' => $data->fecresmov,
       'idturno' => $data->idturno,
-      'idinstituestado' => $data->idinstituestado
+      'idinstituestado' => $data->idinstituestado,
+      'fic' => $data->fic,
+      'ffc' => $data->ffc
     ));
 
     if(is_array($added) || !$added){
@@ -1481,7 +1483,7 @@
       'fec_ing' => $data->fec_ing,
       'resingreso' => $data->resingreso,
       'fecresingreso' => $data->fecresingreso,
-      'pila' => $data->pila,
+      'plla' => $data->plla,
       'orden' => $data->orden,
       'lineapres' => $data->lineapres,
       'idcategoria' => $data->idcategoria,
@@ -1494,7 +1496,9 @@
       'res_mov' => $data->res_mov,
       'fecresmov' => $data->fecresmov,
       'idturno' => $data->idturno,
-      'idinstituestado' => $data->idinstituestado
+      'idinstituestado' => $data->idinstituestado,
+      'fic' => $data->fic,
+      'ffc' => $data->ffc
     ));
 
     if(is_array($updated)){
@@ -2340,6 +2344,11 @@
         'deleted' => $added->descrip
       ));
     }
+  });
+
+  /* Ruta listado general sueldos */
+  Flight::route('GET /listsueldos/@periodo:[0-9]+/@mes:[0-9]+', function($periodo, $mes){
+    Flight::json(CalcSueldos::listSueldos($periodo, $mes));
   });
 
   /* Ruta aguinaldos */

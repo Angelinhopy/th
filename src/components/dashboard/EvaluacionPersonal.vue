@@ -184,7 +184,7 @@
                                   cols="12"
                                   sm="5"
                                 >
-                                  {{ EvaluacionSelect.mes }}
+                                  {{ mes(EvaluacionSelect.mes) }}
                                 </v-col>
                               </v-row>
                             </td>
@@ -316,6 +316,10 @@ export default {
         .catch( error => {
           console.log(error)
         })
+    },
+
+    mes(id = 1){
+      return this.meses.find( mes => mes.value.includes(id)).desc
     },
 
     onProgress(progress) {

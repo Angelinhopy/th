@@ -13,7 +13,7 @@ INNER JOIN perfil c
 on c.idperfil = b.idperfil;
 
 CREATE OR REPLACE VIEW v_empleado AS
-SELECT a.idpersonal, concat_ws(' ', a.nombre, a.apellido, a.ci) AS nomape, a.nombre, a.apellido, a.domicilio, a.idbarrio, b.descripcion AS barrio, a.idciudad, c.descripcion AS ciudad, a.telefono, a.celular, a.fecnac, a.lugarnac, a.idnacional, d.descripcion AS nacionalidad, a.ci, a.sexo, a.estcivil, a.conyuge, a.email, a.foto, a.fec_ing, a.resingreso, a.fecresingreso, a.pila, n.descripcion AS planilla, a.orden, a.lineapres, e.linea, e.descripcion AS linea_pres, e.categoria categoria_pres, e.cantidad, e.sueldo AS sueldo_pres, e.totmensu, e.vacancia, a.idcategoria, f.categoria, f.sueldo, a.idcargopres, g.descripcion AS cargo_pres, a.iddepen, h.descripcion AS dependencia, a.idcargofun, i.descripcion AS cargo_func, a.idjerarquia, j.descripcion AS jerarquia, a.idestado, k.descripcion AS estado, a.tipodoc, a.res_mov, a.fecresmov, a.idturno, l.descripcion AS turno, l.entrada, l.salida, a.idinstituestado, m.descripcion AS institucion
+SELECT a.idpersonal, concat_ws(' ', a.nombre, a.apellido, a.ci) AS nomape, a.nombre, a.apellido, a.domicilio, a.idbarrio, b.descripcion AS barrio, a.idciudad, c.descripcion AS ciudad, a.telefono, a.celular, a.fecnac, a.lugarnac, a.idnacional, d.descripcion AS nacionalidad, a.ci, a.sexo, a.estcivil, a.conyuge, a.email, a.foto, a.fec_ing, a.resingreso, a.fecresingreso, a.plla, a.orden, a.lineapres, e.linea, e.descripcion AS linea_pres, e.categoria categoria_pres, e.cantidad, e.sueldo AS sueldo_pres, e.totmensu, e.vacancia, a.idcategoria, f.categoria, f.sueldo, a.idcargopres, g.descripcion AS cargo_pres, a.iddepen, h.descripcion AS dependencia, a.idcargofun, i.descripcion AS cargo_func, a.idjerarquia, j.descripcion AS jerarquia, a.idestado, k.descripcion AS estado, a.tipodoc, a.res_mov, a.fecresmov, a.idturno, l.descripcion AS turno, l.entrada, l.salida, a.idinstituestado, m.descripcion AS institucion, a.fic, a.ffc
 FROM empleado a
 INNER JOIN barrio b
 ON b.idbarrio = a.idbarrio
@@ -38,9 +38,7 @@ ON k.idestado = a.idestado
 INNER JOIN turno l
 ON l.idturno = a.idturno
 INNER JOIN institucion_estado m
-ON m.idinstituestado = a.idinstituestado
-INNER JOIN plani_benefi n 
-ON n.idplanibene = a.pila;
+ON m.idinstituestado = a.idinstituestado;
 
 CREATE OR REPLACE VIEW v_cursos AS
 SELECT a.idcurso, a.tipocurso, a.nombrecurso, a.institucion, a.fecha_inicio, a.fecha_fin, a.nota, a.rendimiento, a.asistencia, a.observacion,
@@ -70,7 +68,7 @@ INNER JOIN empleado g
 ON g.idpersonal = a.idpersonal;
 
 CREATE OR REPLACE VIEW v_beneficios_gratifi AS
-SELECT a.id_benegratifi, a.idpersonal, b.nombre, concat_ws(' ', b.nombre, b.apellido, b.ci) AS nomape, b.apellido, a.ci, a.periodo, a.mes, a.idrubropres, c.descripcion AS rubro_pres, a.idplanibene, d.descripcion AS planibene, a.monto, a.idtipodescuento, e.descripcion AS tipo_desc, a.desc_jub, a.monto_cobrar
+SELECT a.id_benegratifi, a.idpersonal, b.nombre, concat_ws(' ', b.nombre, b.apellido, b.ci) AS nomape, b.apellido, a.ci, a.periodo, a.mes, b.plla, a.idrubropres, c.descripcion AS rubro_pres, a.idplanibene, d.descripcion AS planibene, a.monto, a.idtipodescuento, e.descripcion AS tipo_desc, a.desc_jub, a.monto_cobrar
 FROM beneficios_gratifi a
 INNER JOIN empleado b
 ON b.idpersonal = a.idpersonal
@@ -93,14 +91,12 @@ ON c.idtipodesempe = d.idtipodesempe
 ORDER BY a.iddesempeno, c.iddetalledesem;
 
 CREATE OR REPLACE VIEW v_sueldos AS
-SELECT a.idsueldo, a.ci, a.periodo, a.mes, a.idrubropres, c.descripcion AS rubro_pres, a.pila, d.descripcion AS planilla, a.lineapres, e.linea, e.descripcion AS descrip_vac, e.categoria AS categoria_vac, e.cantidad, e.sueldo AS sueldo_vac, e.totmensu, e.vacancia, a.cargo_pres, a.categoria, a.sueldo, a.devengado, a.total_desc_pila, a.importe_neto_pila, a.total_general_desc, a.importe_neto_des, a.idpersonal, concat_ws(' ', b.nombre, b.apellido, b.ci) AS nomape, b.nombre, b.apellido, b.ci AS ci_emple, f.iddetallesueldo, f.ci AS ci_det, f.periodo AS periodo_det, f.mes AS mes_det, f.idtipodescuento, g.descripcion AS tipo_descuento, f.monto
+SELECT a.idsueldo, a.ci, a.periodo, a.mes, a.idrubropres, c.descripcion AS rubro_pres, a.plla, a.lineapres, e.linea, e.descripcion AS descrip_vac, e.categoria AS categoria_vac, e.cantidad, e.sueldo AS sueldo_vac, e.totmensu, e.vacancia, a.cargo_pres, a.categoria, a.sueldo, a.devengado, a.total_desc_plla, a.importe_neto_plla, a.total_general_desc, a.importe_neto_des, a.idpersonal, concat_ws(' ', b.nombre, b.apellido, b.ci) AS nomape, b.nombre, b.apellido, b.ci AS ci_emple, f.iddetallesueldo, f.ci AS ci_det, f.periodo AS periodo_det, f.mes AS mes_det, f.idtipodescuento, g.descripcion AS tipo_descuento, f.monto
 FROM sueldos a 
 INNER JOIN empleado b 
 ON b.idpersonal = a.idpersonal
 INNER JOIN rubro_presupuestario c 
 ON c.idrubropres = a.idrubropres
-LEFT JOIN plani_benefi d 
-ON d.idplanibene = a.pila
 LEFT JOIN vacancia e 
 ON e.lineapres = a.lineapres
 LEFT JOIN detalle_sueldo f 

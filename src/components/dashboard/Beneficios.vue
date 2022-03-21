@@ -132,6 +132,7 @@
                               md4>
                               <v-text-field
                                 v-model="editedDetItem.monto"
+                                @input="calcMonto"
                                 label="Monto" />
                             </v-flex>
                             <v-flex
@@ -221,6 +222,10 @@
                 itemsPerPageAllText: 'Todos',
               }"
             >
+
+              <template v-slot:item.plla="props">
+                {{ plani(props.item.plla) }}
+              </template>
               <!--template v-slot:item.accion="props">
 
                 <v-tooltip color="white" bottom>
@@ -298,7 +303,7 @@
                               </v-tooltip>
                             </td>
                             <td>{{ it.periodo }}</td>
-                            <td>{{ it.mes }}</td>
+                            <td>{{ mes(it.mes) }}</td>
                             <td>{{ it.planibene }}</td>
                             <td>{{ it.rubro_pres }}</td>
                             <td>{{ it.monto }}</td>
@@ -377,12 +382,14 @@ export default {
       { text: 'Nombre Empleado', value: 'nombre' },
       { text: 'Apellido', value: 'apellido' },
       { text: 'Nro. Cédula', value: 'ci'},
+      { text: 'Planilla', value: 'plla'},
     ],
     editedIndex: -1,
     editedDetIndex: -1,
     editedItem: {
       idpersonal: '',
-      ci: ''
+      ci: '',
+      plla: '',
     },
     editedDetItem: {
       id_benegratifi: '',
@@ -416,7 +423,18 @@ export default {
       {desc: 'Octubre', value: '10'},
       {desc: 'Noviembre', value: '11'},
       {desc: 'Diciembre', value: '12'},
-    ]
+    ],
+    PlaniList: [
+      {plla: '1', descripcion: 'FISCAL'},
+      {plla: '2', descripcion: 'IPS'},
+      {plla: '3', descripcion: 'OBRERO'},
+      {plla: '4', descripcion: 'CONTRATADO'},
+      {plla: '5', descripcion: 'DIRECTORIO'},
+      {plla: '6', descripcion: 'CONTRATADO-IVA'},
+      {plla: '7', descripcion: 'COMISIONADO-FISCAL'},
+      {plla: '8', descripcion: 'COMISIONADO-IPS'},
+      {plla: '9', descripcion: 'SIN PLANILLA'},
+    ],
   }),
 
   computed: {
@@ -516,6 +534,26 @@ export default {
 
     selectCI(){
       this.editedItem.ci = this.EmpleadoList.find(personal => personal.idpersonal == this.editedItem.idpersonal).ci
+      this.editedItem.plla = this.EmpleadoList.find(personal => personal.idpersonal == this.editedItem.idpersonal).plla
+    },
+
+    plani(id){
+      return this.PlaniList.find( planilla => planilla.plla.includes(id)).descripcion
+    },
+
+    calcMonto(){
+      if(this.editedItem.plla == 1){
+        this.editedDetItem.desc_jub = this.editedDetItem.monto * 0.16
+      }
+      else{
+        this.editedDetItem.desc_jub = this.editedDetItem.monto * 0.09
+      }
+
+      this.editedDetItem.monto_cobrar = this.editedDetItem.monto - this.editedDetItem.desc_jub
+    },
+
+    mes(id){
+      return this.meses.find( mes => mes.value.includes(id)).desc
     },
       
     // object.assign fills in the empty object with the properties of item
