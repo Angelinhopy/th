@@ -63,24 +63,8 @@
                           <v-layout wrap>
                             <v-flex
                               xs12
-                              sm6
-                              md6>
-                              <v-text-field
-                                v-model="editedItem.cicloacademico"
-                                label="Ciclo académico" />
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm6
-                              md6>
-                              <v-text-field
-                                v-model="editedItem.completo"
-                                label="Completo" />
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm8
-                              md8>
+                              sm12
+                              md12>
                               <v-autocomplete
                                 v-model="editedItem.idpersonal"
                                 :items="EmpleadoList"
@@ -91,8 +75,41 @@
                             </v-flex>
                             <v-flex
                               xs12
-                              sm4
+                              sm6
+                              md5>
+                              <v-autocomplete
+                                v-model="editedItem.cicloacademico"
+                                :items="CicloAcademicoList"
+                                item-text="descripcion"
+                                item-value="ciclo"
+                                label="Ciclo Académico"
+                              ></v-autocomplete>
+                            </v-flex>
+                            <v-flex
+                              xs12
+                              sm6
+                              md3>
+                              <v-text-field
+                                v-model="editedItem.grado_curso"
+                                label="Grado/Curso" />
+                            </v-flex>
+                            <v-flex
+                              xs12
+                              sm6
                               md4>
+                              <v-select
+                                v-model="editedItem.completo"
+                                :items="[{compl: 'C', descripcion: 'Completa'},{compl: 'I', descripcion: 'Incompleta'}]"
+                                item-text="descripcion"
+                                item-value="compl"
+                                label="Completa"
+                              >
+                              </v-select>
+                            </v-flex>
+                            <v-flex
+                              xs12
+                              sm12
+                              md12>
                               <v-autocomplete
                                 v-model="editedItem.idcolegio"
                                 :items="ColegioList"
@@ -104,8 +121,8 @@
                             </v-flex>
                             <v-flex
                               xs12
-                              sm8
-                              md8>
+                              sm12
+                              md12>
                               <v-autocomplete
                                 v-model="editedItem.iduniversidad"
                                 :items="UniversidadList"
@@ -117,8 +134,8 @@
                             </v-flex>
                             <v-flex
                               xs12
-                              sm4
-                              md4>
+                              sm12
+                              md12>
                               <v-autocomplete
                                 v-model="editedItem.idfacultad"
                                 :items="FacultadList"
@@ -143,16 +160,8 @@
                             </v-flex>
                             <v-flex
                               xs12
-                              sm6
-                              md6>
-                              <v-text-field
-                                v-model="editedItem.grado_curso"
-                                label="Grado/Curso" />
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm6
-                              md6>
+                              sm12
+                              md12>
                               <v-autocomplete
                                 v-model="editedItem.idtitulo"
                                 :items="TituloList"
@@ -243,6 +252,19 @@
                   <span>Eliminar</span>
                 </v-tooltip>
 
+              </template>
+
+              <template v-slot:item.cicloacademico="props">
+                {{ academic(props.item.cicloacademico) }}
+              </template>
+
+              <template v-slot:item.completo="props">
+                <template v-if="props.item.completo == 'C'">
+                  Completa
+                </template>
+                <template v-else-if="props.item.completo == 'I'">
+                  Incompleta
+                </template>
               </template>
 
               <!--template v-slot:item.galpon="props">
@@ -400,7 +422,7 @@ export default {
       { text: 'Apellido Empleado', value: 'apellido' },
       { text: 'Nro. Cédula', value: 'ci' },
       { text: 'Ciclo Acad.', value: 'cicloacademico' },
-      { text: 'Completo', value: 'completo' },
+      { text: 'Completa', value: 'completo' },
       { text: 'Grado/Curso', value: 'grado_curso' },
       { text: 'Colegio', value: 'colegio'},
       { text: 'Universidad', value: 'universidad' },
@@ -428,6 +450,18 @@ export default {
     CarreraList: [],
     TituloList: [],
     EmpleadoList: [],
+    CicloAcademicoList: [
+      { ciclo: "0", descripcion: '"S/D"'},
+      { ciclo: "1", descripcion: 'Primario'},
+      { ciclo: "3", descripcion: 'Ciclo Básico'},
+      { ciclo: "4", descripcion: 'Secundario'},
+      { ciclo: "6", descripcion: 'Universitario'},
+      { ciclo: "21", descripcion: 'Educ. Inicial'},
+      { ciclo: "22", descripcion: 'Educ. Escolar Media'},
+      { ciclo: "23", descripcion: 'Educ. Media'},
+      { ciclo: "24", descripcion: 'Educ. Técnica Superior'},
+      { cilco: "25", descripcion: 'Educ. Superior'},
+    ],
   }),
 
   computed: {
@@ -545,6 +579,10 @@ export default {
         .catch( error => {
           console.log(error)
         })
+    },
+
+    academic(id){
+      return this.CicloAcademicoList.find( academic => academic.ciclo.includes(id)).descripcion
     },
     
     // object.assign fills in the empty object with the properties of item

@@ -643,6 +643,42 @@
                                   cols="12"
                                   sm="4"
                                 >
+                                  <b>Fecha Inicio Contrato:</b>
+                                </v-col>
+                                <v-col
+                                  cols="12"
+                                  sm="5"
+                                >
+                                  {{ EmpleadoSelect.fic }}
+                                </v-col>
+                              </v-row>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <v-row no-gutters>
+                                <v-col
+                                  cols="12"
+                                  sm="4"
+                                >
+                                  <b>Fecha Fin Contrato:</b>
+                                </v-col>
+                                <v-col
+                                  cols="12"
+                                  sm="5"
+                                >
+                                  {{ EmpleadoSelect.ffc }}
+                                </v-col>
+                              </v-row>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <v-row no-gutters>
+                                <v-col
+                                  cols="12"
+                                  sm="4"
+                                >
                                   <b>Otras Instituciones:</b>
                                 </v-col>
                                 <v-col

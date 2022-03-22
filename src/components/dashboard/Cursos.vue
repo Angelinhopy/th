@@ -65,9 +65,14 @@
                               xs12
                               sm6
                               md6>
-                              <v-text-field
+                              <v-select
                                 v-model="editedItem.tipocurso"
-                                label="Tipo Curso" />
+                                :items="[{tipo: '1', descripcion: 'En el País'},{tipo: '2', descripcion: 'En el Exterior'},]"
+                                item-text="descripcion"
+                                item-value="tipo"
+                                label="Tipo Curso"
+                              >
+                              </v-select>
                             </v-flex>
                             <v-flex
                               xs12
@@ -254,6 +259,15 @@
                   <span>Eliminar</span>
                 </v-tooltip>
 
+              </template>
+
+              <template v-slot:item.tipocurso="props">
+                <template v-if="props.item.tipocurso == 1">
+                  En el País
+                </template>
+                <template v-else-if="props.item.tipocurso == 2">
+                  En el Exterior
+                </template>
               </template>
 
               <!--template v-slot:item.galpon="props">

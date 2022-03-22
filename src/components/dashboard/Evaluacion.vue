@@ -194,6 +194,10 @@
 
               </template>
 
+              <template v-slot:item.mes="props">
+                {{ mes(props.item.mes) }}
+              </template>
+
               <template v-slot:expanded-item="{ headers, item }">
 
                 <td :colspan="headers.length">
@@ -330,7 +334,7 @@
                               </v-tooltip>
                             </td>
                             <td>{{ it.periodo_det }}</td>
-                            <td>{{ it.mes_det }}</td>
+                            <td>{{ mes(it.mes_det) }}</td>
                             <td>{{ it.tipo_desempeno }}</td>
                             <td>{{ it.evaluacion }}</td>
                           </tr>
@@ -535,6 +539,10 @@ export default {
       this.editedDetItem.iddesempeno = iddesempeno
       this.editedDetItem.periodo_det = this.EvaluacionList.find(item => item.iddesempeno == iddesempeno).periodo
       this.editedDetItem.mes_det = this.EvaluacionList.find(item => item.iddesempeno == iddesempeno).mes
+    },
+
+    mes(id){
+      return this.meses.find( mes => mes.value.includes(id)).desc
     },
     
     // object.assign fills in the empty object with the properties of item
