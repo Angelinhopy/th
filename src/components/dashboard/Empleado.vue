@@ -60,362 +60,412 @@
                       </v-card-title>
                       <v-card-text>
                         <v-container grid-list-md >
-                          <v-layout wrap>
-                            <v-flex
-                              xs12
-                              sm6
-                              md6>
-                              <v-text-field
-                                v-model="editedItem.nombre"
-                                label="Nombre" />
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm6
-                              md6>
-                              <v-text-field
-                                v-model="editedItem.apellido"
-                                label="Apellido" />
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm12
-                              md12>
-                              <v-text-field
-                                v-model="editedItem.domicilio"
-                                label="Domicilio" />
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm4
-                              md4>
-                              <v-text-field
-                                v-model="editedItem.ci"
-                                label="Nro. Cédula" />
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm4
-                              md4>
-                              <v-text-field
-                                v-model="editedItem.telefono"
-                                label="Teléfono" />
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm4
-                              md4>
-                              <v-text-field
-                                v-model="editedItem.celular"
-                                label="Celular" />
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm4
-                              md4>
-                              <v-autocomplete
-                                v-model="editedItem.idbarrio"
-                                :items="BarrioList"
-                                item-text="descripcion"
-                                item-value="idbarrio"
-                                label="Barrio"
-                                :append-icon="'mdi-plus'"
-                              ></v-autocomplete>
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm4
-                              md4>
-                              <v-autocomplete
-                                v-model="editedItem.idciudad"
-                                :items="CiudadList"
-                                item-text="descripcion"
-                                item-value="idciudad"
-                                label="Ciudad"
-                                :append-icon="'mdi-plus'"
-                              ></v-autocomplete>
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm4
-                              md4>
-                              <v-autocomplete
-                                v-model="editedItem.idnacional"
-                                :items="NacionalidadList"
-                                item-text="descripcion"
-                                item-value="idnacional"
-                                label="Nacionalidad"
-                                :append-icon="'mdi-plus'"
-                              ></v-autocomplete>
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm4
-                              md4>
-                              <v-text-field
-                                v-model="editedItem.fecnac"
-                                hint="YYYY-MM-DD"
-                                label="Fecha Nacimiento" />
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm8
-                              md8>
-                              <v-text-field
-                                v-model="editedItem.lugarnac"
-                                label="Lugar Nacimiento" />
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm4
-                              md3>
-                              <v-select
-                                v-model="editedItem.sexo"
-                                :items="genero"
-                                item-text="sexo"
-                                item-value="val"
-                                label="Sexo"
-                                :append-icon="'mdi-plus'"
-                              ></v-select>
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm4
-                              md4>
-                              <v-select
-                                v-model="editedItem.estcivil"
-                                :items="estadoCivil"
-                                item-text="estcivil"
-                                item-value="val"
-                                label="Estado Civil"
-                                :append-icon="'mdi-plus'"
-                              ></v-select>
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm4
-                              md5>
-                              <v-autocomplete
-                                v-model="editedItem.idcategoria"
-                                :items="CategoriaList"
-                                item-text="categoria"
-                                item-value="idcategoria"
-                                label="Categoría"
-                                :append-icon="'mdi-plus'"
-                              ></v-autocomplete>
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm12
-                              md12>
-                              <v-text-field
-                                v-model="editedItem.conyuge"
-                                label="Conyuge" />
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm12
-                              md12>
-                              <v-text-field
-                                v-model="editedItem.email"
-                                label="Email" />
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm4
-                              md4>
-                              <v-text-field
-                                v-model="editedItem.fec_ing"
-                                hint="YYYY-MM-DD"
-                                label="Fecha Ingreso" />
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm4
-                              md4>
-                              <v-text-field
-                                v-model="editedItem.resingreso"
-                                label="Resolución Ing." />
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm4
-                              md4>
-                              <v-text-field
-                                v-model="editedItem.fecresingreso"
-                                hint="YYYY-MM-DD"
-                                label="Fecha Resolución" />
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm12
-                              md10>
-                              <v-autocomplete
-                                v-model="editedItem.plla"
-                                :items="PlanillaList"
-                                item-text="descripcion"
-                                item-value="plla"
-                                label="Planilla"
-                                :append-icon="'mdi-plus'"
-                              ></v-autocomplete>
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm12
-                              md2>
-                              <v-text-field
-                                v-model="editedItem.orden"
-                                label="Órden" />
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm12
-                              md12>
-                              <v-autocomplete
-                                v-model="editedItem.lineapres"
-                                :items="VacanciaList"
-                                item-text="descripcion"
-                                item-value="lineapres"
-                                label="Vacancia"
-                                :append-icon="'mdi-plus'"
-                              ></v-autocomplete>
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm4
-                              md4>
-                              <v-autocomplete
-                                v-model="editedItem.idcargopres"
-                                :items="PresupuestadoList"
-                                item-text="descripcion"
-                                item-value="idcargopres"
-                                label="Cargo Presupuestado"
-                                :append-icon="'mdi-plus'"
-                              ></v-autocomplete>
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm4
-                              md4>
-                              <v-autocomplete
-                                v-model="editedItem.iddepen"
-                                :items="DependenciaList"
-                                item-text="descripcion"
-                                item-value="iddepen"
-                                label="Dependencia"
-                                :append-icon="'mdi-plus'"
-                              ></v-autocomplete>
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm4
-                              md4>
-                              <v-autocomplete
-                                v-model="editedItem.idcargofun"
-                                :items="FuncionalList"
-                                item-text="descripcion"
-                                item-value="idcargofun"
-                                label="Cargo Funcional"
-                                :append-icon="'mdi-plus'"
-                              ></v-autocomplete>
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm4
-                              md4>
-                              <v-autocomplete
-                                v-model="editedItem.idjerarquia"
-                                :items="JerarquiaList"
-                                item-text="descripcion"
-                                item-value="idjerarquia"
-                                label="Jerarquía"
-                                :append-icon="'mdi-plus'"
-                              ></v-autocomplete>
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm4
-                              md4>
-                              <v-autocomplete
-                                v-model="editedItem.idestado"
-                                :items="EstadoList"
-                                item-text="descripcion"
-                                item-value="idestado"
-                                label="Estado"
-                                :append-icon="'mdi-plus'"
-                              ></v-autocomplete>
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm4
-                              md4>
-                              <v-text-field
-                                v-model="editedItem.tipodoc"
-                                label="Tipo Doc." />
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm4
-                              md4>
-                              <v-text-field
-                                v-model="editedItem.res_mov"
-                                label="Res. Mov." />
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm4
-                              md4>
-                              <v-text-field
-                                v-model="editedItem.fecresmov"
-                                hint="YYYY-MM-DD"
-                                label="Fecha Res. Mov." />
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm4
-                              md4>
-                              <v-autocomplete
-                                v-model="editedItem.idturno"
-                                :items="TurnoList"
-                                item-text="descripcion"
-                                item-value="idturno"
-                                label="Turno"
-                                :append-icon="'mdi-plus'"
-                              ></v-autocomplete>
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm12
-                              md12>
-                              <v-autocomplete
-                                v-model="editedItem.idinstituestado"
-                                :items="InstitucionList"
-                                item-text="descripcion"
-                                item-value="idinstituestado"
-                                label="Institución Estado"
-                                :append-icon="'mdi-plus'"
-                              ></v-autocomplete>
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm6
-                              md6>
-                              <v-text-field
-                                v-model="editedItem.fic"
-                                hint="YYYY-MM-DD"
-                                label="Fecha Inicio Contrato" />
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm6
-                              md6>
-                              <v-text-field
-                                v-model="editedItem.ffc"
-                                hint="YYYY-MM-DD"
-                                label="Fecha Fin Contrato" />
-                            </v-flex>
+                          <v-form
+                            ref="formEmpleado"
+                            v-model="valid"
+                            lazy-validation
+                          >
+                            <v-layout wrap>
+                              <v-flex
+                                xs12
+                                sm6
+                                md6>
+                                <v-text-field
+                                  v-model="editedItem.nombre"
+                                  :rules="requiredRules.general"
+                                  required
+                                  label="Nombre" />
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm6
+                                md6>
+                                <v-text-field
+                                  v-model="editedItem.apellido"
+                                  :rules="requiredRules.general"
+                                  required
+                                  label="Apellido" />
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm12
+                                md12>
+                                <v-text-field
+                                  v-model="editedItem.domicilio"
+                                  label="Domicilio" />
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm4
+                                md4>
+                                <v-text-field
+                                  v-model="editedItem.ci"
+                                  :rules="requiredRules.general"
+                                  required
+                                  label="Nro. Cédula" />
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm4
+                                md4>
+                                <v-text-field
+                                  v-model="editedItem.telefono"
+                                  label="Teléfono" />
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm4
+                                md4>
+                                <v-text-field
+                                  v-model="editedItem.celular"
+                                  label="Celular" />
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm4
+                                md4>
+                                <v-autocomplete
+                                  v-model="editedItem.idbarrio"
+                                  :items="BarrioList"
+                                  item-text="descripcion"
+                                  item-value="idbarrio"
+                                  label="Barrio"
+                                  :append-icon="'mdi-plus'"
+                                  :rules="requiredRules.general"
+                                  required
+                                ></v-autocomplete>
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm4
+                                md4>
+                                <v-autocomplete
+                                  v-model="editedItem.idciudad"
+                                  :items="CiudadList"
+                                  item-text="descripcion"
+                                  item-value="idciudad"
+                                  label="Ciudad"
+                                  :append-icon="'mdi-plus'"
+                                  :rules="requiredRules.general"
+                                  required
+                                ></v-autocomplete>
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm4
+                                md4>
+                                <v-autocomplete
+                                  v-model="editedItem.idnacional"
+                                  :items="NacionalidadList"
+                                  item-text="descripcion"
+                                  item-value="idnacional"
+                                  label="Nacionalidad"
+                                  :append-icon="'mdi-plus'"
+                                  :rules="requiredRules.general"
+                                  required
+                                ></v-autocomplete>
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm4
+                                md4>
+                                <v-text-field
+                                  v-model="editedItem.fecnac"
+                                  hint="YYYY-MM-DD"
+                                  label="Fecha Nacimiento" />
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm8
+                                md8>
+                                <v-text-field
+                                  v-model="editedItem.lugarnac"
+                                  label="Lugar Nacimiento" />
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm4
+                                md3>
+                                <v-select
+                                  v-model="editedItem.sexo"
+                                  :items="genero"
+                                  item-text="sexo"
+                                  item-value="val"
+                                  label="Sexo"
+                                  :append-icon="'mdi-plus'"
+                                ></v-select>
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm4
+                                md4>
+                                <v-select
+                                  v-model="editedItem.estcivil"
+                                  :items="estadoCivil"
+                                  item-text="estcivil"
+                                  item-value="val"
+                                  label="Estado Civil"
+                                  :append-icon="'mdi-plus'"
+                                ></v-select>
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm4
+                                md5>
+                                <v-autocomplete
+                                  v-model="editedItem.idcategoria"
+                                  :items="CategoriaList"
+                                  item-text="categoria"
+                                  item-value="idcategoria"
+                                  label="Categoría"
+                                  :append-icon="'mdi-plus'"
+                                  :rules="requiredRules.general"
+                                  required
+                                ></v-autocomplete>
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm12
+                                md12>
+                                <v-text-field
+                                  v-model="editedItem.conyuge"
+                                  label="Conyuge" />
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm12
+                                md12>
+                                <v-text-field
+                                  v-model="editedItem.email"
+                                  label="Email" />
+                              </v-flex>
+                              <!--v-flex--
+                                xs12
+                                sm12
+                                md12>
+                                <v-file-input
+                                  v-model="foto"
+                                  accept="image/*"
+                                  label="Foto"
+                                  placeholder="Foto"
+                                  prepend-icon="mdi-image"
+                                />
+                              </!--v-flex-->
+                              <v-flex
+                                xs12
+                                sm4
+                                md4>
+                                <v-text-field
+                                  v-model="editedItem.fec_ing"
+                                  :rules="requiredRules.general"
+                                  required
+                                  hint="YYYY-MM-DD"
+                                  label="Fecha Ingreso" />
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm4
+                                md4>
+                                <v-text-field
+                                  v-model="editedItem.resingreso"
+                                  label="Resolución Ing." />
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm4
+                                md4>
+                                <v-text-field
+                                  v-model="editedItem.fecresingreso"
+                                  hint="YYYY-MM-DD"
+                                  label="Fecha Resolución" />
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm12
+                                md10>
+                                <v-autocomplete
+                                  v-model="editedItem.plla"
+                                  :items="PlanillaList"
+                                  item-text="descripcion"
+                                  item-value="plla"
+                                  label="Planilla"
+                                  :append-icon="'mdi-plus'"
+                                ></v-autocomplete>
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm12
+                                md2>
+                                <v-text-field
+                                  v-model="editedItem.orden"
+                                  label="Órden" />
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm12
+                                md12>
+                                <v-autocomplete
+                                  v-model="editedItem.lineapres"
+                                  :items="VacanciaList"
+                                  item-text="descripcion"
+                                  item-value="lineapres"
+                                  label="Anexo"
+                                  :append-icon="'mdi-plus'"
+                                  :rules="requiredRules.general"
+                                  required
+                                ></v-autocomplete>
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm4
+                                md4>
+                                <v-autocomplete
+                                  v-model="editedItem.idcargopres"
+                                  :items="PresupuestadoList"
+                                  item-text="descripcion"
+                                  item-value="idcargopres"
+                                  label="Cargo Presupuestado"
+                                  :append-icon="'mdi-plus'"
+                                  :rules="requiredRules.general"
+                                  required
+                                ></v-autocomplete>
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm4
+                                md4>
+                                <v-autocomplete
+                                  v-model="editedItem.iddepen"
+                                  :items="DependenciaList"
+                                  item-text="descripcion"
+                                  item-value="iddepen"
+                                  label="Dependencia"
+                                  :append-icon="'mdi-plus'"
+                                  :rules="requiredRules.general"
+                                  required
+                                ></v-autocomplete>
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm4
+                                md4>
+                                <v-autocomplete
+                                  v-model="editedItem.idcargofun"
+                                  :items="FuncionalList"
+                                  item-text="descripcion"
+                                  item-value="idcargofun"
+                                  label="Cargo Funcional"
+                                  :append-icon="'mdi-plus'"
+                                  :rules="requiredRules.general"
+                                  required
+                                ></v-autocomplete>
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm4
+                                md4>
+                                <v-autocomplete
+                                  v-model="editedItem.idjerarquia"
+                                  :items="JerarquiaList"
+                                  item-text="descripcion"
+                                  item-value="idjerarquia"
+                                  label="Jerarquía"
+                                  :append-icon="'mdi-plus'"
+                                  :rules="requiredRules.general"
+                                  required
+                                ></v-autocomplete>
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm4
+                                md4>
+                                <v-autocomplete
+                                  v-model="editedItem.idestado"
+                                  :items="EstadoList"
+                                  item-text="descripcion"
+                                  item-value="idestado"
+                                  label="Estado"
+                                  :append-icon="'mdi-plus'"
+                                  :rules="requiredRules.general"
+                                  required
+                                ></v-autocomplete>
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm4
+                                md4>
+                                <v-text-field
+                                  v-model="editedItem.tipodoc"
+                                  label="Tipo Doc." />
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm4
+                                md4>
+                                <v-text-field
+                                  v-model="editedItem.res_mov"
+                                  label="Res. Mov." />
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm4
+                                md4>
+                                <v-text-field
+                                  v-model="editedItem.fecresmov"
+                                  hint="YYYY-MM-DD"
+                                  label="Fecha Res. Mov." />
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm4
+                                md4>
+                                <v-autocomplete
+                                  v-model="editedItem.idturno"
+                                  :items="TurnoList"
+                                  item-text="descripcion"
+                                  item-value="idturno"
+                                  label="Turno"
+                                  :append-icon="'mdi-plus'"
+                                  :rules="requiredRules.general"
+                                  required
+                                ></v-autocomplete>
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm12
+                                md12>
+                                <v-autocomplete
+                                  v-model="editedItem.idinstituestado"
+                                  :items="InstitucionList"
+                                  item-text="descripcion"
+                                  item-value="idinstituestado"
+                                  label="Institución Estado"
+                                  :append-icon="'mdi-plus'"
+                                  :rules="requiredRules.general"
+                                  required
+                                ></v-autocomplete>
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm6
+                                md6>
+                                <v-text-field
+                                  v-model="editedItem.fic"
+                                  hint="YYYY-MM-DD"
+                                  label="Fecha Inicio Contrato" />
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm6
+                                md6>
+                                <v-text-field
+                                  v-model="editedItem.ffc"
+                                  hint="YYYY-MM-DD"
+                                  label="Fecha Fin Contrato" />
+                              </v-flex>
 
-                          </v-layout>
+                            </v-layout>
+                          </v-form>
                         </v-container>
                       </v-card-text>
 
@@ -428,6 +478,7 @@
                         <v-btn
                           color="blue darken-1"
                           text
+                          :disabled="!valid"
                           @click="save">Guardar</v-btn>
                       </v-card-actions>
                     </v-card>
@@ -602,7 +653,7 @@ export default {
       { text: 'Cantidad', value: 'cantidad' },
       { text: 'Sueldo Pres.', value: 'sueldo_pres' },
       { text: 'Total Mens.', value: 'totmensu' },
-      { text: 'Vacancia', value: 'vacancia' },
+      { text: 'Anexo', value: 'vacancia' },
       { text: 'Categoría', value: 'categoria' },
       { text: 'Sueldo', value: 'sueldo' },
       { text: 'Cargo Pres.', value: 'cargo_pres' },
@@ -674,6 +725,7 @@ export default {
     TurnoList: [],
     InstitucionList: [],
     PlanillaList: [
+      {plla: '0', descripcion: 'S/D'},
       {plla: '1', descripcion: 'FISCAL'},
       {plla: '2', descripcion: 'IPS'},
       {plla: '3', descripcion: 'OBRERO'},
@@ -685,15 +737,23 @@ export default {
       {plla: '9', descripcion: 'SIN PLANILLA'},
     ],
     genero: [
+      {sexo: 'S/D', val: '0'},
       {sexo: 'M', val: '1'},
       {sexo: 'F', val: '2'},
     ],
     estadoCivil: [
+      {estcivil: 'S/D', val: '0'},
       {estcivil: 'Soltero/a', val: '1'},
       {estcivil: 'Casado/a', val: '2'},
       {estcivil: 'Divorciado/a', val: '3'},
-      {estcivil: 'Viudo/a', val:'4'}
+      {estcivil: 'Viudo/a', val:'4'},
     ],
+    valid: true,
+    requiredRules: {
+      general: [
+        (v) => !!v || "Este campo es requerido"
+      ],
+    },
   }),
 
   computed: {
@@ -919,18 +979,20 @@ export default {
     },
 
     save() {
-      if(this.editedIndex > -1) {
-        Object.assign(this.EmpleadoList[this.editedIndex], this.editedItem)
-        let endpoint = `empleado/update/${this.editedItem.idpersonal}`
-        let method = 'PATCH'
-        this.callTableAction(endpoint, method)
+      if( this.$refs.formEmpleado.validate() ){
+        if(this.editedIndex > -1) {
+          Object.assign(this.EmpleadoList[this.editedIndex], this.editedItem)
+          let endpoint = `empleado/update/${this.editedItem.idpersonal}`
+          let method = 'PATCH'
+          this.callTableAction(endpoint, method)
+        }
+        else {
+          let endpoint = `empleado/add`
+          let method = 'POST'
+          this.callTableAction(endpoint, method)
+        }
+        this.close()
       }
-      else {
-        let endpoint = `empleado/add`
-        let method = 'POST'
-        this.callTableAction(endpoint, method)
-      }
-      this.close()
     },
 
     saveItem(item) {
