@@ -60,54 +60,65 @@
                       </v-card-title>
                       <v-card-text>
                         <v-container grid-list-md >
-                          <v-layout wrap>
-                            <v-flex
-                              xs12
-                              sm12
-                              md12>
-                              <v-text-field
-                                :disabled="editedIndex > -1"
-                                v-model="editedItem.nombreusuario"
-                                label="Usuario" />
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm12
-                              md12>
-                              <v-text-field
-                                v-model="editedItem.pass"
-                                :rules="rules"
-                                type="password"
-                                label="Contraseña"
-                                placeholder="*********"
-                              />
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm12
-                              md12>
-                              <v-text-field
-                                v-model="editedItem.repass"
-                                :rules="[() => editedItem.pass == editedItem.repass || 'Las contraseñas no coinciden!']"
-                                type="password"
-                                label="Repetir contraseña"
-                                placeholder="*********"
-                              />
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm12
-                              md12>
-                              <v-autocomplete
-                                v-model="editedItem.idperfil"
-                                :items="PerfilList"
-                                item-text="nombreperfil"
-                                item-value="idperfil"
-                                label="Perfil"
-                                required
-                              ></v-autocomplete>
-                            </v-flex>
-                          </v-layout>
+                          <v-form
+                            ref="formUsuario"
+                            v-model="valid"
+                            lazy-validation
+                          >
+                            <v-layout wrap>
+                              <v-flex
+                                xs12
+                                sm12
+                                md12>
+                                <v-text-field
+                                  :disabled="editedIndex > -1"
+                                  v-model="editedItem.nombreusuario"
+                                  :rules="requiredRules.general"
+                                  required
+                                  label="Usuario" />
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm12
+                                md12>
+                                <v-text-field
+                                  v-model="editedItem.pass"
+                                  :rules="passwordRules"
+                                  type="password"
+                                  label="Contraseña"
+                                  placeholder="*********"
+                                  required
+                                />
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm12
+                                md12>
+                                <v-text-field
+                                  v-model="editedItem.repass"
+                                  :rules="[() => editedItem.pass == editedItem.repass || 'Las contraseñas no coinciden!']"
+                                  type="password"
+                                  label="Repetir contraseña"
+                                  placeholder="*********"
+                                  required
+                                />
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm12
+                                md12>
+                                <v-autocomplete
+                                  v-model="editedItem.idperfil"
+                                  :items="PerfilList"
+                                  item-text="nombreperfil"
+                                  item-value="idperfil"
+                                  label="Perfil"
+                                  required
+                                  :rules="requiredRules.general"
+                                ></v-autocomplete>
+                              </v-flex>
+                            </v-layout>
+                          </v-form>
                         </v-container>
                       </v-card-text>
 
@@ -121,14 +132,14 @@
                           <v-btn
                             color="blue darken-1"
                             text
-                            :disabled="!checkAdd"
+                            :disabled="!checkAdd || !valid"
                             @click="save">Guardar</v-btn>
                         </template>
                         <template v-else-if="editedIndex > -1">
                           <v-btn
                             color="blue darken-1"
                             text
-                            :disabled="!checkEdit"
+                            :disabled="!checkEdit || !valid"
                             @click="save">Guardar</v-btn>
                         </template>
                       </v-card-actions>
@@ -280,17 +291,24 @@ export default {
     editedIndex: -1,
     editedItem: {
       idusuario: '',
+      nombreusuario: '',
       idperfil: '',
       pass: '',
       repass: '',
     },
     defaultItem: {
     },
-    rules: [
+    passwordRules: [
       //v => !!v || 'El password es requerido',
-      v => v.length >= 6 || 'Debe contener 6 caracteres como mínimo',
+      v => ( v && v.length >= 6) || 'Debe contener 6 caracteres como mínimo',
       v => /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/.test(v) || 'La contraseña debe contener minúscula, número, carácter especial y mayúscula ',
-    ]
+    ],
+    valid: true,
+    requiredRules: {
+      general: [
+        (v) => !!v || "Este campo es requerido"
+      ],
+    }
   }),
 
   computed: {
@@ -401,26 +419,28 @@ export default {
     },
 
     save() {
-      if(this.editedIndex > -1) {
-        if(this.editedItem.pass !== this.editedItem.repass){
-          this.cancelInline()
-          return
+      if( this.$refs.formUsuario.validate() ){
+        if(this.editedIndex > -1) {
+          if(this.editedItem.pass !== this.editedItem.repass){
+            this.cancelInline()
+            return
+          }
+          Object.assign(this.UsuariosList[this.editedIndex], this.editedItem)
+          let endpoint = `usuario/update/${this.editedItem.idusuario}`
+          let method = 'PATCH'
+          this.callTableAction(endpoint, method)
         }
-        Object.assign(this.UsuariosList[this.editedIndex], this.editedItem)
-        let endpoint = `usuario/update/${this.editedItem.idusuario}`
-        let method = 'PATCH'
-        this.callTableAction(endpoint, method)
-      }
-      else {
-        if(this.editedItem.pass !== this.editedItem.repass){
-          this.cancelInline()
-          return
+        else {
+          if(this.editedItem.pass !== this.editedItem.repass){
+            this.cancelInline()
+            return
+          }
+          let endpoint = `usuario/add`
+          let method = 'POST'
+          this.callTableAction(endpoint, method)
         }
-        let endpoint = `usuario/add`
-        let method = 'POST'
-        this.callTableAction(endpoint, method)
+        this.close()
       }
-      this.close()
     },
 
     saveItem(item) {
