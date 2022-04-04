@@ -107,7 +107,7 @@
                               <v-autocomplete
                                 v-model="editedDetItem.idrubropres"
                                 :items="RubroList"
-                                item-text="descripcion"
+                                item-text="descrip"
                                 item-value="idrubropres"
                                 label="Rubro Pres."
                                 :append-icon="'mdi-plus'"
@@ -306,10 +306,10 @@
                             <td>{{ mes(it.mes) }}</td>
                             <td>{{ it.planibene }}</td>
                             <td>{{ it.rubro_pres }}</td>
-                            <td>{{ it.monto }}</td>
+                            <td>{{ numberFormat.format(it.monto) }}</td>
                             <td>{{ it.tipo_desc }}</td>
-                            <td>{{ it.desc_jub }}</td>
-                            <td>{{ it.monto_cobrar }}</td>
+                            <td>{{ numberFormat.format(it.desc_jub) }}</td>
+                            <td>{{ numberFormat.format(it.monto_cobrar) }}</td>
                           </tr>
                         </template>
                         <template v-else>
@@ -435,6 +435,7 @@ export default {
       {plla: '8', descripcion: 'COMISIONADO-IPS'},
       {plla: '9', descripcion: 'SIN PLANILLA'},
     ],
+    numberFormat: new Intl.NumberFormat('es-ES'),
   }),
 
   computed: {

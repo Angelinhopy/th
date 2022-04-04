@@ -286,7 +286,7 @@
 
   /* Ruta categoria */
   Flight::route('GET /categoria', function(){
-    Flight::json(tabCategoria::all());
+    Flight::json(viewCategoria::all());
   });
 
    /* Ruta categoria ADD */
@@ -654,7 +654,7 @@
 
   /* Ruta turno */
   Flight::route('GET /turno', function(){
-    Flight::json(tabTurno::all());
+    Flight::json(viewTurno::all());
   });
 
    /* Ruta turno ADD */
@@ -780,7 +780,7 @@
 
   /* Ruta rubro */
   Flight::route('GET /rubro', function(){
-    Flight::json(tabRubro::all());
+    Flight::json(viewRubro::all());
   });
 
    /* Ruta rubro ADD */
@@ -1329,7 +1329,7 @@
 
   /* Ruta vacancia */
   Flight::route('GET /vacancia', function(){
-    Flight::json(tabVacancia::all());
+    Flight::json(viewVacancia::all());
   });
 
    /* Ruta vacancia ADD */
@@ -1433,7 +1433,7 @@
       'orden' => $data->orden,
       'lineapres' => $data->lineapres,
       'idcategoria' => $data->idcategoria,
-      'idcargopres' => $data->idcargopres,
+      'idcargopres' => 1, // $data->idcargopres,
       'iddepen' => $data->iddepen,
       'idcargofun' => $data->idcargofun,
       'idjerarquia' => $data->idjerarquia,
@@ -1487,7 +1487,7 @@
       'orden' => $data->orden,
       'lineapres' => $data->lineapres,
       'idcategoria' => $data->idcategoria,
-      'idcargopres' => $data->idcargopres,
+      'idcargopres' => 1, // $data->idcargopres,
       'iddepen' => $data->iddepen,
       'idcargofun' => $data->idcargofun,
       'idjerarquia' => $data->idjerarquia,
@@ -2347,8 +2347,8 @@
   });
 
   /* Ruta listado general sueldos */
-  Flight::route('GET /listsueldos/@periodo:[0-9]+/@mes:[0-9]+', function($periodo, $mes){
-    Flight::json(CalcSueldos::listSueldos($periodo, $mes));
+  Flight::route('GET /listsueldos/@plla:[0-9]+/@periodo:[0-9]+/@mes:[0-9]+', function($plla, $periodo, $mes){
+    Flight::json(CalcSueldos::listSueldos($plla, $periodo, $mes));
   });
 
   /* Ruta aguinaldos */

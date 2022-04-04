@@ -63,6 +63,18 @@
                           <v-layout wrap>
                             <v-flex
                               xs12
+                              sm12
+                              md12>
+                              <v-autocomplete
+                                v-model="editedItem.idpersonal"
+                                :items="EmpleadoList"
+                                item-text="nomape"
+                                item-value="idpersonal"
+                                label="Empleado"
+                              ></v-autocomplete>
+                            </v-flex>
+                            <v-flex
+                              xs12
                               sm6
                               md6>
                               <v-select
@@ -92,33 +104,65 @@
                             </v-flex>
                             <v-flex
                               xs12
-                              sm12
-                              md12>
-                              <v-autocomplete
-                                v-model="editedItem.idpersonal"
-                                :items="EmpleadoList"
-                                item-text="nomape"
-                                item-value="idpersonal"
-                                label="Empleado"
-                              ></v-autocomplete>
-                            </v-flex>
-                            <v-flex
-                              xs12
                               sm3
                               md3>
-                              <v-text-field
+                              <!--v-text-field
                                 v-model="editedItem.fecha_inicio"
                                 hint="YYYY-MM-DD"
-                                label="Fecha Inicio" />
+                                label="Fecha Inicio" /-->
+                              <v-menu
+                                  v-model="calendarioFecIni"
+                                  :close-on-content-click="false"
+                                  :nudge-right="40"
+                                  transition="scale-transition"
+                                  offset-y
+                                  min-width="auto"
+                                >
+                                  <template v-slot:activator="{ on, attrs }">
+                                    <v-text-field
+                                      v-model="computedDateFormattedFecIni"
+                                      label="Fecha Inicio"
+                                      readonly
+                                      v-bind="attrs"
+                                      v-on="on"
+                                    ></v-text-field>
+                                  </template>
+                                  <v-date-picker
+                                    v-model="editedItem.fecha_inicio"
+                                    @input="calendarioFecIni = false"
+                                  ></v-date-picker>
+                                </v-menu>
                             </v-flex>
                             <v-flex
                               xs12
                               sm3
                               md3>
-                              <v-text-field
+                              <!--v-text-field
                                 v-model="editedItem.fecha_fin"
                                 hint="YYYY-MM-DD"
-                                label="Fecha Fin" />
+                                label="Fecha Fin" /-->
+                              <v-menu
+                                  v-model="calendarioFecFin"
+                                  :close-on-content-click="false"
+                                  :nudge-right="40"
+                                  transition="scale-transition"
+                                  offset-y
+                                  min-width="auto"
+                                >
+                                  <template v-slot:activator="{ on, attrs }">
+                                    <v-text-field
+                                      v-model="computedDateFormattedFecFin"
+                                      label="Fecha Fin"
+                                      readonly
+                                      v-bind="attrs"
+                                      v-on="on"
+                                    ></v-text-field>
+                                  </template>
+                                  <v-date-picker
+                                    v-model="editedItem.fecha_fin"
+                                    @input="calendarioFecFin = false"
+                                  ></v-date-picker>
+                                </v-menu>
                             </v-flex>
                             <v-flex
                               xs12
@@ -268,6 +312,14 @@
                 <template v-else-if="props.item.tipocurso == 2">
                   En el Exterior
                 </template>
+              </template>
+
+              <template v-slot:item.fecha_inicio="props">
+                {{ formatDate(props.item.fecha_inicio) }}
+              </template>
+
+              <template v-slot:item.fecha_fin="props">
+                {{ formatDate(props.item.fecha_fin) }}
               </template>
 
               <!--template v-slot:item.galpon="props">
@@ -456,6 +508,8 @@ export default {
     EmpleadoList: [],
     CiudadList: [],
     PaisList: [],
+    calendarioFecIni: false,
+    calendarioFecFin: false,
   }),
 
   computed: {
@@ -473,7 +527,15 @@ export default {
 
     mod(){
       return this.getPermiso().find( access => access.nombretabla.includes(this.$route.name)).mod
-    }
+    },
+
+    computedDateFormattedFecIni () {
+      return this.formatDate(this.editedItem.fecha_inicio)
+    },
+
+    computedDateFormattedFecFin () {
+      return this.formatDate(this.editedItem.fecha_fin)
+    },
   },
 
   watch: {
@@ -574,6 +636,13 @@ export default {
           console.log(error)
           this.cancelInline()
         })
+    },
+
+    formatDate (date) {
+      if (!date) return null
+
+      const [year, month, day] = date.split('-')
+      return `${day}-${month}-${year}`
     },
 
     save() {

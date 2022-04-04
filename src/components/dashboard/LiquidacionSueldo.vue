@@ -238,7 +238,7 @@
                                   cols="12"
                                   sm="5"
                                 >
-                                  {{ SueldoSelect.sueldo }}
+                                  {{ numberFormat.format(SueldoSelect.sueldo) }}
                                 </v-col>
                               </v-row>
                             </td>
@@ -301,21 +301,20 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td>{{ totalDevengado }}</td>
+                            <td>{{ numberFormat.format(totalDevengado) }}</td>
                           </tr>
                           <tr v-for="(sueldo, index) in SueldoSelect.detalle" :key="index">
                             <td>{{ index+1 }}</td>
                             <td>{{ sueldo.tipo_descuento }}</td>
-                            <td>{{ sueldo.monto }}</td>
+                            <td>{{ numberFormat.format(sueldo.monto) }}</td>
                             <td></td>
                           </tr>
                         </tbody>
                         <tfoot>
                           <tr>
-                            <td>-</td>
-                            <td><b>TOTAL ............................GS:</b></td>
-                            <td><b>{{ totalDescuento }}</b></td>
-                            <td><b>{{ totalSueldo }}</b></td>
+                            <td colspan="2"><b>TOTAL ............................GS:</b></td>
+                            <td><b>{{ numberFormat.format(totalDescuento) }}</b></td>
+                            <td><b>{{ numberFormat.format(totalSueldo) }}</b></td>
                           </tr>
                         </tfoot>
                       </template>
@@ -374,6 +373,7 @@ export default {
       {desc: 'Diciembre', value: '12'},
     ],
     PlanillaList: [
+      {plla: '0', descripcion: 'S/D'},
       {plla: '1', descripcion: 'FISCAL'},
       {plla: '2', descripcion: 'IPS'},
       {plla: '3', descripcion: 'OBRERO'},
@@ -384,6 +384,7 @@ export default {
       {plla: '8', descripcion: 'COMISIONADO-IPS'},
       {plla: '9', descripcion: 'SIN PLANILLA'},
     ],
+    numberFormat: new Intl.NumberFormat('es-ES'),
   }),
 
   // called when page is created before dom
@@ -453,7 +454,7 @@ export default {
         })
     },
 
-    planilla(id = 1){
+    planilla(id = 0){
       return null || this.PlanillaList.find( planilla => planilla.plla.includes(id)).descripcion
     },
 

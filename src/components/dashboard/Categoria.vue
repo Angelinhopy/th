@@ -193,7 +193,7 @@
                   save-text="Guardar"
                   cancel-text="Cancelar"
                 >
-                  <div>{{ props.item.sueldo }}</div>
+                  <div>{{ numberFormat.format(props.item.sueldo) }}</div>
                   <template v-slot:input>
                     <v-text-field
                       v-model="props.item.sueldo"
@@ -267,7 +267,8 @@ export default {
       sueldo: '',
     },
     defaultItem: {
-    }
+    },
+    numberFormat: new Intl.NumberFormat('es-ES')
   }),
 
   computed: {

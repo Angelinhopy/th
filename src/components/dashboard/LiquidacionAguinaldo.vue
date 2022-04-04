@@ -71,7 +71,9 @@
               >
                 <section slot="pdf-content" class="section-container">
                   <section class="mb-1">
+                    <span>{{ fechayhora.toLocaleDateString() }}</span>
                     <h1>Liquidación de Aguinaldo</h1>
+                    <h6>Diciembre {{ AguinaldoSelect.periodo }}</h6>
                   </section>
 
                   <section class="mb-1">
@@ -138,6 +140,42 @@
                               </v-row>
                             </td>
                           </tr>
+                          <tr>
+                            <td>
+                              <v-row no-gutters>
+                                <v-col
+                                  cols="12"
+                                  sm="4"
+                                >
+                                  <b>Planilla:</b>
+                                </v-col>
+                                <v-col
+                                  cols="12"
+                                  sm="5"
+                                >
+                                  {{ planilla(AguinaldoSelect.plla) }}
+                                </v-col>
+                              </v-row>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <v-row no-gutters>
+                                <v-col
+                                  cols="12"
+                                  sm="4"
+                                >
+                                  <b>Rubro Presupuestario:</b>
+                                </v-col>
+                                <v-col
+                                  cols="12"
+                                  sm="5"
+                                >
+                                  {{ AguinaldoSelect.idrubropres }} - {{ AguinaldoSelect.rubro_pres }}
+                                </v-col>
+                              </v-row>
+                            </td>
+                          </tr>
                         </tbody>
                       </template>
                     </v-simple-table>
@@ -160,14 +198,13 @@
                             <td>{{ index+1 }}</td>
                             <td>{{ agui.periodo_det }}</td>
                             <td>{{ mes(agui.mes_det) }}</td>
-                            <td>{{ agui.monto }}</td>
+                            <td>{{ numberFormat.format(agui.monto) }}</td>
                           </tr>
                         </tbody>
                         <tfoot>
                           <tr>
-                            <td>-</td>
-                            <td colspan="2"><b>TOTAL ............................GS:</b></td>
-                            <td><b>{{ totalAguinaldo }}</b></td>
+                            <td colspan="3"><b>TOTAL AGUINALDO ............................GS:</b></td>
+                            <td><b>{{ numberFormat.format(totalAguinaldo) }}</b></td>
                           </tr>
                         </tfoot>
                       </template>
@@ -223,7 +260,21 @@ export default {
       {desc: 'Octubre', value: '10'},
       {desc: 'Noviembre', value: '11'},
       {desc: 'Diciembre', value: '12'},
-    ]
+    ],
+    PlanillaList: [
+      {plla: '0', descripcion: 'S/D'},
+      {plla: '1', descripcion: 'FISCAL'},
+      {plla: '2', descripcion: 'IPS'},
+      {plla: '3', descripcion: 'OBRERO'},
+      {plla: '4', descripcion: 'CONTRATADO'},
+      {plla: '5', descripcion: 'DIRECTORIO'},
+      {plla: '6', descripcion: 'CONTRATADO-IVA'},
+      {plla: '7', descripcion: 'COMISIONADO-FISCAL'},
+      {plla: '8', descripcion: 'COMISIONADO-IPS'},
+      {plla: '9', descripcion: 'SIN PLANILLA'},
+    ],
+    fechayhora: new Date(),
+    numberFormat: new Intl.NumberFormat('es-ES'),
   }),
 
   // called when page is created before dom
@@ -284,6 +335,10 @@ export default {
       return this.meses.find( mes => mes.value.includes(id)).desc
     },
 
+    planilla(id = 0){
+      return null || this.PlanillaList.find( planilla => planilla.plla.includes(id)).descripcion
+    },
+
     onProgress(progress) {
       this.progress = progress;
       //console.log(`PDF generation progress: ${progress}%`)
@@ -312,5 +367,11 @@ export default {
 
   .section-container {
     margin: 20px;
+  }
+
+  .section-container span {
+    font-size: 14px;
+    float: right;
+    font-weight: bold;
   }
 </style>

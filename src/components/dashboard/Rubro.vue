@@ -226,6 +226,7 @@ export default {
     search: '',
     headers: [
       { text: '---Acción---', value: 'accion', sortable: false },
+      { text: 'Código', value: 'idrubropres' },
       { text: 'Rubro presupuestario', value: 'descripcion' },
     ],
     editedIndex: -1,

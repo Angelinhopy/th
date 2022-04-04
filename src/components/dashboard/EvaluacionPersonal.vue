@@ -212,6 +212,12 @@
                             <td>{{ evaluac.evaluacion }}</td>
                           </tr>
                         </tbody>
+                        <tfoot>
+                          <tr>
+                            <td colspan="2"><b>TOTAL PROMEDIO:</b></td>
+                            <td><b>{{ promedio }}</b></td>
+                          </tr>
+                        </tfoot>
                       </template>
                     </v-simple-table>
                   </section>
@@ -285,6 +291,21 @@ export default {
 
     isPeriodo() {
       return this.period !== '' ? true : false
+    },
+
+    promedio(){
+      if(this.EvaluacionSelect.hasOwnProperty("detalle")){
+        let sumatoria = this.EvaluacionSelect.detalle.reduce( (acumulador, siguienteValor) => 
+          ({ evaluacion: parseInt(acumulador.evaluacion) + parseInt(siguienteValor.evaluacion) }), { evaluacion: 0}
+        )
+
+        let promedio = (sumatoria.evaluacion / this.EvaluacionSelect.detalle.length)
+
+        return promedio
+      }
+      else{
+        return 0
+      }
     },
   },
 

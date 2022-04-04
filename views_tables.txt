@@ -13,7 +13,7 @@ INNER JOIN perfil c
 on c.idperfil = b.idperfil;
 
 CREATE OR REPLACE VIEW v_empleado AS
-SELECT a.idpersonal, concat_ws(' ', a.nombre, a.apellido, a.ci) AS nomape, a.nombre, a.apellido, a.domicilio, a.idbarrio, b.descripcion AS barrio, a.idciudad, c.descripcion AS ciudad, a.telefono, a.celular, a.fecnac, a.lugarnac, a.idnacional, d.descripcion AS nacionalidad, a.ci, a.sexo, a.estcivil, a.conyuge, a.email, a.foto, a.fec_ing, a.resingreso, a.fecresingreso, a.plla, a.orden, a.lineapres, e.linea, e.descripcion AS linea_pres, e.categoria categoria_pres, e.cantidad, e.sueldo AS sueldo_pres, e.totmensu, e.vacancia, a.idcategoria, f.categoria, f.sueldo, a.idcargopres, g.descripcion AS cargo_pres, a.iddepen, h.descripcion AS dependencia, a.idcargofun, i.descripcion AS cargo_func, a.idjerarquia, j.descripcion AS jerarquia, a.idestado, k.descripcion AS estado, a.tipodoc, a.res_mov, a.fecresmov, a.idturno, l.descripcion AS turno, l.entrada, l.salida, a.idinstituestado, m.descripcion AS institucion, a.fic, a.ffc
+SELECT a.idpersonal, concat_ws(' ', a.nombre, a.apellido, a.ci) AS nomape, a.nombre, a.apellido, a.domicilio, a.idbarrio, b.descripcion AS barrio, a.idciudad, c.descripcion AS ciudad, a.telefono, a.celular, a.fecnac, a.lugarnac, a.idnacional, d.descripcion AS nacionalidad, a.ci, a.sexo, a.estcivil, a.conyuge, a.email, a.foto, a.fec_ing, a.resingreso, a.fecresingreso, a.plla, a.orden, a.lineapres, e.linea, concat_ws(' ', e.linea, e.descripcion) AS linea_pres, e.categoria categoria_pres, e.cantidad, e.sueldo AS sueldo_pres, e.totmensu, e.vacancia, a.idcategoria, f.categoria, f.sueldo, concat_ws(' ', f.categoria, f.sueldo) AS categ, a.idcargopres, g.descripcion AS cargo_pres, a.iddepen, h.descripcion AS dependencia, a.idcargofun, i.descripcion AS cargo_func, a.idjerarquia, j.descripcion AS jerarquia, a.idestado, k.descripcion AS estado, a.tipodoc, a.res_mov, a.fecresmov, a.idturno, l.descripcion AS turno, l.entrada, l.salida, a.idinstituestado, m.descripcion AS institucion, a.fic , a.ffc 
 FROM empleado a
 INNER JOIN barrio b
 ON b.idbarrio = a.idbarrio
@@ -41,8 +41,7 @@ INNER JOIN institucion_estado m
 ON m.idinstituestado = a.idinstituestado;
 
 CREATE OR REPLACE VIEW v_cursos AS
-SELECT a.idcurso, a.tipocurso, a.nombrecurso, a.institucion, a.fecha_inicio, a.fecha_fin, a.nota, a.rendimiento, a.asistencia, a.observacion,
-a.idpersonal, concat_ws(' ', b.nombre, b.apellido, b.ci) AS nomape, b.nombre, b.apellido, b.ci, a.idciudad, c.descripcion AS ciudad, a.idpais, d.descripcion AS pais
+SELECT a.idcurso, a.tipocurso, a.nombrecurso, a.institucion, a.fecha_inicio, a.fecha_fin, a.nota, a.rendimiento, a.asistencia, a.observacion, a.idpersonal, concat_ws(' ', b.nombre, b.apellido, b.ci) AS nomape, b.nombre, b.apellido, b.ci, a.idciudad, c.descripcion AS ciudad, a.idpais, d.descripcion AS pais
 FROM cursos a
 INNER JOIN empleado b
 ON b.idpersonal = a.idpersonal
@@ -105,7 +104,7 @@ LEFT JOIN tipo_descuento g
 ON g.idtipodescuento = f.idtipodescuento;
 
 CREATE OR REPLACE VIEW v_aguinaldo AS
-SELECT a.idaguinaldo, a.periodo, a.mes, a.idrubropres, c.descripcion AS rubro_pres, a.idpersonal, concat_ws(' ', b.nombre, b.apellido, b.ci) AS nomape, b.nombre, b.apellido, b.ci, d.iddetalle_agui, d.ci AS ci_det, d.periodo AS periodo_det, d.mes AS mes_det, d.idsueldo, d.monto
+SELECT a.idaguinaldo, a.periodo, a.mes, a.idrubropres, c.descripcion AS rubro_pres, a.idpersonal, concat_ws(' ', b.nombre, b.apellido, b.ci) AS nomape, b.nombre, b.apellido, b.ci, b.plla, d.iddetalle_agui, d.ci AS ci_det, d.periodo AS periodo_det, d.mes AS mes_det, d.idsueldo, d.monto
 FROM aguinaldo a 
 INNER JOIN empleado b 
 ON b.idpersonal = a.idpersonal
@@ -113,4 +112,22 @@ INNER JOIN rubro_presupuestario c
 ON c.idrubropres = a.idrubropres
 LEFT JOIN detalle_agui d 
 ON d.idaguinaldo = a.idaguinaldo;
+
+CREATE OR REPLACE VIEW v_vacancia AS
+SELECT lineapres, linea, descripcion, concat_ws(' ', linea, descripcion) AS descrip, categoria, cantidad, sueldo, totmensu, vacancia
+FROM vacancia;
+
+CREATE OR REPLACE VIEW v_categoria AS
+SELECT idcategoria, categoria, sueldo, concat_ws(' ', categoria, sueldo) as categ
+FROM categoria
+
+CREATE OR REPLACE VIEW v_turno AS
+SELECT idturno, descripcion, entrada, salida, concat_ws(' ', descripcion, concat_ws(' a ', entrada, salida)) AS descrip
+FROM turno;
+
+CREATE OR REPLACE VIEW v_rubro_presupuestario AS
+SELECT idrubropres, descripcion, concat_ws(' ', idrubropres, descripcion) AS descrip 
+FROM rubro_presupuestario;
+
+
 

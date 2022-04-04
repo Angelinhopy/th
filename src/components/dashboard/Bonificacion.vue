@@ -181,21 +181,20 @@
                             <td>{{ bonif.periodo }}</td>
                             <td>{{ mes(bonif.mes) }}</td>
                             <td>{{ bonif.planibene }}</td>
-                            <td>{{ bonif.rubro_pres }}</td>
-                            <td>{{ bonif.monto }}</td>
+                            <td>{{ bonif.idrubropres }} - {{ bonif.rubro_pres }}</td>
+                            <td>{{ numberFormat.format(bonif.monto) }}</td>
                             <td>{{ bonif.tipo_desc }}</td>
-                            <td>{{ bonif.desc_jub }}</td>
-                            <td>{{ bonif.monto_cobrar }}</td>
+                            <td>{{ numberFormat.format(bonif.desc_jub) }}</td>
+                            <td>{{ numberFormat.format(bonif.monto_cobrar) }}</td>
                           </tr>
                         </tbody>
                         <tfoot>
                           <tr>
-                            <td>-</td>
-                            <td colspan="4"><b>TOTAL ............................GS:</b></td>
-                            <td><b>{{ totalMonto }}</b></td>
+                            <td colspan="5"><b>TOTAL ............................GS:</b></td>
+                            <td><b>{{ numberFormat.format(totalMonto) }}</b></td>
                             <td></td>
-                            <td><b>{{ totalDescuento }}</b></td>
-                            <td><b>{{ totalMontoCobrar }}</b></td>
+                            <td><b>{{ numberFormat.format(totalDescuento) }}</b></td>
+                            <td><b>{{ numberFormat.format(totalMontoCobrar) }}</b></td>
                           </tr>
                         </tfoot>
                       </template>
@@ -252,7 +251,8 @@ export default {
       {desc: 'Octubre', value: '10'},
       {desc: 'Noviembre', value: '11'},
       {desc: 'Diciembre', value: '12'},
-    ]
+    ],
+    numberFormat: new Intl.NumberFormat('es-ES'),
   }),
 
   // called when page is created before dom

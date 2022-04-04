@@ -14,8 +14,8 @@
         <div>
           <material-card
             color="general"
-            title="Vacancia"
-            text="Lista de vacancias"
+            title="Anexo"
+            text="Lista de anexos"
           >
             <v-spacer/>
 
@@ -128,7 +128,8 @@
                               md12>
                               <v-text-field
                                 v-model="editedItem.sueldo"
-                                label="Sueldo" />
+                                label="Sueldo"
+                                @change="totalMens" />
                             </v-flex>
                           </v-layout>
                         </v-container>
@@ -348,7 +349,7 @@
                   save-text="Guardar"
                   cancel-text="Cancelar"
                 >
-                  <div>{{ props.item.sueldo }}</div>
+                  <div>{{ numberFormat.format(props.item.sueldo) }}</div>
                   <template v-slot:input>
                     <v-text-field
                       v-model="props.item.sueldo"
@@ -357,6 +358,7 @@
                       single-line
                       counter
                       autofocus
+                      @change="totalMens"
                     />
                   </template>
                 </v-edit-dialog>
@@ -372,7 +374,7 @@
                   save-text="Guardar"
                   cancel-text="Cancelar"
                 >
-                  <div>{{ props.item.totmensu }}</div>
+                  <div>{{ numberFormat.format(props.item.totmensu) }}</div>
                   <template v-slot:input>
                     <v-text-field
                       v-model="props.item.totmensu"
@@ -381,6 +383,7 @@
                       single-line
                       counter
                       autofocus
+                      :value="totalMens"
                     />
                   </template>
                 </v-edit-dialog>
@@ -401,7 +404,7 @@
                     <v-text-field
                       v-model="props.item.vacancia"
                       :rules="[max25chars]"
-                      label="Vacancia"
+                      label="Anexo"
                       single-line
                       counter
                       autofocus
@@ -467,7 +470,7 @@ export default {
       { text: 'Cantidad', value: 'cantidad' },
       { text: 'Sueldo', value: 'sueldo' },
       { text: 'Total mensual', value: 'totmensu' },
-      { text: 'Vacancia', value: 'vacancia' },
+      { text: 'Anexo', value: 'vacancia' },
     ],
     editedIndex: -1,
     editedItem: {
@@ -480,7 +483,8 @@ export default {
       vacancia: '',
     },
     defaultItem: {
-    }
+    },
+    numberFormat: new Intl.NumberFormat('es-ES'),
   }),
 
   computed: {
@@ -498,7 +502,7 @@ export default {
 
     mod(){
       return this.getPermiso().find( access => access.nombretabla.includes(this.$route.name)).mod
-    }
+    },
   },
 
   watch: {
@@ -569,6 +573,10 @@ export default {
           console.log(error)
           this.cancelInline()
         })
+    },
+
+    totalMens(){
+      this.editedItem.totmensu = this.editedItem.cantidad * this.editedItem.sueldo || 0
     },
 
     save() {

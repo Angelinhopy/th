@@ -300,14 +300,14 @@
         return self::$sueldo = array(
           array(
             "idpersonal" => "",
-            "devengado" => ""
+            "devengado" => 0
           )
         );
       }  
     }
     
-    public static function listSueldos($periodo, $mes){
-      $listSueldos = viewSueldos::where('periodo', '=', $periodo)->and_where('mes', '=', $mes)->get();
+    public static function listSueldos($plla, $periodo, $mes){
+      $listSueldos = viewSueldos::where('plla', '=', $plla)->and_where('periodo', '=', $periodo)->and_where('mes', '=', $mes)->get();
       
       if($listSueldos) {
         return $listSueldos;
@@ -315,7 +315,10 @@
       else{
         return $listSueldos = array(
           array(
-            "idsueldo" => ''
+            "idpersonal" => "",
+            "devengado" => 0,
+            "sueldo" => 0,
+            "monto" => 0
           )
         );
       }

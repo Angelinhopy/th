@@ -169,15 +169,37 @@
                                 xs12
                                 sm4
                                 md4>
-                                <v-text-field
+                                <!--v-text-field
                                   v-model="editedItem.fecnac"
                                   hint="YYYY-MM-DD"
-                                  label="Fecha Nacimiento" />
+                                  label="Fecha Nacimiento" /-->
+                                <v-menu
+                                  v-model="calendarioFecNac"
+                                  :close-on-content-click="false"
+                                  :nudge-right="40"
+                                  transition="scale-transition"
+                                  offset-y
+                                  min-width="auto"
+                                >
+                                  <template v-slot:activator="{ on, attrs }">
+                                    <v-text-field
+                                      v-model="computedDateFormattedFecNac"
+                                      label="Fecha Nacimiento"
+                                      readonly
+                                      v-bind="attrs"
+                                      v-on="on"
+                                    ></v-text-field>
+                                  </template>
+                                  <v-date-picker
+                                    v-model="editedItem.fecnac"
+                                    @input="calendarioFecNac = false"
+                                  ></v-date-picker>
+                                </v-menu>
                               </v-flex>
                               <v-flex
                                 xs12
                                 sm8
-                                md8>
+                                md6>
                                 <v-text-field
                                   v-model="editedItem.lugarnac"
                                   label="Lugar Nacimiento" />
@@ -185,7 +207,7 @@
                               <v-flex
                                 xs12
                                 sm4
-                                md3>
+                                md2>
                                 <v-select
                                   v-model="editedItem.sexo"
                                   :items="genero"
@@ -210,23 +232,8 @@
                               </v-flex>
                               <v-flex
                                 xs12
-                                sm4
-                                md5>
-                                <v-autocomplete
-                                  v-model="editedItem.idcategoria"
-                                  :items="CategoriaList"
-                                  item-text="categoria"
-                                  item-value="idcategoria"
-                                  label="Categoría"
-                                  :append-icon="'mdi-plus'"
-                                  :rules="requiredRules.general"
-                                  required
-                                ></v-autocomplete>
-                              </v-flex>
-                              <v-flex
-                                xs12
                                 sm12
-                                md12>
+                                md8>
                                 <v-text-field
                                   v-model="editedItem.conyuge"
                                   label="Conyuge" />
@@ -253,14 +260,43 @@
                               </!--v-flex-->
                               <v-flex
                                 xs12
+                                sm12
+                                md12
+                              >
+                                <h3>Documentación de Ingreso</h3>
+                              </v-flex>
+                              <v-flex
+                                xs12
                                 sm4
                                 md4>
-                                <v-text-field
+                                <!--v-text-field
                                   v-model="editedItem.fec_ing"
                                   :rules="requiredRules.general"
                                   required
                                   hint="YYYY-MM-DD"
-                                  label="Fecha Ingreso" />
+                                  label="Fecha Ingreso" /-->
+                                <v-menu
+                                  v-model="calendarioFechaIngreso"
+                                  :close-on-content-click="false"
+                                  :nudge-right="40"
+                                  transition="scale-transition"
+                                  offset-y
+                                  min-width="auto"
+                                >
+                                  <template v-slot:activator="{ on, attrs }">
+                                    <v-text-field
+                                      v-model="computedDateFormattedFechaIngreso"
+                                      label="Fecha Ingreso"
+                                      readonly
+                                      v-bind="attrs"
+                                      v-on="on"
+                                    ></v-text-field>
+                                  </template>
+                                  <v-date-picker
+                                    v-model="editedItem.fec_ing"
+                                    @input="calendarioFechaIngreso = false"
+                                  ></v-date-picker>
+                                </v-menu>
                               </v-flex>
                               <v-flex
                                 xs12
@@ -274,10 +310,39 @@
                                 xs12
                                 sm4
                                 md4>
-                                <v-text-field
+                                <!--v-text-field
                                   v-model="editedItem.fecresingreso"
                                   hint="YYYY-MM-DD"
-                                  label="Fecha Resolución" />
+                                  label="Fecha Resolución" /-->
+                                <v-menu
+                                  v-model="calendarioFechaResol"
+                                  :close-on-content-click="false"
+                                  :nudge-right="40"
+                                  transition="scale-transition"
+                                  offset-y
+                                  min-width="auto"
+                                >
+                                  <template v-slot:activator="{ on, attrs }">
+                                    <v-text-field
+                                      v-model="computedDateFormattedFechaResol"
+                                      label="Fecha Resolución"
+                                      readonly
+                                      v-bind="attrs"
+                                      v-on="on"
+                                    ></v-text-field>
+                                  </template>
+                                  <v-date-picker
+                                    v-model="editedItem.fecresingreso"
+                                    @input="calendarioFechaResol = false"
+                                  ></v-date-picker>
+                                </v-menu>
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm12
+                                md12
+                              >
+                                <h3>Datos de Movimiento</h3>
                               </v-flex>
                               <v-flex
                                 xs12
@@ -290,6 +355,8 @@
                                   item-value="plla"
                                   label="Planilla"
                                   :append-icon="'mdi-plus'"
+                                  :rules="requiredRules.general"
+                                  required
                                 ></v-autocomplete>
                               </v-flex>
                               <v-flex
@@ -307,7 +374,7 @@
                                 <v-autocomplete
                                   v-model="editedItem.lineapres"
                                   :items="VacanciaList"
-                                  item-text="descripcion"
+                                  item-text="descrip"
                                   item-value="lineapres"
                                   label="Anexo"
                                   :append-icon="'mdi-plus'"
@@ -315,7 +382,7 @@
                                   required
                                 ></v-autocomplete>
                               </v-flex>
-                              <v-flex
+                              <!--v-flex--
                                 xs12
                                 sm4
                                 md4>
@@ -329,11 +396,26 @@
                                   :rules="requiredRules.general"
                                   required
                                 ></v-autocomplete>
+                              </!--v-flex-->
+                              <v-flex
+                                xs12
+                                sm6
+                                md5>
+                                <v-autocomplete
+                                  v-model="editedItem.idcategoria"
+                                  :items="CategoriaList"
+                                  item-text="categ"
+                                  item-value="idcategoria"
+                                  label="Categoría"
+                                  :append-icon="'mdi-plus'"
+                                  :rules="requiredRules.general"
+                                  required
+                                ></v-autocomplete>
                               </v-flex>
                               <v-flex
                                 xs12
-                                sm4
-                                md4>
+                                sm6
+                                md7>
                                 <v-autocomplete
                                   v-model="editedItem.iddepen"
                                   :items="DependenciaList"
@@ -410,10 +492,32 @@
                                 xs12
                                 sm4
                                 md4>
-                                <v-text-field
+                                <!--v-text-field
                                   v-model="editedItem.fecresmov"
                                   hint="YYYY-MM-DD"
-                                  label="Fecha Res. Mov." />
+                                  label="Fecha Res. Mov." /-->
+                                <v-menu
+                                  v-model="calendarioFechaResMov"
+                                  :close-on-content-click="false"
+                                  :nudge-right="40"
+                                  transition="scale-transition"
+                                  offset-y
+                                  min-width="auto"
+                                >
+                                  <template v-slot:activator="{ on, attrs }">
+                                    <v-text-field
+                                      v-model="computedDateFormattedFecResMov"
+                                      label="Fecha Res. Mov."
+                                      readonly
+                                      v-bind="attrs"
+                                      v-on="on"
+                                    ></v-text-field>
+                                  </template>
+                                  <v-date-picker
+                                    v-model="editedItem.fecresmov"
+                                    @input="calendarioFechaResMov = false"
+                                  ></v-date-picker>
+                                </v-menu>
                               </v-flex>
                               <v-flex
                                 xs12
@@ -422,7 +526,7 @@
                                 <v-autocomplete
                                   v-model="editedItem.idturno"
                                   :items="TurnoList"
-                                  item-text="descripcion"
+                                  item-text="descrip"
                                   item-value="idturno"
                                   label="Turno"
                                   :append-icon="'mdi-plus'"
@@ -433,7 +537,7 @@
                               <v-flex
                                 xs12
                                 sm12
-                                md12>
+                                md8>
                                 <v-autocomplete
                                   v-model="editedItem.idinstituestado"
                                   :items="InstitucionList"
@@ -449,19 +553,63 @@
                                 xs12
                                 sm6
                                 md6>
-                                <v-text-field
+                                <!--v-text-field
                                   v-model="editedItem.fic"
                                   hint="YYYY-MM-DD"
-                                  label="Fecha Inicio Contrato" />
+                                  label="Fecha Inicio Contrato" /-->
+                                <v-menu
+                                  v-model="calendarioFic"
+                                  :close-on-content-click="false"
+                                  :nudge-right="40"
+                                  transition="scale-transition"
+                                  offset-y
+                                  min-width="auto"
+                                >
+                                  <template v-slot:activator="{ on, attrs }">
+                                    <v-text-field
+                                      v-model="computedDateFormattedFic"
+                                      label="Fecha Inicio Contrato"
+                                      readonly
+                                      v-bind="attrs"
+                                      v-on="on"
+                                    ></v-text-field>
+                                  </template>
+                                  <v-date-picker
+                                    v-model="editedItem.fic"
+                                    @input="calendarioFic = false"
+                                  ></v-date-picker>
+                                </v-menu>
                               </v-flex>
                               <v-flex
                                 xs12
                                 sm6
                                 md6>
-                                <v-text-field
+                                <!--v-text-field
                                   v-model="editedItem.ffc"
                                   hint="YYYY-MM-DD"
-                                  label="Fecha Fin Contrato" />
+                                  label="Fecha Fin Contrato" /-->
+                                <v-menu
+                                  v-model="calendarioFfc"
+                                  :close-on-content-click="false"
+                                  :nudge-right="40"
+                                  transition="scale-transition"
+                                  offset-y
+                                  min-width="auto"
+                                >
+                                  <template v-slot:activator="{ on, attrs }">
+                                    <v-text-field
+                                      v-model="computedDateFormattedFfc"
+                                      label="Fecha Fin Contrato"
+                                      readonly
+                                      v-bind="attrs"
+                                      v-on="on"
+                                    ></v-text-field>
+                                  </template>
+                                  <v-date-picker
+                                    v-model="editedItem.ffc"
+                                    @input="calendarioFfc = false"
+                                  ></v-date-picker>
+                                </v-menu>
                               </v-flex>
 
                             </v-layout>
@@ -548,6 +696,10 @@
 
               </template>
 
+              <template v-slot:item.fecnac="props">
+                {{ formatDate(props.item.fecnac) }}
+              </template>
+
               <template v-slot:item.sexo="props">
                 <template v-if="props.item.sexo == 1">
                   Masculino
@@ -572,8 +724,36 @@
                 </template>
               </template>
 
+              <template v-slot:item.fec_ing="props">
+                {{ formatDate(props.item.fec_ing) }}
+              </template>
+
+              <template v-slot:item.fecresingreso="props">
+                {{ formatDate(props.item.fecresingreso) }}
+              </template>
+
+              <template v-slot:item.fecresmov="props">
+                {{ formatDate(props.item.fecresmov) }}
+              </template>
+
+              <template v-slot:item.fic="props">
+                {{ formatDate(props.item.fic) }}
+              </template>
+
+              <template v-slot:item.ffc="props">
+                {{ formatDate(props.item.ffc) }}
+              </template>
+
               <template v-slot:item.plla="props">
                 {{ planilla(props.item.plla) }}
+              </template>
+
+              <template v-slot:item.sueldo_pres="props">
+                {{ numberFormat.format(props.item.sueldo_pres) }}
+              </template>
+
+              <template v-slot:item.sueldo="props">
+                {{ numberFormat.format(props.item.sueldo) }}
               </template>
 
               <template v-slot:footer.page-text="props">
@@ -649,14 +829,14 @@ export default {
       { text: 'Planilla', value: 'plla' },
       { text: 'Órden', value: 'orden' },
       { text: 'Línea Pres.', value: 'linea_pres' },
-      { text: 'Categ. Pres.', value: 'categoria_pres' },
-      { text: 'Cantidad', value: 'cantidad' },
-      { text: 'Sueldo Pres.', value: 'sueldo_pres' },
-      { text: 'Total Mens.', value: 'totmensu' },
-      { text: 'Anexo', value: 'vacancia' },
+      //{ text: 'Categ. Pres.', value: 'categoria_pres' },
+      //{ text: 'Sueldo Pres.', value: 'sueldo_pres' },
+      //{ text: 'Cantidad', value: 'cantidad' },
+      //{ text: 'Total Mens.', value: 'totmensu' },
+      //{ text: 'Anexo', value: 'vacancia' },
       { text: 'Categoría', value: 'categoria' },
       { text: 'Sueldo', value: 'sueldo' },
-      { text: 'Cargo Pres.', value: 'cargo_pres' },
+      //{ text: 'Cargo Pres.', value: 'cargo_pres' },
       { text: 'Dependencia', value: 'dependencia' },
       { text: 'Cargo Func.', value: 'cargo_func' },
       { text: 'Jerarquía', value: 'jerarquia' },
@@ -697,7 +877,7 @@ export default {
       orden: '',
       lineapres: '',
       idcategoria: '',
-      idcargopres: '',
+      //idcargopres: '',
       iddepen: '',
       idcargofun: '',
       idjerarquia: '',
@@ -754,6 +934,14 @@ export default {
         (v) => !!v || "Este campo es requerido"
       ],
     },
+    numberFormat: new Intl.NumberFormat('es-ES'),
+    calendarioFecNac: false,
+    calendarioFechaIngreso: false,
+    calendarioFechaResol: false,
+    calendarioFechaResMov: false,
+    calendarioFic: false,
+    calendarioFfc: false,
+
   }),
 
   computed: {
@@ -773,6 +961,29 @@ export default {
       return this.getPermiso().find( access => access.nombretabla.includes(this.$route.name)).mod
     },
 
+    computedDateFormattedFecNac () {
+      return this.formatDate(this.editedItem.fecnac)
+    },
+
+    computedDateFormattedFechaIngreso () {
+      return this.formatDate(this.editedItem.fec_ing)
+    },
+
+    computedDateFormattedFechaResol () {
+      return this.formatDate(this.editedItem.fecresingreso)
+    },
+
+    computedDateFormattedFecResMov () {
+      return this.formatDate(this.editedItem.fecresmov)
+    },
+
+    computedDateFormattedFic () {
+      return this.formatDate(this.editedItem.fic)
+    },
+
+    computedDateFormattedFfc () {
+      return this.formatDate(this.editedItem.ffc)
+    },
   },
 
   watch: {
@@ -942,6 +1153,13 @@ export default {
 
     planilla(id){
       return this.PlanillaList.find( planilla => planilla.plla.includes(id)).descripcion
+    },
+
+    formatDate (date) {
+      if (!date) return null
+
+      const [year, month, day] = date.split('-')
+      return `${day}-${month}-${year}`
     },
     
     // object.assign fills in the empty object with the properties of item

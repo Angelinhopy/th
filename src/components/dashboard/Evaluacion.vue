@@ -472,7 +472,7 @@ export default {
 
     mod(){
       return this.getPermiso().find( access => access.nombretabla.includes(this.$route.name)).mod
-    }
+    },
   },
 
   watch: {

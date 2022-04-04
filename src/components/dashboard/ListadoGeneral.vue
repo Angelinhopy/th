@@ -29,6 +29,20 @@
             <v-flex
               xs12
               sm12
+              md3>
+              <v-autocomplete
+                v-model="plla"
+                :items="PlanillaList"
+                item-text="descripcion"
+                item-value="plla"
+                label="Planilla"
+                :append-icon="'mdi-plus'"
+                required
+              ></v-autocomplete>
+            </v-flex>
+            <v-flex
+              xs12
+              sm12
               md2
             >
               <v-select
@@ -38,6 +52,7 @@
                 item-value="value"
                 label="Periodo"
                 :append-icon="'mdi-plus'"
+                :disabled="!isPlanilla"
               ></v-select>
             </v-flex>
             <v-flex
@@ -101,6 +116,8 @@
                             <th class="text-left">Nombre</th>
                             <th class="text-left">Apellido</th>
                             <th class="text-left">Planilla</th>
+                            <th class="text-left">Periodo</th>
+                            <th class="text-left">Mes</th>
                             <th class="text-left">Categoría</th>
                             <th class="text-left">Sueldo</th>
                             <th class="text-left">Devengado</th>
@@ -118,11 +135,13 @@
                             <td>{{ item.nombre }}</td>
                             <td>{{ item.apellido }}</td>
                             <td>{{ planilla(item.plla) }}</td>
+                            <td>{{ item.periodo }}</td>
+                            <td>{{ mesElegido(item.mes) }}</td>
                             <td>{{ item.categoria }}</td>
-                            <td>{{ item.sueldo }}</td>
-                            <td>{{ item.devengado }}</td>
-                            <td>{{ item.monto }}</td>
-                            <td>{{ item.devengado - item.monto }}</td>
+                            <td>{{ numberFormat.format(item.sueldo) }}</td>
+                            <td>{{ numberFormat.format(item.devengado) }}</td>
+                            <td>{{ numberFormat.format(item.monto) }}</td>
+                            <td>{{ numberFormat.format(item.devengado - item.monto) }}</td>
                           </tr>
                         </tbody>
                       </template>
@@ -155,6 +174,7 @@ export default {
     //EmpleadoList: [],
     //EmpleadoSelect: [],
     SueldoSelect: [],
+    plla: '',
     periodo: '',
     mes: '',
     progress: 0,
@@ -181,6 +201,7 @@ export default {
       {desc: 'Diciembre', value: '12'},
     ],
     PlanillaList: [
+      {plla: '0', descripcion: 'S/D'},
       {plla: '1', descripcion: 'FISCAL'},
       {plla: '2', descripcion: 'IPS'},
       {plla: '3', descripcion: 'OBRERO'},
@@ -191,6 +212,7 @@ export default {
       {plla: '8', descripcion: 'COMISIONADO-IPS'},
       {plla: '9', descripcion: 'SIN PLANILLA'},
     ],
+    numberFormat: new Intl.NumberFormat('es-ES'),
   }),
 
   // called when page is created before dom
@@ -206,6 +228,10 @@ export default {
     /*isEmpleadoSelect(){
       return Object.keys(this.EmpleadoSelect).length !== 0 ? true : false
     },*/
+
+    isPlanilla() {
+      return this.plla !== '' ? true : false
+    },
 
     isPeriodo() {
       return this.periodo !== '' ? true : false
@@ -251,7 +277,7 @@ export default {
 
     getSueldo() {
       this.SueldoSelect = []
-      this.actTableList(`listsueldos/${this.periodo}/${this.mes}`)
+      this.actTableList(`listsueldos/${this.plla}/${this.periodo}/${this.mes}`)
         .then( response => {
           this.SueldoSelect = response.data
         })
@@ -260,7 +286,7 @@ export default {
         })
     },
 
-    planilla(id = 1){
+    planilla(id = 0){
       return null || this.PlanillaList.find( planilla => planilla.plla.includes(id)).descripcion
     },
 

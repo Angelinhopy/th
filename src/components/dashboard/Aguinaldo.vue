@@ -310,7 +310,7 @@
                             <td-->
                             <td>{{ it.periodo_det }}</td>
                             <td>{{ mes(it.mes_det) }}</td>
-                            <td>{{ it.monto }}</td>
+                            <td>{{ numberFormat.format(it.monto) }}</td>
                           </tr>
                         </template>
                         <template v-else>
@@ -430,7 +430,8 @@ export default {
       {desc: 'Octubre', value: '10'},
       {desc: 'Noviembre', value: '11'},
       {desc: 'Diciembre', value: '12'},
-    ]
+    ],
+    numberFormat: new Intl.NumberFormat('es-ES'),
   }),
 
   computed: {

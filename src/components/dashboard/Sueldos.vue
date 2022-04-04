@@ -302,6 +302,14 @@
                 {{ mes(props.item.mes) }}
               </template>
 
+              <template v-slot:item.sueldo="props">
+                {{ numberFormat.format(props.item.sueldo) }}
+              </template>
+
+              <template v-slot:item.devengado="props">
+                {{ numberFormat.format(props.item.devengado) }}
+              </template>
+
               <template v-slot:expanded-item="{ headers, item }">
 
                 <td :colspan="headers.length">
@@ -440,7 +448,7 @@
                             <td>{{ it.periodo_det }}</td>
                             <td>{{ mes(it.mes_det) }}</td>
                             <td>{{ it.tipo_descuento }}</td>
-                            <td>{{ it.monto }}</td>
+                            <td>{{ numberFormat.format(it.monto) }}</td>
                           </tr>
                         </template>
                         <template v-else>
@@ -518,7 +526,7 @@ export default {
       { text: 'Rubro', value: 'rubro_pres' },
       { text: 'Planilla', value: 'plla' },
       { text: 'Linea Pres', value: 'descrip_vac' },
-      { text: 'Cargo Pres.', value: 'cargo_pres' },
+      //{ text: 'Cargo Pres.', value: 'cargo_pres' },
       { text: 'Categoría', value: 'categoria_vac' },
       { text: 'Sueldo', value: 'sueldo' },
       { text: 'Devengado', value: 'devengado' },
@@ -588,7 +596,8 @@ export default {
       {desc: 'Octubre', value: '10'},
       {desc: 'Noviembre', value: '11'},
       {desc: 'Diciembre', value: '12'},
-    ]
+    ],
+    numberFormat: new Intl.NumberFormat('es-ES'),
   }),
 
   computed: {

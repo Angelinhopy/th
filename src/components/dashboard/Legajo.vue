@@ -499,7 +499,7 @@
                                   cols="12"
                                   sm="5"
                                 >
-                                  {{ EmpleadoSelect.sueldo }}
+                                  {{ numberFormat.format(EmpleadoSelect.sueldo) }}
                                 </v-col>
                               </v-row>
                             </td>
@@ -736,7 +736,13 @@
                                   cols="12"
                                   sm="5"
                                 >
-                                  {{ AcademicoSelect.cicloacademico }} - <b>Completo:</b> {{ AcademicoSelect.completo }}
+                                  {{ AcademicoSelect.cicloacademico }} - {{ academic(AcademicoSelect.cicloacademico) }} |
+                                  <template v-if="AcademicoSelect.completo == 'C'">
+                                    <b>Completo</b>
+                                  </template>
+                                  <template v-else-if="AcademicoSelect.completo == 'I'">
+                                    <b>Incompleto</b>
+                                  </template>
                                 </v-col>
                               </v-row>
                             </td>
@@ -908,6 +914,12 @@
                             </tr>
                           </template>
                         </tbody>
+                        <tfoot>
+                          <tr>
+                            <td colspan="3"><b>TOTAL PROMEDIO:</b></td>
+                            <td><b>{{ promedio }}</b></td>
+                          </tr>
+                        </tfoot>
                       </template>
                     </v-simple-table>
                   </section>
@@ -942,7 +954,7 @@ export default {
     CursosList: [],
     CursosSelect: [],
     EvaluacionList: [],
-    EvaluacionSelect: [],
+    EvaluacionSelect: [{}],
     PlanillaList: [
       {plla: '1', descripcion: 'FISCAL'},
       {plla: '2', descripcion: 'IPS'},
@@ -956,6 +968,19 @@ export default {
     ],
     progress: 0,
     pdfDownloaded: false,
+    CicloAcademicoList: [
+      { ciclo: "0", descripcion: '"S/D"'},
+      { ciclo: "1", descripcion: 'Primario'},
+      { ciclo: "3", descripcion: 'Ciclo Básico'},
+      { ciclo: "4", descripcion: 'Secundario'},
+      { ciclo: "6", descripcion: 'Universitario'},
+      { ciclo: "21", descripcion: 'Educ. Inicial'},
+      { ciclo: "22", descripcion: 'Educ. Escolar Media'},
+      { ciclo: "23", descripcion: 'Educ. Media'},
+      { ciclo: "24", descripcion: 'Educ. Técnica Superior'},
+      { cilco: "25", descripcion: 'Educ. Superior'},
+    ],
+    numberFormat: new Intl.NumberFormat('es-ES'),
   }),
 
   // called when page is created before dom
@@ -969,6 +994,21 @@ export default {
   computed: {
     isGenerating () {
       return this.progress !== 0 && this.progress !== 100
+    },
+
+    promedio(){
+      if(this.EvaluacionSelect[0].hasOwnProperty("detalle")){
+        let sumatoria = this.EvaluacionSelect[0].detalle.reduce( (acumulador, siguienteValor) => 
+          ({ evaluacion: parseInt(acumulador.evaluacion) + parseInt(siguienteValor.evaluacion) }), { evaluacion: 0}
+        )
+
+        let promedio = (sumatoria.evaluacion / this.EvaluacionSelect[0].detalle.length)
+
+        return promedio
+      }
+      else{
+        return 0
+      }
     },
   },
 
@@ -1023,6 +1063,10 @@ export default {
 
     planilla(id = 1){
       return this.PlanillaList.find( planilla => planilla.plla.includes(id)).descripcion
+    },
+
+    academic(id = 0){
+      return this.CicloAcademicoList.find( academic => academic.ciclo.includes(id)).descripcion
     },
 
     FiltrarDatos() {
