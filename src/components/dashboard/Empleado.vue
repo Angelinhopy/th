@@ -192,6 +192,7 @@
                                   </template>
                                   <v-date-picker
                                     v-model="editedItem.fecnac"
+                                    no-title
                                     @input="calendarioFecNac = false"
                                   ></v-date-picker>
                                 </v-menu>
@@ -287,13 +288,13 @@
                                     <v-text-field
                                       v-model="computedDateFormattedFechaIngreso"
                                       label="Fecha Ingreso"
-                                      readonly
                                       v-bind="attrs"
                                       v-on="on"
                                     ></v-text-field>
                                   </template>
                                   <v-date-picker
                                     v-model="editedItem.fec_ing"
+                                    no-title
                                     @input="calendarioFechaIngreso = false"
                                   ></v-date-picker>
                                 </v-menu>
@@ -333,6 +334,7 @@
                                   </template>
                                   <v-date-picker
                                     v-model="editedItem.fecresingreso"
+                                    no-title
                                     @input="calendarioFechaResol = false"
                                   ></v-date-picker>
                                 </v-menu>
@@ -515,6 +517,7 @@
                                   </template>
                                   <v-date-picker
                                     v-model="editedItem.fecresmov"
+                                    no-title
                                     @input="calendarioFechaResMov = false"
                                   ></v-date-picker>
                                 </v-menu>
@@ -576,6 +579,7 @@
                                   </template>
                                   <v-date-picker
                                     v-model="editedItem.fic"
+                                    no-title
                                     @input="calendarioFic = false"
                                   ></v-date-picker>
                                 </v-menu>
@@ -607,6 +611,7 @@
                                   </template>
                                   <v-date-picker
                                     v-model="editedItem.ffc"
+                                    no-title
                                     @input="calendarioFfc = false"
                                   ></v-date-picker>
                                 </v-menu>

@@ -412,7 +412,7 @@
                           <th>Periodo</th>
                           <th>Mes</th>
                           <th>Tipo Descuento</th>
-                          <th>Monto</th>
+                          <th class="text-right">Monto</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -448,7 +448,7 @@
                             <td>{{ it.periodo_det }}</td>
                             <td>{{ mes(it.mes_det) }}</td>
                             <td>{{ it.tipo_descuento }}</td>
-                            <td>{{ numberFormat.format(it.monto) }}</td>
+                            <td class="text-right">{{ numberFormat.format(it.monto) }}</td>
                           </tr>
                         </template>
                         <template v-else>
@@ -528,8 +528,8 @@ export default {
       { text: 'Linea Pres', value: 'descrip_vac' },
       //{ text: 'Cargo Pres.', value: 'cargo_pres' },
       { text: 'Categoría', value: 'categoria_vac' },
-      { text: 'Sueldo', value: 'sueldo' },
-      { text: 'Devengado', value: 'devengado' },
+      { text: 'Sueldo', value: 'sueldo', align: 'end' },
+      { text: 'Devengado', value: 'devengado', align: 'end' },
     ],
     editedIndex: -1,
     editedDetIndex: -1,
@@ -566,6 +566,7 @@ export default {
     CategoriaList: [],
     TipoDescuentoList: [],
     PlanillaList: [
+      {plla: '0', descripcion: 'S/D'},
       {plla: '1', descripcion: 'FISCAL'},
       {plla: '2', descripcion: 'IPS'},
       {plla: '3', descripcion: 'OBRERO'},
@@ -718,7 +719,7 @@ export default {
         })
     },
 
-    planilla(id){
+    planilla(id = 0){
       return this.PlanillaList.find( planilla => planilla.plla.includes(id)).descripcion
     },
 

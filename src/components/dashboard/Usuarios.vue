@@ -301,7 +301,7 @@ export default {
     passwordRules: [
       //v => !!v || 'El password es requerido',
       v => ( v && v.length >= 6) || 'Debe contener 6 caracteres como mínimo',
-      v => /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/.test(v) || 'La contraseña debe contener minúscula, número, carácter especial y mayúscula ',
+      v => /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/.test(v) || 'La contraseña debe contener letra mayúscula, minúscula y número',
     ],
     valid: true,
     requiredRules: {

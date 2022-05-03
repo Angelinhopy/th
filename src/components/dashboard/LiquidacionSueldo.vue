@@ -85,6 +85,7 @@
                 ref="html2Pdf"
               >
                 <section slot="pdf-content" class="section-container">
+                  <span>{{ fechayhora.toLocaleDateString() }}</span>
                   <section class="mb-1">
                     <h1>Liquidación de Sueldo</h1>
                   </section>
@@ -189,7 +190,7 @@
                               </v-row>
                             </td>
                           </tr>
-                          <tr>
+                          <!--tr>
                             <td>
                               <v-row no-gutters>
                                 <v-col
@@ -206,7 +207,7 @@
                                 </v-col>
                               </v-row>
                             </td>
-                          </tr>
+                          </!--tr-->
                           <tr>
                             <td>
                               <v-row no-gutters>
@@ -292,8 +293,8 @@
                           <tr>
                             <th>Nro.</th>
                             <th>Descuento</th>
-                            <th>Monto Desc.</th>
-                            <th>Sueldo Devengado</th>
+                            <th class="text-right">Monto Desc.</th>
+                            <th class="text-right">Sueldo Devengado</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -301,20 +302,20 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td>{{ numberFormat.format(totalDevengado) }}</td>
+                            <td class="text-right">{{ numberFormat.format(totalDevengado) }}</td>
                           </tr>
                           <tr v-for="(sueldo, index) in SueldoSelect.detalle" :key="index">
                             <td>{{ index+1 }}</td>
                             <td>{{ sueldo.tipo_descuento }}</td>
-                            <td>{{ numberFormat.format(sueldo.monto) }}</td>
+                            <td class="text-right">{{ numberFormat.format(sueldo.monto) }}</td>
                             <td></td>
                           </tr>
                         </tbody>
                         <tfoot>
                           <tr>
                             <td colspan="2"><b>TOTAL ............................GS:</b></td>
-                            <td><b>{{ numberFormat.format(totalDescuento) }}</b></td>
-                            <td><b>{{ numberFormat.format(totalSueldo) }}</b></td>
+                            <td class="text-right"><b class="totales">{{ numberFormat.format(totalDescuento) }}</b></td>
+                            <td class="text-right"><b class="totales">{{ numberFormat.format(totalSueldo) }}</b></td>
                           </tr>
                         </tfoot>
                       </template>
@@ -385,6 +386,7 @@ export default {
       {plla: '9', descripcion: 'SIN PLANILLA'},
     ],
     numberFormat: new Intl.NumberFormat('es-ES'),
+    fechayhora: new Date(),
   }),
 
   // called when page is created before dom
@@ -490,5 +492,15 @@ export default {
 
   .section-container {
     margin: 20px;
+  }
+
+  .section-container span {
+    font-size: 14px;
+    float: right;
+    font-weight: bold;
+  }
+
+  .section-container .totales {
+    font-size: 0.875rem;
   }
 </style>

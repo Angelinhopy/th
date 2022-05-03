@@ -85,6 +85,7 @@
                 ref="html2Pdf"
               >
                 <section slot="pdf-content" class="section-container">
+                  <span>{{ fechayhora.toLocaleDateString() }}</span>
                   <section class="mb-1">
                     <h1>Evaluación Personal</h1>
                   </section>
@@ -272,7 +273,8 @@ export default {
       {desc: 'Octubre', value: '10'},
       {desc: 'Noviembre', value: '11'},
       {desc: 'Diciembre', value: '12'},
-    ]
+    ],
+    fechayhora: new Date(),
   }),
 
   // called when page is created before dom
@@ -301,7 +303,7 @@ export default {
 
         let promedio = (sumatoria.evaluacion / this.EvaluacionSelect.detalle.length)
 
-        return promedio
+        return Math.round(promedio)
       }
       else{
         return 0
@@ -371,5 +373,11 @@ export default {
 
   .section-container {
     margin: 20px;
+  }
+
+  .section-container span {
+    font-size: 14px;
+    float: right;
+    font-weight: bold;
   }
 </style>

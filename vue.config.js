@@ -1,11 +1,10 @@
 module.exports = {
-  "transpileDependencies": [
-    "vuetify"
-  ],
+  transpileDependencies: ["vuetify"],
   devServer: {
-    proxy: process.env.NODE_ENV === 'production'
-    ? 'http://localhost/'
-    : 'http://localhost/dev/th/api/v1',
+    proxy:
+      process.env.NODE_ENV === "production"
+        ? "http://localhost/"
+        : "http://localhost/dev/th/api/v1",
     /*proxy: {
       '/': {
         target: 'http://localhost/dev/th/api/v1',
@@ -14,4 +13,4 @@ module.exports = {
       }
     }*/
   },
-}
+};

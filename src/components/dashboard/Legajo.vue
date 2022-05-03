@@ -172,7 +172,7 @@
                                   cols="12"
                                   sm="5"
                                 >
-                                  {{ EmpleadoSelect.fecnac }}
+                                  {{ formatDate(EmpleadoSelect.fecnac) }}
                                 </v-col>
                               </v-row>
                             </td>
@@ -390,11 +390,11 @@
                         <tbody>
                           <tr>
                             <td><b>Fecha de Ingreso:</b></td>
-                            <td>{{ EmpleadoSelect.fec_ing }}</td>
+                            <td>{{ formatDate(EmpleadoSelect.fec_ing) }}</td>
                             <td><b>Resolución o Decreto N°:</b></td>
                             <td>{{ EmpleadoSelect.res_mov }}</td>
                             <td><b>Fecha Resolución:</b></td>
-                            <td>{{ EmpleadoSelect.fecresmov }}</td>
+                            <td>{{ formatDate(EmpleadoSelect.fecresmov) }}</td>
                           </tr>
                         </tbody>
                       </template>
@@ -463,7 +463,7 @@
                                   cols="12"
                                   sm="5"
                                 >
-                                  {{ EmpleadoSelect.linea }} - {{ EmpleadoSelect.linea_pres }}
+                                  {{ EmpleadoSelect.linea_pres }}
                                 </v-col>
                               </v-row>
                             </td>
@@ -504,7 +504,7 @@
                               </v-row>
                             </td>
                           </tr>
-                          <tr>
+                          <!--tr>
                             <td>
                               <v-row no-gutters>
                                 <v-col
@@ -521,7 +521,7 @@
                                 </v-col>
                               </v-row>
                             </td>
-                          </tr>
+                          </!--tr-->
                           <tr>
                             <td>
                               <v-row no-gutters>
@@ -631,7 +631,7 @@
                                   cols="12"
                                   sm="2"
                                 >
-                                  {{ EmpleadoSelect.fecresingreso }}
+                                  {{ formatDate(EmpleadoSelect.fecresingreso) }}
                                 </v-col>
                               </v-row>
                             </td>
@@ -649,7 +649,7 @@
                                   cols="12"
                                   sm="5"
                                 >
-                                  {{ EmpleadoSelect.fic }}
+                                  {{ formatDate(EmpleadoSelect.fic) }}
                                 </v-col>
                               </v-row>
                             </td>
@@ -667,7 +667,7 @@
                                   cols="12"
                                   sm="5"
                                 >
-                                  {{ EmpleadoSelect.ffc }}
+                                  {{ formatDate(EmpleadoSelect.ffc) }}
                                 </v-col>
                               </v-row>
                             </td>
@@ -880,8 +880,8 @@
                           <tr v-for="(cursos, index) in CursosSelect" :key="index">
                             <td>{{ cursos.nombrecurso }}</td>
                             <td>{{ cursos.institucion }}</td>
-                            <td>{{ cursos.fecha_inicio }}</td>
-                            <td>{{ cursos.fecha_fin }}</td>
+                            <td>{{ formatDate(cursos.fecha_inicio) }}</td>
+                            <td>{{ formatDate(cursos.fecha_fin) }}</td>
                             <td>{{ cursos.nota }}</td>
                             <td>{{ cursos.rendimiento }}</td>
                             <td>{{ cursos.asistencia }}</td>
@@ -1004,7 +1004,7 @@ export default {
 
         let promedio = (sumatoria.evaluacion / this.EvaluacionSelect[0].detalle.length)
 
-        return promedio
+        return Math.round(promedio)
       }
       else{
         return 0
@@ -1073,6 +1073,13 @@ export default {
       this.AcademicoSelect = this.AcademicoList.find( personal => personal.idpersonal == this.EmpleadoSelect.idpersonal)
       this.CursosSelect = this.CursosList.filter( personal => personal.idpersonal == this.EmpleadoSelect.idpersonal)
       this.EvaluacionSelect = this.EvaluacionList.filter(personal => personal.idpersonal == this.EmpleadoSelect.idpersonal)
+    },
+
+    formatDate (date) {
+      if (!date) return null
+
+      const [year, month, day] = date.split('-')
+      return `${day}-${month}-${year}`
     },
 
     onProgress(progress) {

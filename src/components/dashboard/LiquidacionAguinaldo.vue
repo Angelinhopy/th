@@ -190,7 +190,7 @@
                             <th>Nro.</th>
                             <th>Periodo</th>
                             <th>Mes</th>
-                            <th>Monto</th>
+                            <th class="text-right">Monto</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -198,13 +198,13 @@
                             <td>{{ index+1 }}</td>
                             <td>{{ agui.periodo_det }}</td>
                             <td>{{ mes(agui.mes_det) }}</td>
-                            <td>{{ numberFormat.format(agui.monto) }}</td>
+                            <td class="text-right">{{ numberFormat.format(agui.monto) }}</td>
                           </tr>
                         </tbody>
                         <tfoot>
                           <tr>
                             <td colspan="3"><b>TOTAL AGUINALDO ............................GS:</b></td>
-                            <td><b>{{ numberFormat.format(totalAguinaldo) }}</b></td>
+                            <td class="text-right"><b class="totales">{{ numberFormat.format(totalAguinaldo) }}</b></td>
                           </tr>
                         </tfoot>
                       </template>
@@ -373,5 +373,9 @@ export default {
     font-size: 14px;
     float: right;
     font-weight: bold;
+  }
+
+  .section-container .totales {
+    font-size: 0.875rem;
   }
 </style>
