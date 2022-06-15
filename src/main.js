@@ -10,6 +10,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
+import MultiFiltersPlugin from './plugins/MultiFilters';
 import axios from "axios";
 
 Vue.prototype.$http = axios;
@@ -26,6 +27,8 @@ if (token) {
 sync(store, router);
 
 Vue.config.productionTip = false;
+
+Vue.use(MultiFiltersPlugin);
 
 new Vue({
   router,

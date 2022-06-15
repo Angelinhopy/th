@@ -168,7 +168,7 @@
                                 xs12
                                 sm6
                                 md5>
-                                <v-select
+                                <v-autocomplete
                                   v-model="editedItem.mes"
                                   :items="meses"
                                   item-text="desc"
@@ -176,7 +176,7 @@
                                   label="Mes"
                                   :append-icon="'mdi-plus'"
                                   :rules="[rules.required]"
-                                ></v-select>
+                                ></v-autocomplete>
                               </v-flex>
                               <!--v-flex
                                 xs12
@@ -260,16 +260,58 @@
 
                 <v-flex
                   xs12
-                  sm9
-                  md10
+                  sm4
+                  md3
                 >
                   <v-text-field
-                    v-model="search"
+                    v-model="filters.nombre"
                     append-icon="mdi-magnify"
-                    label="Buscar"
+                    label="Nombre"
                     single-line
                     hide-details
                   />
+                </v-flex>
+
+                <v-flex
+                  xs12
+                  sm4
+                  md3
+                >
+                  <v-text-field
+                    v-model="filters.ci"
+                    append-icon="mdi-magnify"
+                    label="Nro cédula"
+                    single-line
+                    hide-details
+                  />
+                </v-flex>
+
+                <v-flex
+                  xs12
+                  sm4
+                  md2
+                >
+                  <v-text-field
+                    v-model="filters.periodo"
+                    append-icon="mdi-magnify"
+                    label="Periodo"
+                    single-line
+                    hide-details
+                  />
+                </v-flex>
+
+                <v-flex
+                  xs12
+                  sm4
+                  md2
+                >
+                  <v-autocomplete
+                    v-model="filters.mes"
+                    :items="meses"
+                    item-text="desc"
+                    item-value="value"
+                    label="Mes"
+                  ></v-autocomplete>
                 </v-flex>
 
               </v-layout>
@@ -282,7 +324,6 @@
               :expanded.sync="expanded"
               item-key="idsueldo"
               show-expand
-              :search="search"
               class="elevation-1"
               no-data-text="Datos no disponibles"
               no-results-text="No se encontraron datos coincidentes"
@@ -541,32 +582,21 @@ export default {
     buscando: false,
     dialog: false,
     dialogDet: false,
-    search: '',
+    filters: {
+      nombre: '',
+      ci: '',
+      periodo: '',
+      mes: '',
+    },
     expanded: [],
     singleExpand: true,
-    headers: [
-      { text: '', value: 'data-table-expand' },
-      { text: '---Acción---', value: 'accion', sortable: false },
-      { text: 'Nombre Empleado', value: 'nombre' },
-      { text: 'Apellido', value: 'apellido' },
-      { text: 'Nro. Cédula', value: 'ci'},
-      { text: 'Periodo', value: 'periodo' },
-      { text: 'Mes', value: 'mes' },
-      { text: 'Rubro', value: 'rubro_pres' },
-      { text: 'Planilla', value: 'plla' },
-      { text: 'Linea Pres', value: 'descrip_vac' },
-      //{ text: 'Cargo Pres.', value: 'cargo_pres' },
-      { text: 'Categoría', value: 'categoria_vac' },
-      { text: 'Sueldo', value: 'sueldo', align: 'end' },
-      { text: 'Devengado', value: 'devengado', align: 'end' },
-    ],
     editedIndex: -1,
     editedDetIndex: -1,
     editedItem: {
       idsueldo: '',
       idpersonal: '',
       //ci: '',
-      periodo: new Date().getFullYear(),
+      periodo: `${new Date().getFullYear()}`,
       mes: `${new Date().getMonth()}`,
       idrubropres: '',
       plla: '',
@@ -581,7 +611,7 @@ export default {
       iddetallesueldo: '',
       idsueldo: '',
       //ci_det: '',
-      periodo_det: new Date().getFullYear(),
+      periodo_det: `${new Date().getFullYear()}`,
       mes_det: `${new Date().getMonth()}`,
       idtipodescuento: '',
       monto: '',
@@ -590,7 +620,7 @@ export default {
       idsueldo: '',
       idpersonal: '',
       //ci: '',
-      periodo: new Date().getFullYear(),
+      periodo: `${new Date().getFullYear()}`,
       mes: `${new Date().getMonth()}`,
       idrubropres: '',
       plla: '',
@@ -651,6 +681,24 @@ export default {
   }),
 
   computed: {
+    headers(){
+      return [
+      { text: '', value: 'data-table-expand' },
+      { text: '---Acción---', value: 'accion', sortable: false },
+      { text: 'Nombre Empleado', value: 'nombre', filter: this.nombreFilter },
+      { text: 'Apellido', value: 'apellido' },
+      { text: 'Nro. Cédula', value: 'ci', filter: this.ciFilter},
+      { text: 'Periodo', value: 'periodo', filter: this.periodoFilter },
+      { text: 'Mes', value: 'mes', filter: this.mesFilter },
+      { text: 'Rubro', value: 'rubro_pres' },
+      { text: 'Planilla', value: 'plla' },
+      { text: 'Linea Pres', value: 'descrip_vac' },
+      //{ text: 'Cargo Pres.', value: 'cargo_pres' },
+      { text: 'Categoría', value: 'categoria_vac' },
+      { text: 'Sueldo', value: 'sueldo', align: 'end' },
+      { text: 'Devengado', value: 'devengado', align: 'end' },
+    ]},
+
     formTitle() {
       return this.editedIndex === -1 ? 'Agregar' : 'Editar'
     },
@@ -781,6 +829,57 @@ export default {
       this.editedItem.sueldo = this.CategoriaList.find(categ => categ.idcategoria.includes(this.editedItem.categoria)).sueldo
     },
     */
+
+    nombreFilter(value) {
+      // If this filter has no value we just skip the entire filter.
+      if (!this.filters.nombre) {
+        return true;
+      }
+
+      // Check if the current loop value (The dessert name)
+      // partially contains the searched word.
+      return value
+        .toLowerCase()
+        .includes(this.filters.nombre.toLowerCase());
+    },
+
+    ciFilter(value) {
+      // If this filter has no value we just skip the entire filter.
+      if (!this.filters.ci) {
+        return true;
+      }
+
+      // Check if the current loop value (The dessert name)
+      // partially contains the searched word.
+      return value
+        .toLowerCase()
+        .includes(this.filters.ci.toLowerCase());
+    },
+
+    periodoFilter(value) {
+      // If this filter has no value we just skip the entire filter.
+      if (!this.filters.periodo) {
+        return true;
+      }
+
+      // Check if the current loop value (The dessert name)
+      // partially contains the searched word.
+      return value
+        .toLowerCase()
+        .includes(this.filters.periodo.toLowerCase());
+    },
+
+    mesFilter(value) {
+      // If this filter has no value we just skip the entire filter.
+      if (!this.filters.mes) {
+        return true;
+      }
+
+      // Check if the current loop value (The calories value)
+      // equals to the selected value at the <v-select>.
+      return value === this.filters.mes;
+    },
+
     selectDetalles(idsueldo){
       this.editedDetItem.idsueldo = idsueldo
       this.editedDetItem.ci_det = this.SueldosList.find(sueldo => sueldo.idsueldo.includes(this.editedDetItem.idsueldo)).ci
