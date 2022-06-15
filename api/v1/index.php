@@ -1786,6 +1786,7 @@
    /* Ruta evaluacion ADD */
    Flight::route('POST /evaluacion/add', function(){
     $data = Flight::request()->data;
+    $tipodesemp = tabDesempeno::all();
     
     $added = tabEvaluacion::create(array(
       'idpersonal' => $data->idpersonal,
@@ -1799,6 +1800,21 @@
       Flight::stop();
     }
     else{
+      foreach ($tipodesemp as $key => $value) {
+        $addedDet = tabEvaluacionDet::create(array(
+          'iddesempeno' => $added,
+          'periodo' => $data->periodo,
+          'mes' => $data->mes,
+          'idtipodesempe' => $value->idtipodesempe,
+          'evaluacion' => 0
+        ));
+
+        if(is_array($addedDet)){
+          Flight::json($added, 400);
+          Flight::stop();
+        }
+      }
+      
       Flight::json(array(
         'success' => true, 
         'added' => $added

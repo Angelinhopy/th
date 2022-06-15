@@ -183,15 +183,15 @@
                                 >
                                   <template v-slot:activator="{ on, attrs }">
                                     <v-text-field
-                                      v-model="computedDateFormattedFecNac"
+                                      v-model="editedItem.fecnac"
                                       label="Fecha Nacimiento"
-                                      readonly
                                       v-bind="attrs"
+                                      @blur="dateFecnac = editedItem.fecnac"
                                       v-on="on"
                                     ></v-text-field>
                                   </template>
                                   <v-date-picker
-                                    v-model="editedItem.fecnac"
+                                    v-model="dateFecnac"
                                     no-title
                                     @input="calendarioFecNac = false"
                                   ></v-date-picker>
@@ -286,14 +286,15 @@
                                 >
                                   <template v-slot:activator="{ on, attrs }">
                                     <v-text-field
-                                      v-model="computedDateFormattedFechaIngreso"
+                                      v-model="editedItem.fec_ing"
                                       label="Fecha Ingreso"
                                       v-bind="attrs"
+                                      @blur="dateFec_ing = editedItem.fec_ing"
                                       v-on="on"
                                     ></v-text-field>
                                   </template>
                                   <v-date-picker
-                                    v-model="editedItem.fec_ing"
+                                    v-model="dateFec_ing"
                                     no-title
                                     @input="calendarioFechaIngreso = false"
                                   ></v-date-picker>
@@ -325,15 +326,15 @@
                                 >
                                   <template v-slot:activator="{ on, attrs }">
                                     <v-text-field
-                                      v-model="computedDateFormattedFechaResol"
+                                      v-model="editedItem.fecresingreso"
                                       label="Fecha Resolución"
-                                      readonly
                                       v-bind="attrs"
+                                      @blur="dateFecresingreso = editedItem.fecresingreso"
                                       v-on="on"
                                     ></v-text-field>
                                   </template>
                                   <v-date-picker
-                                    v-model="editedItem.fecresingreso"
+                                    v-model="dateFecresingreso"
                                     no-title
                                     @input="calendarioFechaResol = false"
                                   ></v-date-picker>
@@ -508,15 +509,15 @@
                                 >
                                   <template v-slot:activator="{ on, attrs }">
                                     <v-text-field
-                                      v-model="computedDateFormattedFecResMov"
+                                      v-model="editedItem.fecresmov"
                                       label="Fecha Res. Mov."
-                                      readonly
                                       v-bind="attrs"
+                                      @blur="dateFecresmov = editedItem.fecresmov"
                                       v-on="on"
                                     ></v-text-field>
                                   </template>
                                   <v-date-picker
-                                    v-model="editedItem.fecresmov"
+                                    v-model="dateFecresmov"
                                     no-title
                                     @input="calendarioFechaResMov = false"
                                   ></v-date-picker>
@@ -570,15 +571,15 @@
                                 >
                                   <template v-slot:activator="{ on, attrs }">
                                     <v-text-field
-                                      v-model="computedDateFormattedFic"
+                                      v-model="editedItem.fic"
                                       label="Fecha Inicio Contrato"
-                                      readonly
                                       v-bind="attrs"
+                                      @blur="dateFic = editedItem.fic"
                                       v-on="on"
                                     ></v-text-field>
                                   </template>
                                   <v-date-picker
-                                    v-model="editedItem.fic"
+                                    v-model="dateFic"
                                     no-title
                                     @input="calendarioFic = false"
                                   ></v-date-picker>
@@ -602,15 +603,15 @@
                                 >
                                   <template v-slot:activator="{ on, attrs }">
                                     <v-text-field
-                                      v-model="computedDateFormattedFfc"
+                                      v-model="editedItem.ffc"
                                       label="Fecha Fin Contrato"
-                                      readonly
                                       v-bind="attrs"
+                                      @blur="dateFfc = editedItem.ffc"
                                       v-on="on"
                                     ></v-text-field>
                                   </template>
                                   <v-date-picker
-                                    v-model="editedItem.ffc"
+                                    v-model="dateFfc"
                                     no-title
                                     @input="calendarioFfc = false"
                                   ></v-date-picker>
@@ -946,7 +947,12 @@ export default {
     calendarioFechaResMov: false,
     calendarioFic: false,
     calendarioFfc: false,
-
+    dateFecnac: null,
+    dateFec_ing: null,
+    dateFecresingreso: null,
+    dateFecresmov: null,
+    dateFic: null,
+    dateFfc: null,
   }),
 
   computed: {
@@ -995,6 +1001,30 @@ export default {
     dialog(val) {
       val || this.close()
     },
+
+    dateFecnac(val){
+      this.editedItem.fecnac = this.dateFecnac
+    },
+
+    dateFec_ing(val){
+      this.editedItem.fec_ing = this.dateFec_ing
+    },
+
+    dateFecresingreso(val){
+      this.editedItem.fecresingreso = this.dateFecresingreso
+    },
+
+    dateFecresmov(val){
+      this.editedItem.fecresmov = this.dateFecresmov
+    },
+
+    dateFic(val){
+      this.editedItem.fic = this.dateFic
+    },
+
+    dateFfc(val){
+      this.editedItem.ffc = this.dateFfc
+    }
   },
 
   // called when page is created before dom
@@ -1158,6 +1188,10 @@ export default {
 
     planilla(id){
       return this.PlanillaList.find( planilla => planilla.plla.includes(id)).descripcion
+    },
+
+    changeDate(date){
+      this.editedItem.fecnac = date
     },
 
     formatDate (date) {

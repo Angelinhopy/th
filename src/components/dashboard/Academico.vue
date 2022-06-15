@@ -460,7 +460,7 @@ export default {
       { ciclo: "22", descripcion: 'Educ. Escolar Media'},
       { ciclo: "23", descripcion: 'Educ. Media'},
       { ciclo: "24", descripcion: 'Educ. Técnica Superior'},
-      { cilco: "25", descripcion: 'Educ. Superior'},
+      { ciclo: "25", descripcion: 'Educ. Superior'},
     ],
   }),
 

@@ -20,34 +20,48 @@
           <v-card>
             <v-card-text>
               <v-container grid-list-md >
-                <v-layout wrap>
-                  <v-flex
-                    xs12
-                    sm6
-                    md5>
-                    <v-select
-                      v-model="editedItem.periodo"
-                      :items="years"
-                      item-text="desc"
-                      item-value="value"
-                      label="Periodo"
-                      :append-icon="'mdi-plus'"
-                    ></v-select>
-                  </v-flex>
-                  <v-flex
-                    xs12
-                    sm6
-                    md4>
-                    <v-select
-                      v-model="editedItem.mes"
-                      :items="meses"
-                      item-text="desc"
-                      item-value="value"
-                      label="Mes"
-                      :append-icon="'mdi-plus'"
-                    ></v-select>
-                  </v-flex>
-                </v-layout>
+                <v-form
+                  ref="formSueldos"
+                  v-model="valid"
+                  lazy-validation
+                >
+                  <v-layout wrap>
+                    <v-flex
+                      xs12
+                      sm6
+                      md5>
+                      <!--v-autocomplete
+                        v-model="editedItem.periodo"
+                        :items="years"
+                        item-text="desc"
+                        item-value="value"
+                        label="Periodo"
+                        :append-icon="'mdi-plus'"
+                      ></!--v-autocomplete-->
+                      <v-text-field
+                        v-model="editedItem.periodo"
+                        label="Periodo"
+                        :rules="[rules.required, rules.counterMax, rules.counterMin]"
+                        minlength="4"
+                      >
+                      </v-text-field>
+                    </v-flex>
+                    <v-flex
+                      xs12
+                      sm6
+                      md4>
+                      <v-autocomplete
+                        v-model="editedItem.mes"
+                        :items="meses"
+                        item-text="desc"
+                        item-value="value"
+                        label="Mes"
+                        :append-icon="'mdi-plus'"
+                        :rules="[rules.required]"
+                      ></v-autocomplete>
+                    </v-flex>
+                  </v-layout>
+                </v-form>
               </v-container>
             </v-card-text>
             <v-card-actions>
@@ -55,6 +69,7 @@
               <v-btn
                 color="blue darken-1"
                 text
+                :disabled="!valid"
                 @click="save('gensueldos')">Guardar</v-btn>
             </v-card-actions>
           </v-card>
@@ -112,103 +127,116 @@
                       </v-card-title>
                       <v-card-text>
                         <v-container grid-list-md >
-                          <v-layout wrap>
-                            <v-flex
-                              xs12
-                              sm12
-                              md12>
-                              <v-autocomplete
-                                v-model="editedItem.idpersonal"
-                                :items="EmpleadoList"
-                                item-text="nomape"
-                                item-value="idpersonal"
-                                label="Empleado"
-                              ></v-autocomplete>
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm6
-                              md7>
-                              <v-select
-                                v-model="editedItem.periodo"
-                                :items="years"
-                                item-text="desc"
-                                item-value="value"
-                                label="Periodo"
-                                :append-icon="'mdi-plus'"
-                              ></v-select>
-                            </v-flex>
-                            <v-flex
-                              xs12
-                              sm6
-                              md5>
-                              <v-select
-                                v-model="editedItem.mes"
-                                :items="meses"
-                                item-text="desc"
-                                item-value="value"
-                                label="Mes"
-                                :append-icon="'mdi-plus'"
-                              ></v-select>
-                            </v-flex>
-                            <!--v-flex
-                              xs12
-                              sm12
-                              md12>
-                              <v-autocomplete
-                                v-model="editedItem.idrubropres"
-                                :items="RubroList"
-                                item-text="descripcion"
-                                item-value="idrubropres"
-                                label="Rubro presupuestario"
-                              ></v-autocomplete>
-                            </!--v-flex-->
-                            <!--v-flex
-                              xs12
-                              sm12
-                              md12>
-                              <v-autocomplete
-                                v-model="editedItem.pila"
-                                :items="PlanillaList"
-                                item-text="descripcion"
-                                item-value="idplanibene"
-                                label="Planilla"
-                              ></v-autocomplete>
-                            </!--v-flex-->
-                            <!--v-flex
-                              xs12
-                              sm12
-                              md12>
-                              <v-autocomplete
-                                v-model="editedItem.lineapres"
-                                :items="VacanciaList"
-                                item-text="descripcion"
-                                item-value="lineapres"
-                                label="Linea Pres."
-                              ></v-autocomplete>
-                            </!--v-flex-->
-                            <!--v-flex
-                              xs12
-                              sm12
-                              md12>
-                              <v-autocomplete
-                                v-model="editedItem.categoria"
-                                :items="CategoriaList"
-                                item-text="categoria"
-                                item-value="idcategoria"
-                                label="Categoría"
-                                @change="selectSueldo"
-                              ></v-autocomplete>
-                            </!--v-flex-->
-                            <!--v-flex
-                              xs12
-                              sm12
-                              md12>
-                              <v-text-field
-                                v-model="editedItem.sueldo"
-                                label="Sueldo" />
-                            </!--v-flex-->
-                          </v-layout>
+                          <v-form
+                            ref="formSueldo"
+                            v-model="validOnly"
+                            lazy-validation
+                          >
+                            <v-layout wrap>
+                              <v-flex
+                                xs12
+                                sm12
+                                md12>
+                                <v-autocomplete
+                                  v-model="editedItem.idpersonal"
+                                  :items="EmpleadoList"
+                                  item-text="nomape"
+                                  item-value="idpersonal"
+                                  label="Empleado"
+                                  :rules="[rules.required]"
+                                ></v-autocomplete>
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm6
+                                md7>
+                                <!--v-select
+                                  v-model="editedItem.periodo"
+                                  :items="years"
+                                  item-text="desc"
+                                  item-value="value"
+                                  label="Periodo"
+                                  :append-icon="'mdi-plus'"
+                                ></!--v-select-->
+                                <v-text-field
+                                  v-model="editedItem.periodo"
+                                  label="Periodo"
+                                  :rules="[rules.required, rules.counterMax, rules.counterMin]"
+                                ></v-text-field>
+                              </v-flex>
+                              <v-flex
+                                xs12
+                                sm6
+                                md5>
+                                <v-select
+                                  v-model="editedItem.mes"
+                                  :items="meses"
+                                  item-text="desc"
+                                  item-value="value"
+                                  label="Mes"
+                                  :append-icon="'mdi-plus'"
+                                  :rules="[rules.required]"
+                                ></v-select>
+                              </v-flex>
+                              <!--v-flex
+                                xs12
+                                sm12
+                                md12>
+                                <v-autocomplete
+                                  v-model="editedItem.idrubropres"
+                                  :items="RubroList"
+                                  item-text="descripcion"
+                                  item-value="idrubropres"
+                                  label="Rubro presupuestario"
+                                ></v-autocomplete>
+                              </!--v-flex-->
+                              <!--v-flex
+                                xs12
+                                sm12
+                                md12>
+                                <v-autocomplete
+                                  v-model="editedItem.pila"
+                                  :items="PlanillaList"
+                                  item-text="descripcion"
+                                  item-value="idplanibene"
+                                  label="Planilla"
+                                ></v-autocomplete>
+                              </!--v-flex-->
+                              <!--v-flex
+                                xs12
+                                sm12
+                                md12>
+                                <v-autocomplete
+                                  v-model="editedItem.lineapres"
+                                  :items="VacanciaList"
+                                  item-text="descripcion"
+                                  item-value="lineapres"
+                                  label="Linea Pres."
+                                ></v-autocomplete>
+                              </!--v-flex-->
+                              <!--v-flex
+                                xs12
+                                sm12
+                                md12>
+                                <v-autocomplete
+                                  v-model="editedItem.categoria"
+                                  :items="CategoriaList"
+                                  item-text="categoria"
+                                  item-value="idcategoria"
+                                  label="Categoría"
+                                  @change="selectSueldo"
+                                ></v-autocomplete>
+                              </!--v-flex-->
+                              <!--v-flex
+                                xs12
+                                sm12
+                                md12>
+                                <v-text-field
+                                  v-model="editedItem.sueldo"
+                                  label="Sueldo" />
+                              </!--v-flex-->
+                            </v-layout>
+                          </v-form>
                         </v-container>
                       </v-card-text>
 
@@ -221,6 +249,7 @@
                         <v-btn
                           color="blue darken-1"
                           text
+                          :disabled="!validOnly"
                           @click="save('sueldos')">Guardar</v-btn>
                       </v-card-actions>
                     </v-card>
@@ -537,8 +566,8 @@ export default {
       idsueldo: '',
       idpersonal: '',
       //ci: '',
-      periodo: '',
-      mes: '',
+      periodo: new Date().getFullYear(),
+      mes: `${new Date().getMonth()}`,
       idrubropres: '',
       plla: '',
       lineapres: '',
@@ -552,12 +581,25 @@ export default {
       iddetallesueldo: '',
       idsueldo: '',
       //ci_det: '',
-      periodo_det: '',
-      mes_det: '',
+      periodo_det: new Date().getFullYear(),
+      mes_det: `${new Date().getMonth()}`,
       idtipodescuento: '',
       monto: '',
     },
     defaultItem: {
+      idsueldo: '',
+      idpersonal: '',
+      //ci: '',
+      periodo: new Date().getFullYear(),
+      mes: `${new Date().getMonth()}`,
+      idrubropres: '',
+      plla: '',
+      lineapres: '',
+      //cargo_pres: '',
+      categoria: '',
+      sueldo: '',
+      //devengado: '',
+      detalle: [],
     },
     EmpleadoList: [],
     RubroList: [],
@@ -599,6 +641,13 @@ export default {
       {desc: 'Diciembre', value: '12'},
     ],
     numberFormat: new Intl.NumberFormat('es-ES'),
+    valid: true,
+    validOnly: true,
+    rules: {
+      required: (v) => !!v || "Este campo es requerido",
+      counterMax: (value) => value.length <= 4 || "4 caracteres, formato YYYY",
+      counterMin: (value) => value.length >= 4 || "4 caracteres, formato YYYY",
+    }
   }),
 
   computed: {
@@ -808,24 +857,26 @@ export default {
     },
 
     save(dir) {
-      if(this.editedIndex > -1) {
-        Object.assign(this.SueldosList[this.editedIndex], this.editedItem)
-        let endpoint = `${dir}/update/${this.editedItem.idsueldo}`
-        let method = 'PATCH'
-        this.callTableAction(endpoint, method, dir)
-        setTimeout(() => {
-          this.getSueldos()
-        }, 1000) 
+      if( this.$refs.formSueldos.validate() || this.$refs.formSueldo.validate() ){
+        if(this.editedIndex > -1) {
+          Object.assign(this.SueldosList[this.editedIndex], this.editedItem)
+          let endpoint = `${dir}/update/${this.editedItem.idsueldo}`
+          let method = 'PATCH'
+          this.callTableAction(endpoint, method, dir)
+          setTimeout(() => {
+            this.getSueldos()
+          }, 1000) 
+        }
+        else {
+          let endpoint = `${dir}/add`
+          let method = 'POST'
+          this.callTableAction(endpoint, method, dir)
+          setTimeout(() => {
+            this.getSueldos()
+          }, 1000) 
+        }
+        this.close()
       }
-      else {
-        let endpoint = `${dir}/add`
-        let method = 'POST'
-        this.callTableAction(endpoint, method, dir)
-        setTimeout(() => {
-          this.getSueldos()
-        }, 1000) 
-      }
-      this.close()
     },
 
     saveDetItem(dir) {

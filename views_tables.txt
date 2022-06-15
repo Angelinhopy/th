@@ -101,7 +101,8 @@ ON e.lineapres = a.lineapres
 LEFT JOIN detalle_sueldo f 
 ON f.idsueldo = a.idsueldo
 LEFT JOIN tipo_descuento g 
-ON g.idtipodescuento = f.idtipodescuento;
+ON g.idtipodescuento = f.idtipodescuento
+ORDER BY a.idsueldo;
 
 CREATE OR REPLACE VIEW v_aguinaldo AS
 SELECT a.idaguinaldo, a.periodo, a.mes, a.idrubropres, c.descripcion AS rubro_pres, a.idpersonal, concat_ws(' ', b.nombre, b.apellido, b.ci) AS nomape, b.nombre, b.apellido, b.ci, b.plla, d.iddetalle_agui, d.ci AS ci_det, d.periodo AS periodo_det, d.mes AS mes_det, d.idsueldo, d.monto

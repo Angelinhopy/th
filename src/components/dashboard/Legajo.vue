@@ -392,7 +392,7 @@
                             <td><b>Fecha de Ingreso:</b></td>
                             <td>{{ formatDate(EmpleadoSelect.fec_ing) }}</td>
                             <td><b>Resolución o Decreto N°:</b></td>
-                            <td>{{ EmpleadoSelect.res_mov }}</td>
+                            <td>{{ EmpleadoSelect.resingreso }}</td>
                             <td><b>Fecha Resolución:</b></td>
                             <td>{{ formatDate(EmpleadoSelect.fecresmov) }}</td>
                           </tr>
@@ -619,7 +619,7 @@
                                   cols="12"
                                   sm="1"
                                 >
-                                  {{ EmpleadoSelect.resingreso }}
+                                  {{ EmpleadoSelect.res_mov }}
                                 </v-col>
                                 <v-col
                                   cols="12"
@@ -978,7 +978,7 @@ export default {
       { ciclo: "22", descripcion: 'Educ. Escolar Media'},
       { ciclo: "23", descripcion: 'Educ. Media'},
       { ciclo: "24", descripcion: 'Educ. Técnica Superior'},
-      { cilco: "25", descripcion: 'Educ. Superior'},
+      { ciclo: "25", descripcion: 'Educ. Superior'},
     ],
     numberFormat: new Intl.NumberFormat('es-ES'),
   }),
