@@ -91,7 +91,7 @@
                   </section>
 
                   <section class="mb-1">
-                    <h3>Datos Personales</h3>
+                    <h3>Datos del Evaluado o del Funcionario</h3>
                     <v-simple-table dense light>
                       <template v-slot:default>
                         <thead>

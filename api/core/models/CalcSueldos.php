@@ -324,6 +324,25 @@
       }
     }
 
+    public static function listSueldosMultas($plla, $periodo, $mes){
+      $listSueldos = viewSueldosMultas::where('plla', '=', $plla)->and_where('periodo', '=', $periodo)->and_where('mes', '=', $mes)->get();
+      
+      if($listSueldos) {
+        return $listSueldos;
+      }
+      else{
+        return $listSueldos = array(
+          array(
+            "idpersonal" => "",
+            "devengado" => 0,
+            "sueldo" => 0,
+            "monto" => 0,
+            "multas" => 0
+          )
+        );
+      }
+    }
+
     public static function UpSueldo($id, $data){
       self::Sueldos($data->idpersonal, $data->periodo, $data->mes);
 

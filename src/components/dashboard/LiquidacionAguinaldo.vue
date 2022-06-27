@@ -77,7 +77,7 @@
                   </section>
 
                   <section class="mb-1">
-                    <h3>Datos Personales</h3>
+                    <h3>Datos de la Planilla </h3>
                     <v-simple-table dense light>
                       <template v-slot:default>
                         <thead>

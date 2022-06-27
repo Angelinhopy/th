@@ -2367,6 +2367,11 @@
     Flight::json(CalcSueldos::listSueldos($plla, $periodo, $mes));
   });
 
+  /* Ruta listado general sueldos con multas */
+  Flight::route('GET /listsueldosmultas/@plla:[0-9]+/@periodo:[0-9]+/@mes:[0-9]+', function($plla, $periodo, $mes){
+    Flight::json(CalcSueldos::listSueldosMultas($plla, $periodo, $mes));
+  });
+
   /* Ruta aguinaldos */
   Flight::route('GET /aguinaldos', function(){
     Flight::json(Aguinaldo::getAguinaldo());

@@ -394,7 +394,7 @@
                             <td><b>Resolución o Decreto N°:</b></td>
                             <td>{{ EmpleadoSelect.resingreso }}</td>
                             <td><b>Fecha Resolución:</b></td>
-                            <td>{{ formatDate(EmpleadoSelect.fecresmov) }}</td>
+                            <td>{{ formatDate(EmpleadoSelect.fecresingreso) }}</td>
                           </tr>
                         </tbody>
                       </template>
@@ -631,7 +631,7 @@
                                   cols="12"
                                   sm="2"
                                 >
-                                  {{ formatDate(EmpleadoSelect.fecresingreso) }}
+                                  {{ formatDate(EmpleadoSelect.fecresmov) }}
                                 </v-col>
                               </v-row>
                             </td>

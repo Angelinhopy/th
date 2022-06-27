@@ -120,15 +120,15 @@
                                 >
                                   <template v-slot:activator="{ on, attrs }">
                                     <v-text-field
-                                      v-model="computedDateFormattedFecIni"
+                                      v-model="editedItem.fecha_inicio"
                                       label="Fecha Inicio"
-                                      readonly
                                       v-bind="attrs"
+                                      @blur="dateFecha_inicio = editedItem.fecha_inicio"
                                       v-on="on"
                                     ></v-text-field>
                                   </template>
                                   <v-date-picker
-                                    v-model="editedItem.fecha_inicio"
+                                    v-model="dateFecha_inicio"
                                     @input="calendarioFecIni = false"
                                   ></v-date-picker>
                                 </v-menu>
@@ -151,15 +151,15 @@
                                 >
                                   <template v-slot:activator="{ on, attrs }">
                                     <v-text-field
-                                      v-model="computedDateFormattedFecFin"
+                                      v-model="editedItem.fecha_fin"
                                       label="Fecha Fin"
-                                      readonly
                                       v-bind="attrs"
+                                      @blur="dateFecha_fin = editedItem.fecha_fin"
                                       v-on="on"
                                     ></v-text-field>
                                   </template>
                                   <v-date-picker
-                                    v-model="editedItem.fecha_fin"
+                                    v-model="dateFecha_fin"
                                     @input="calendarioFecFin = false"
                                   ></v-date-picker>
                                 </v-menu>
@@ -510,6 +510,8 @@ export default {
     PaisList: [],
     calendarioFecIni: false,
     calendarioFecFin: false,
+    dateFecha_inicio: null,
+    dateFecha_fin: null,
   }),
 
   computed: {
@@ -541,7 +543,15 @@ export default {
   watch: {
     dialog(val) {
       val || this.close()
-    }
+    },
+
+    dateFecha_inicio(val){
+      this.editedItem.fecha_inicio = this.dateFecha_inicio
+    },
+
+    dateFecha_fin(val){
+      this.editedItem.fecha_fin = this.dateFecha_fin
+    },
   },
 
   // called when page is created before dom

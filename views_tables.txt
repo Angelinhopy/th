@@ -130,5 +130,24 @@ CREATE OR REPLACE VIEW v_rubro_presupuestario AS
 SELECT idrubropres, descripcion, concat_ws(' ', idrubropres, descripcion) AS descrip 
 FROM rubro_presupuestario;
 
+CREATE OR REPLACE VIEW v_sueldos_multas AS
+SELECT a.idsueldo, a.ci, a.periodo, a.mes, a.idrubropres, c.descripcion AS rubro_pres, a.plla, a.lineapres, e.linea, e.descripcion AS descrip_vac, e.categoria AS categoria_vac, e.cantidad, e.sueldo AS sueldo_vac, e.totmensu, e.vacancia, a.cargo_pres, a.categoria, a.sueldo, a.devengado, a.total_desc_plla, a.importe_neto_plla, a.total_general_desc, a.importe_neto_des, a.idpersonal, concat_ws(' ', b.nombre, b.apellido, b.ci) AS nomape, b.nombre, b.apellido, b.ci AS ci_emple, f.iddetallesueldo, f.ci AS ci_det, f.periodo AS periodo_det, f.mes AS mes_det, f.idtipodescuento, g.descripcion AS tipo_descuento, f.monto, ff.monto AS multas
+FROM sueldos a 
+INNER JOIN empleado b 
+ON b.idpersonal = a.idpersonal
+INNER JOIN rubro_presupuestario c 
+ON c.idrubropres = a.idrubropres
+LEFT JOIN vacancia e 
+ON e.lineapres = a.lineapres
+LEFT JOIN detalle_sueldo f 
+ON f.idsueldo = a.idsueldo
+AND f.idtipodescuento in(1,2)
+LEFT JOIN detalle_sueldo ff
+ON ff.idsueldo = a.idsueldo
+AND ff.idtipodescuento = 4
+LEFT JOIN tipo_descuento g 
+ON g.idtipodescuento = f.idtipodescuento
+ORDER BY a.idsueldo;
+
 
 

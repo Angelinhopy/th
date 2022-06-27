@@ -122,6 +122,7 @@
                             <th class="text-left">Sueldo</th>
                             <th class="text-left">Devengado</th>
                             <th class="text-left">Aporte</th>
+                            <th class="text-left">Multas</th>
                             <th class="text-left">Neto</th>
                           </tr>
                         </thead>
@@ -141,6 +142,7 @@
                             <td>{{ numberFormat.format(item.sueldo) }}</td>
                             <td>{{ numberFormat.format(item.devengado) }}</td>
                             <td>{{ numberFormat.format(item.monto) }}</td>
+                            <td>{{ numberFormat.format(item.multas)}}</td>
                             <td>{{ numberFormat.format(item.devengado - item.monto) }}</td>
                           </tr>
                         </tbody>
@@ -313,7 +315,7 @@ export default {
 
     getSueldo() {
       this.SueldoSelect = []
-      this.actTableList(`listsueldos/${this.plla}/${this.periodo}/${this.mes}`)
+      this.actTableList(`listsueldosmultas/${this.plla}/${this.periodo}/${this.mes}`)
         .then( response => {
           this.SueldoSelect = response.data
         })

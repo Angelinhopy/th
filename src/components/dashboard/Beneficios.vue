@@ -389,7 +389,7 @@ export default {
     editedItem: {
       idpersonal: '',
       periodo: `${new Date().getFullYear()}`,
-      mes: `${new Date().getMonth()}`,
+      mes: `${new Date().getMonth()+1}`,
       ci: '',
       plla: '',
     },
@@ -399,12 +399,12 @@ export default {
       idplanibene: '',
       idtipodescuento: '',
       periodo: `${new Date().getFullYear()}`,
-      mes: `${new Date().getMonth()}`,
+      mes: `${new Date().getMonth()+1}`,
     },
     defaultItem: {
       idpersonal: '',
       periodo: `${new Date().getFullYear()}`,
-      mes: `${new Date().getMonth()}`,
+      mes: `${new Date().getMonth()+1}`,
       ci: '',
       plla: '',
     },
