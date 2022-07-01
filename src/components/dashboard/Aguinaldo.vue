@@ -117,7 +117,7 @@
 
                 <v-spacer />
 
-                <v-flex
+                <!--v-flex
                   xs12
                   sm12
                   md12
@@ -126,6 +126,62 @@
                     v-model="search"
                     append-icon="mdi-magnify"
                     label="Buscar"
+                    single-line
+                    hide-details
+                  />
+                </!--v-flex-->
+
+                <v-flex
+                  xs12
+                  sm3
+                  md3
+                >
+                  <v-text-field
+                    v-model="filters.nombre"
+                    append-icon="mdi-magnify"
+                    label="Nombre"
+                    single-line
+                    hide-details
+                  />
+                </v-flex>
+
+                <v-flex
+                  xs12
+                  sm3
+                  md3
+                >
+                  <v-text-field
+                    v-model="filters.apellido"
+                    append-icon="mdi-magnify"
+                    label="Apellido"
+                    single-line
+                    hide-details
+                  />
+                </v-flex>
+
+                <v-flex
+                  xs12
+                  sm3
+                  md3
+                >
+                  <v-text-field
+                    v-model="filters.ci"
+                    append-icon="mdi-magnify"
+                    label="Nro cédula"
+                    single-line
+                    hide-details
+                  />
+                </v-flex>
+
+                <v-flex
+                  xs12
+                  sm3
+                  md3
+                >
+                  <v-text-field
+                    v-model="filters.periodo"
+                    append-icon="mdi-magnify"
+                    label="Periodo"
                     single-line
                     hide-details
                   />
@@ -377,16 +433,12 @@ export default {
     search: '',
     expanded: [],
     singleExpand: true,
-    headers: [
-      { text: '', value: 'data-table-expand' },
-      { text: '---Acción---', value: 'accion', sortable: false },
-      { text: 'Nombre Empleado', value: 'nombre' },
-      { text: 'Apellido', value: 'apellido' },
-      { text: 'Nro. Cédula', value: 'ci_emple'},
-      { text: 'Periodo', value: 'periodo' },
-      { text: 'Mes', value: 'mes' },
-      { text: 'Robro pres.', value: 'rubro_pres' },
-    ],
+    filters: {
+      nombre: '',
+      apellido: '',
+      ci: '',
+      periodo: '',
+    },
     editedIndex: -1,
     editedDetIndex: -1,
     editedItem: {
@@ -435,6 +487,18 @@ export default {
   }),
 
   computed: {
+    headers(){
+      return [
+      { text: '', value: 'data-table-expand' },
+      { text: '---Acción---', value: 'accion', sortable: false },
+      { text: 'Nombre Empleado', value: 'nombre', filter: this.nombreFilter },
+      { text: 'Apellido', value: 'apellido', filter: this.apellidoFilter },
+      { text: 'Nro. Cédula', value: 'ci', filter: this.ciFilter },
+      { text: 'Periodo', value: 'periodo', filter: this.periodoFilter },
+      { text: 'Mes', value: 'mes' },
+      { text: 'Robro pres.', value: 'rubro_pres' },
+    ]},
+
     formTitle() {
       return this.editedIndex === -1 ? 'Agregar' : 'Editar'
     },
@@ -501,6 +565,59 @@ export default {
     mes(id){
       return this.meses.find( mes => mes.value.includes(id)).desc
     },
+
+    nombreFilter(value) {
+      // If this filter has no value we just skip the entire filter.
+      if (!this.filters.nombre) {
+        return true;
+      }
+
+      // Check if the current loop value (The dessert name)
+      // partially contains the searched word.
+      return value
+        .toLowerCase()
+        .includes(this.filters.nombre.toLowerCase());
+    },
+
+    apellidoFilter(value) {
+      // If this filter has no value we just skip the entire filter.
+      if (!this.filters.apellido) {
+        return true;
+      }
+
+      // Check if the current loop value (The dessert name)
+      // partially contains the searched word.
+      return value
+        .toLowerCase()
+        .includes(this.filters.apellido.toLowerCase());
+    },
+
+    ciFilter(value) {
+      // If this filter has no value we just skip the entire filter.
+      if (!this.filters.ci) {
+        return true;
+      }
+
+      // Check if the current loop value (The dessert name)
+      // partially contains the searched word.
+      return value
+        .toLowerCase()
+        .includes(this.filters.ci.toLowerCase());
+    },
+
+    periodoFilter(value) {
+      // If this filter has no value we just skip the entire filter.
+      if (!this.filters.periodo) {
+        return true;
+      }
+
+      // Check if the current loop value (The dessert name)
+      // partially contains the searched word.
+      return value
+        .toLowerCase()
+        .includes(this.filters.periodo.toLowerCase());
+    },
+    
     // object.assign fills in the empty object with the properties of item
     editItem(item, dbox = true) {
       this.editedIndex = this.AguinaldoList.indexOf(item)

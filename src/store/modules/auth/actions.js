@@ -17,7 +17,6 @@ export default {
           resolve(response)
         })
         .catch(error => {
-          console.log('login error')
           commit('auth_error')
           localStorage.removeItem('_token')
           reject(error)

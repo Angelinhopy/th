@@ -36,8 +36,8 @@
 
     public static function CalculoSueldo($empleado, $periodo, $mes){
       $idrubropres = 111;
-      $cargo = '';
-      $categ = '';
+      $cargo = '**S/D**';
+      $categ = '**S/D**';
       $cargo_pres_desc = "**S/D**";
       $sueldo = 0;
       $devengado = 0;
@@ -47,7 +47,7 @@
       $monto = 0;
 
       self::Sueldos($empleado, $periodo, $mes);
-
+      
       if( self::getSueldos() ){
         return self::$respuesta = (object) array(
           'success' => false, 
@@ -59,7 +59,7 @@
       $empl = self::getEmpleado();
       self::CargoPres($empl->idcargopres);
       self::Categoria($empl->idcategoria);
-      
+            
       if( $empl->plla == 1 || $empl->plla == 2 ){
         $idrubropres = 111;
       }
@@ -67,17 +67,37 @@
         $idrubropres = 144;
       }
 
-      $cargo = self::getCargoPres();
-      if( $cargo ){
+      
+      if( self::getCargoPres() ){
+        $cargo = self::getCargoPres();
         $cargo_pres_desc = $cargo->descripcion;
       }
+      else{
+        $cargo_pres_desc = '**S/D**';
+      }
 
-      $categ = self::getCategoria();
-      $sueldo = $categ->sueldo;
-      $categoria = $categ->categoria;
+      if( self::getCategoria() ){
+        $categ = self::getCategoria();
+        $sueldo = $categ->sueldo;
+        $categoria = $categ->categoria;
+      }
+      else{
+        return self::$respuesta = (object) array(
+          'success' => false, 
+          'descrip' => 'Error al seleccionar la categoría. Empleado: ' . $empl->idpersonal . ' - ' . $empl->nombre
+        );
+      }
       
       //calcular salario por fecha de ingreso
-      list($anio_ing, $mes_ing, $dia_ing) = explode('-', $empl->fec_ing);
+      if( $empl->fec_ing ){
+        list($anio_ing, $mes_ing, $dia_ing) = explode('-', $empl->fec_ing);
+      }
+      else{
+        return self::$respuesta = (object) array(
+          'success' => false, 
+          'descrip' => 'Error al seleccionar la fecha de ingreso. Empleado: ' . $empl->idpersonal . ' - ' . $empl->nombre
+        );
+      }
       
       if( $anio_ing == $periodo && $mes_ing == $mes){
         $cant_dias_mes = date('t', strtotime($empl->fec_ing));

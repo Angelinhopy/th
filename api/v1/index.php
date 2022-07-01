@@ -35,7 +35,10 @@
       Flight::json(User::genToken());
     }
     else{
-      Flight::halt(401);
+      Flight::json(array(
+        'success' => false,
+        'message' => 'Error en el usuario o la contraseña'
+      ), 401);
       Flight::stop();
     }
   });
@@ -1495,7 +1498,7 @@
       'tipodoc' => $data->tipodoc,
       'res_mov' => $data->res_mov,
       'fecresmov' => $data->fecresmov,
-      'idturno' => $data->idturno,
+      'idturno' =>'a', // $data->idturno,
       'idinstituestado' => $data->idinstituestado,
       'fic' => $data->fic,
       'ffc' => $data->ffc
@@ -2357,7 +2360,7 @@
     else {
       Flight::json(array(
         'success' => true, 
-        'deleted' => $added->descrip
+        'added' => $added->descrip
       ));
     }
   });

@@ -130,6 +130,7 @@
                                   <v-date-picker
                                     v-model="dateFecha_inicio"
                                     @input="calendarioFecIni = false"
+                                    locale="ES"
                                   ></v-date-picker>
                                 </v-menu>
                             </v-flex>
@@ -161,6 +162,7 @@
                                   <v-date-picker
                                     v-model="dateFecha_fin"
                                     @input="calendarioFecFin = false"
+                                    locale="ES"
                                   ></v-date-picker>
                                 </v-menu>
                             </v-flex>

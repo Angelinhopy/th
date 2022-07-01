@@ -95,7 +95,7 @@ export default {
     return {
       username: '',
       password: '',
-      errorMessages: 'Usuario o contraseña incorrecta!',
+      errorMessages: '',
       snackbar: false,
       color: 'error',
       showPassword: false
@@ -116,7 +116,7 @@ export default {
           this.$router.push('/dashboard')
         })
         .catch(error => {
-          console.log(error)
+          this.errorMessages = error.response.data.message
           this.snackbar = true
         })
     }

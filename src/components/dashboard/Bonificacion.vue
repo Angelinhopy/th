@@ -31,7 +31,7 @@
               sm12
               md2
             >
-              <v-select
+              <v-autocomplete
                 v-model="period"
                 :items="years"
                 item-text="desc"
@@ -39,14 +39,14 @@
                 label="Periodo"
                 :append-icon="'mdi-plus'"
                 :disabled="!isEmpleadoSelect"
-              ></v-select>
+              ></v-autocomplete>
             </v-flex>
             <v-flex
               xs12
               sm12
               md2
             >
-              <v-select
+              <v-autocomplete
                 v-model="mess"
                 :items="meses"
                 item-text="desc"
@@ -55,7 +55,7 @@
                 :append-icon="'mdi-plus'"
                 @change="getBonificacion()"
                 :disabled="!isPeriodo"
-              ></v-select>
+              ></v-autocomplete>
             </v-flex>
           </v-layout>
         </v-container>

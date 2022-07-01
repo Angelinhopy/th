@@ -45,7 +45,7 @@
               sm12
               md2
             >
-              <v-select
+              <v-autocomplete
                 v-model="periodo"
                 :items="years"
                 item-text="desc"
@@ -53,14 +53,14 @@
                 label="Periodo"
                 :append-icon="'mdi-plus'"
                 :disabled="!isPlanilla"
-              ></v-select>
+              ></v-autocomplete>
             </v-flex>
             <v-flex
               xs12
               sm12
               md2
             >
-              <v-select
+              <v-autocomplete
                 v-model="mes"
                 :items="meses"
                 item-text="desc"
@@ -69,7 +69,7 @@
                 :append-icon="'mdi-plus'"
                 @change="getSueldo()"
                 :disabled="!isPeriodo"
-              ></v-select>
+              ></v-autocomplete>
             </v-flex>
           </v-layout>
         </v-container>
@@ -86,10 +86,10 @@
                 :float-layout="false"
                 :enable-download="true"
                 :preview-modal="true"
-                :paginate-elements-by-height="1000"
-                filename="ListaGeneral"
+                :paginate-elements-by-height="800"
                 :pdf-quality="2"
                 :manual-pagination="false"
+                filename="ListaGeneral"
                 pdf-format="a4"
                 pdf-orientation="landscape"
                 pdf-content-width="100%"
@@ -98,58 +98,52 @@
                 @hasDownloaded="hasDownloaded($event)"
                 ref="html2Pdf"
               >
-                <section slot="pdf-content" class="section-container">
-                  <section class="mb-1">
-                    <h1>Listado General</h1>
-                  </section>
-
-                  <section>
-                    <v-simple-table
-                      dense
-                      light
-                    >
-                      <template v-slot:default>
-                        <thead>
-                          <tr>
-                            <th class="text-left">Legajo</th>
-                            <th class="text-left">N° Cédula</th>
-                            <th class="text-left">Nombre</th>
-                            <th class="text-left">Apellido</th>
-                            <th class="text-left">Planilla</th>
-                            <th class="text-left">Periodo</th>
-                            <th class="text-left">Mes</th>
-                            <th class="text-left">Categoría</th>
-                            <th class="text-left">Sueldo</th>
-                            <th class="text-left">Devengado</th>
-                            <th class="text-left">Aporte</th>
-                            <th class="text-left">Multas</th>
-                            <th class="text-left">Neto</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr
-                            v-for="item in SueldoSelect"
-                            :key="item.idsueldo"
-                          >
-                            <td>{{ item.idpersonal }}</td>
-                            <td>{{ item.ci }}</td>
-                            <td>{{ item.nombre }}</td>
-                            <td>{{ item.apellido }}</td>
-                            <td>{{ planilla(item.plla) }}</td>
-                            <td>{{ item.periodo }}</td>
-                            <td>{{ mesElegido(item.mes) }}</td>
-                            <td>{{ item.categoria }}</td>
-                            <td>{{ numberFormat.format(item.sueldo) }}</td>
-                            <td>{{ numberFormat.format(item.devengado) }}</td>
-                            <td>{{ numberFormat.format(item.monto) }}</td>
-                            <td>{{ numberFormat.format(item.multas)}}</td>
-                            <td>{{ numberFormat.format(item.devengado - item.monto) }}</td>
-                          </tr>
-                        </tbody>
-                      </template>
-                    </v-simple-table>
-                  </section>
-
+                <section slot="pdf-content">
+                  <h1 class="mt-1">Listado General</h1>
+                  <v-simple-table
+                    dense
+                    light
+                  >
+                    <template v-slot:default>
+                      <thead>
+                        <tr>
+                          <th class="text-left">Legajo</th>
+                          <th class="text-left">N° Cédula</th>
+                          <th class="text-left">Nombre</th>
+                          <th class="text-left">Apellido</th>
+                          <th class="text-left">Planilla</th>
+                          <th class="text-left">Periodo</th>
+                          <th class="text-left">Mes</th>
+                          <th class="text-left">Categoría</th>
+                          <th class="text-left">Sueldo</th>
+                          <th class="text-left">Devengado</th>
+                          <th class="text-left">Aporte</th>
+                          <th class="text-left">Multas</th>
+                          <th class="text-left">Neto</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          v-for="item in SueldoSelect"
+                          :key="item.idsueldo"
+                        >
+                          <td>{{ item.idpersonal }}</td>
+                          <td>{{ item.ci }}</td>
+                          <td>{{ item.nombre }}</td>
+                          <td>{{ item.apellido }}</td>
+                          <td>{{ planilla(item.plla) }}</td>
+                          <td>{{ item.periodo }}</td>
+                          <td>{{ mesElegido(item.mes) }}</td>
+                          <td>{{ item.categoria }}</td>
+                          <td>{{ numberFormat.format(item.sueldo) }}</td>
+                          <td>{{ numberFormat.format(item.devengado) }}</td>
+                          <td>{{ numberFormat.format(item.monto) }}</td>
+                          <td>{{ numberFormat.format(item.multas)}}</td>
+                          <td>{{ numberFormat.format(item.devengado - item.monto - item.multas) }}</td>
+                        </tr>
+                      </tbody>
+                    </template>
+                  </v-simple-table>
                 </section>
               </vue-html2pdf>
               

@@ -30,7 +30,7 @@
               >
                 <v-flex
                   xs12
-                  sm3
+                  sm2
                   md2
                 >
                   <v-dialog
@@ -78,27 +78,27 @@
                               xs12
                               sm6
                               md6>
-                              <v-select
+                              <v-autocomplete
                                 v-model="editedDetItem.periodo"
                                 :items="years"
                                 item-text="desc"
                                 item-value="value"
                                 label="Periodo"
                                 :append-icon="'mdi-plus'"
-                              ></v-select>
+                              ></v-autocomplete>
                             </v-flex>
                             <v-flex
                               xs12
                               sm6
                               md6>
-                              <v-select
+                              <v-autocomplete
                                 v-model="editedDetItem.mes"
                                 :items="meses"
                                 item-text="desc"
                                 item-value="value"
                                 label="Mes"
                                 :append-icon="'mdi-plus'"
-                              ></v-select>
+                              ></v-autocomplete>
                             </v-flex>
                             <v-flex
                               xs12
@@ -186,7 +186,7 @@
 
                 <v-spacer />
 
-                <v-flex
+                <!--v-flex
                   xs12
                   sm9
                   md10
@@ -198,6 +198,62 @@
                     single-line
                     hide-details
                   />
+                </!--v-flex-->
+
+                <v-flex
+                  xs12
+                  sm3
+                  md3
+                >
+                  <v-text-field
+                    v-model="filters.nombre"
+                    append-icon="mdi-magnify"
+                    label="Nombre"
+                    single-line
+                    hide-details
+                  />
+                </v-flex>
+
+                <v-flex
+                  xs12
+                  sm3
+                  md3
+                >
+                  <v-text-field
+                    v-model="filters.apellido"
+                    append-icon="mdi-magnify"
+                    label="Apellido"
+                    single-line
+                    hide-details
+                  />
+                </v-flex>
+
+                <v-flex
+                  xs12
+                  sm2
+                  md2
+                >
+                  <v-text-field
+                    v-model="filters.ci"
+                    append-icon="mdi-magnify"
+                    label="Nro cédula"
+                    single-line
+                    hide-details
+                  />
+                </v-flex>
+
+                <v-flex
+                  xs12
+                  sm1
+                  md2
+                >
+                  <v-autocomplete
+                    v-model="filters.plla"
+                    :items="PlaniList"
+                    item-text="descripcion"
+                    item-value="plla"
+                    label="Planilla"
+                  ></v-autocomplete>
                 </v-flex>
 
               </v-layout>
@@ -376,14 +432,6 @@ export default {
     search: '',
     expanded: [],
     singleExpand: true,
-    headers: [
-      { text: '', value: 'data-table-expand' },
-      //{ text: '---Acción---', value: 'accion', sortable: false },
-      { text: 'Nombre Empleado', value: 'nombre' },
-      { text: 'Apellido', value: 'apellido' },
-      { text: 'Nro. Cédula', value: 'ci'},
-      { text: 'Planilla', value: 'plla'},
-    ],
     editedIndex: -1,
     editedDetIndex: -1,
     editedItem: {
@@ -405,6 +453,12 @@ export default {
       idpersonal: '',
       periodo: `${new Date().getFullYear()}`,
       mes: `${new Date().getMonth()+1}`,
+      ci: '',
+      plla: '',
+    },
+    filters: {
+      nombre: '',
+      apellido: '',
       ci: '',
       plla: '',
     },
@@ -484,6 +538,16 @@ export default {
   }),
 
   computed: {
+    headers(){
+      return [
+        { text: '', value: 'data-table-expand' },
+        //{ text: '---Acción---', value: 'accion', sortable: false },
+        { text: 'Nombre Empleado', value: 'nombre', filter: this.nombreFilter },
+        { text: 'Apellido', value: 'apellido', filter: this.apellidoFilter },
+        { text: 'Nro. Cédula', value: 'ci', filter: this.ciFilter},
+        { text: 'Planilla', value: 'plla', filter: this.pllaFilter},
+    ]},
+
     formTitle() {
       return this.editedIndex === -1 ? 'Agregar' : 'Editar'
     },
@@ -527,8 +591,10 @@ export default {
     }),
 
     getBeneficios() {
+      this.buscando = true
       this.actTableList('beneficios')
         .then( response => {
+          this.buscando = false
           this.BeneficiosList = response.data
         })
         .catch( error => {
@@ -537,10 +603,8 @@ export default {
     },
 
     getEmpleado() {
-      this.buscando = true
       this.actTableList('empleado')
         .then( response => {
-          this.buscando = false
           this.EmpleadoList = response.data
         })
         .catch( error => {
@@ -600,6 +664,56 @@ export default {
 
     mes(id){
       return this.meses.find( mes => mes.value.includes(id)).desc
+    },
+
+    nombreFilter(value) {
+      // If this filter has no value we just skip the entire filter.
+      if (!this.filters.nombre) {
+        return true;
+      }
+
+      // Check if the current loop value (The dessert name)
+      // partially contains the searched word.
+      return value
+        .toLowerCase()
+        .includes(this.filters.nombre.toLowerCase());
+    },
+
+    apellidoFilter(value) {
+      // If this filter has no value we just skip the entire filter.
+      if (!this.filters.apellido) {
+        return true;
+      }
+
+      // Check if the current loop value (The dessert name)
+      // partially contains the searched word.
+      return value
+        .toLowerCase()
+        .includes(this.filters.apellido.toLowerCase());
+    },
+
+    ciFilter(value) {
+      // If this filter has no value we just skip the entire filter.
+      if (!this.filters.ci) {
+        return true;
+      }
+
+      // Check if the current loop value (The dessert name)
+      // partially contains the searched word.
+      return value
+        .toLowerCase()
+        .includes(this.filters.ci.toLowerCase());
+    },
+
+    pllaFilter(value) {
+      // If this filter has no value we just skip the entire filter.
+      if (!this.filters.plla) {
+        return true;
+      }
+
+      // Check if the current loop value (The calories value)
+      // equals to the selected value at the <v-select>.
+      return value === this.filters.plla;
     },
       
     // object.assign fills in the empty object with the properties of item

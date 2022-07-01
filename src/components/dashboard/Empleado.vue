@@ -194,6 +194,7 @@
                                     v-model="dateFecnac"
                                     no-title
                                     @input="calendarioFecNac = false"
+                                    locale="ES"
                                   ></v-date-picker>
                                 </v-menu>
                               </v-flex>
@@ -297,6 +298,7 @@
                                     v-model="dateFec_ing"
                                     no-title
                                     @input="calendarioFechaIngreso = false"
+                                    locale="ES"
                                   ></v-date-picker>
                                 </v-menu>
                               </v-flex>
@@ -337,6 +339,7 @@
                                     v-model="dateFecresingreso"
                                     no-title
                                     @input="calendarioFechaResol = false"
+                                    locale="ES"
                                   ></v-date-picker>
                                 </v-menu>
                               </v-flex>
@@ -520,6 +523,7 @@
                                     v-model="dateFecresmov"
                                     no-title
                                     @input="calendarioFechaResMov = false"
+                                    locale="ES"
                                   ></v-date-picker>
                                 </v-menu>
                               </v-flex>
@@ -582,6 +586,7 @@
                                     v-model="dateFic"
                                     no-title
                                     @input="calendarioFic = false"
+                                    locale="ES"
                                   ></v-date-picker>
                                 </v-menu>
                               </v-flex>
@@ -614,6 +619,7 @@
                                     v-model="dateFfc"
                                     no-title
                                     @input="calendarioFfc = false"
+                                    locale="ES"
                                   ></v-date-picker>
                                 </v-menu>
                               </v-flex>
@@ -1230,7 +1236,7 @@ export default {
           this.saveInline()
         })
         .catch(error => {
-          console.log(error)
+          console.log(error.response)
           this.cancelInline()
         })
     },

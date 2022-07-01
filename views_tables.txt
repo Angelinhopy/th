@@ -120,7 +120,7 @@ FROM vacancia;
 
 CREATE OR REPLACE VIEW v_categoria AS
 SELECT idcategoria, categoria, sueldo, concat_ws(' ', categoria, sueldo) as categ
-FROM categoria
+FROM categoria;
 
 CREATE OR REPLACE VIEW v_turno AS
 SELECT idturno, descripcion, entrada, salida, concat_ws(' ', descripcion, concat_ws(' a ', entrada, salida)) AS descrip

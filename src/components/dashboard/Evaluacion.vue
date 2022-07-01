@@ -86,27 +86,27 @@
                               xs12
                               sm6
                               md3>
-                              <v-select
+                              <v-autocomplete
                                 v-model="editedItem.periodo"
                                 :items="years"
                                 item-text="desc"
                                 item-value="value"
                                 label="Periodo"
                                 :append-icon="'mdi-plus'"
-                              ></v-select>
+                              ></v-autocomplete>
                             </v-flex>
                             <v-flex
                               xs12
                               sm6
                               md3>
-                              <v-select
+                              <v-autocomplete
                                 v-model="editedItem.mes"
                                 :items="meses"
                                 item-text="desc"
                                 item-value="value"
                                 label="Mes"
                                 :append-icon="'mdi-plus'"
-                              ></v-select>
+                              ></v-autocomplete>
                             </v-flex>
                           </v-layout>
                         </v-container>

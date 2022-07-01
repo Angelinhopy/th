@@ -69,8 +69,8 @@
               <v-btn
                 color="blue darken-1"
                 text
-                :disabled="!valid"
-                @click="save('gensueldos')">Guardar</v-btn>
+                :disabled="!valid || procesando"
+                @click="save('gensueldos')">{{ (procesando) ? 'Procesando...' : 'Guardar' }}</v-btn>
             </v-card-actions>
           </v-card>
         </material-card>
@@ -260,8 +260,8 @@
 
                 <v-flex
                   xs12
-                  sm4
-                  md3
+                  sm2
+                  md2
                 >
                   <v-text-field
                     v-model="filters.nombre"
@@ -274,8 +274,22 @@
 
                 <v-flex
                   xs12
-                  sm4
-                  md3
+                  sm2
+                  md2
+                >
+                  <v-text-field
+                    v-model="filters.apellido"
+                    append-icon="mdi-magnify"
+                    label="Apellido"
+                    single-line
+                    hide-details
+                  />
+                </v-flex>
+
+                <v-flex
+                  xs12
+                  sm2
+                  md2
                 >
                   <v-text-field
                     v-model="filters.ci"
@@ -288,7 +302,7 @@
 
                 <v-flex
                   xs12
-                  sm4
+                  sm2
                   md2
                 >
                   <v-text-field
@@ -302,7 +316,7 @@
 
                 <v-flex
                   xs12
-                  sm4
+                  sm1
                   md2
                 >
                   <v-autocomplete
@@ -584,6 +598,7 @@ export default {
     dialogDet: false,
     filters: {
       nombre: '',
+      apellido: '',
       ci: '',
       periodo: '',
       mes: '',
@@ -677,7 +692,8 @@ export default {
       required: (v) => !!v || "Este campo es requerido",
       counterMax: (value) => value.length <= 4 || "4 caracteres, formato YYYY",
       counterMin: (value) => value.length >= 4 || "4 caracteres, formato YYYY",
-    }
+    },
+    procesando: false,
   }),
 
   computed: {
@@ -686,8 +702,8 @@ export default {
       { text: '', value: 'data-table-expand' },
       { text: '---Acción---', value: 'accion', sortable: false },
       { text: 'Nombre Empleado', value: 'nombre', filter: this.nombreFilter },
-      { text: 'Apellido', value: 'apellido' },
-      { text: 'Nro. Cédula', value: 'ci', filter: this.ciFilter},
+      { text: 'Apellido', value: 'apellido', filter: this.apellidoFilter },
+      { text: 'Nro. Cédula', value: 'ci', filter: this.ciFilter },
       { text: 'Periodo', value: 'periodo', filter: this.periodoFilter },
       { text: 'Mes', value: 'mes', filter: this.mesFilter },
       { text: 'Rubro', value: 'rubro_pres' },
@@ -843,6 +859,19 @@ export default {
         .includes(this.filters.nombre.toLowerCase());
     },
 
+    apellidoFilter(value) {
+      // If this filter has no value we just skip the entire filter.
+      if (!this.filters.apellido) {
+        return true;
+      }
+
+      // Check if the current loop value (The dessert name)
+      // partially contains the searched word.
+      return value
+        .toLowerCase()
+        .includes(this.filters.apellido.toLowerCase());
+    },
+
     ciFilter(value) {
       // If this filter has no value we just skip the entire filter.
       if (!this.filters.ci) {
@@ -911,9 +940,9 @@ export default {
             let method = 'DELETE'
             this.callTableAction(endpoint, method, dir)
             this.SueldosList.splice(index, 1)
-            setTimeout(() => {
-              this.getSueldos()
-            }, 1000) 
+            //setTimeout(() => {
+              //this.getSueldos()
+            //}, 1000) 
           }
         })
     },
@@ -929,9 +958,9 @@ export default {
             let method = 'DELETE'
             this.callTableAction(endpoint, method, dir)
             this.SueldosList[indexItem].detalle.splice(indexDet, 1)
-            setTimeout(() => {
-              this.getSueldos()
-            }, 1000)            
+            //setTimeout(() => {
+              //this.getSueldos()
+            //}, 1000)            
           }
         })
     },
@@ -939,6 +968,7 @@ export default {
     callTableAction(endpoint, method, dir) {
       let tableItem
       if( dir == 'sueldos' || dir == 'gensueldos' ){
+        this.procesando = true
         tableItem = this.editedItem
       }
       else if( dir == 'det_sueldo' ) {
@@ -947,10 +977,20 @@ export default {
 
       this.actProcesar({endpoint, tableItem, method})
         .then( response => {
+          this.procesando = false
           this.saveInline()
+          this.getSueldos()
         })
         .catch(error => {
-          console.log(error)
+          if( error.response.status == 500 ){
+            this.procesando = false
+            this.snackText = 'Error interno. Codigo ' + error.response.status
+          }
+          else{
+            this.procesando = false
+            this.snackText = error.response.data.descrip
+          }
+          this.getSueldos()
           this.cancelInline()
         })
     },
@@ -962,17 +1002,17 @@ export default {
           let endpoint = `${dir}/update/${this.editedItem.idsueldo}`
           let method = 'PATCH'
           this.callTableAction(endpoint, method, dir)
-          setTimeout(() => {
-            this.getSueldos()
-          }, 1000) 
+          //setTimeout(() => {
+            //this.getSueldos()
+          //}, 1000) 
         }
         else {
           let endpoint = `${dir}/add`
           let method = 'POST'
           this.callTableAction(endpoint, method, dir)
-          setTimeout(() => {
-            this.getSueldos()
-          }, 1000) 
+          //setTimeout(() => {
+            //this.getSueldos()
+          //}, 1000) 
         }
         this.close()
       }
@@ -984,17 +1024,17 @@ export default {
         let endpoint = `${dir}/update/${this.editedDetItem.iddetallesueldo}`
         let method = 'PATCH'
         this.callTableAction(endpoint, method, dir)
-        setTimeout(() => {
-          this.getSueldos()
-        }, 1000) 
+        //setTimeout(() => {
+          //this.getSueldos()
+        //}, 1000) 
       }
       else {
         let endpoint = `${dir}/add`
         let method = 'POST'
         this.callTableAction(endpoint, method, dir)
-        setTimeout(() => {
-          this.getSueldos()
-        }, 1000) 
+        //setTimeout(() => {
+          //this.getSueldos()
+        //}, 1000) 
       }
       this.close()
     },
@@ -1015,7 +1055,7 @@ export default {
     cancelInline() {
       this.snack = true
       this.snackColor = 'error'
-      this.snackText = 'Ocurrio algun error'
+      //this.snackText = 'Ocurrio algun error'
     },
 
     close() {
